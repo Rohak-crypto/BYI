@@ -1,0 +1,258 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+
+    min-height:100vh;
+
+    background:linear-gradient(135deg,#0F172A,#1E3A8A,#2563EB);
+
+}
+
+/* ================================
+   NAVBAR
+================================ */
+
+.navbar{
+
+    background:#0F172A;
+    padding:15px 0;
+
+}
+
+.navbar-brand{
+
+    color:#fff !important;
+    font-size:28px;
+    font-weight:700;
+
+}
+
+.navbar-brand i{
+
+    color:#FFD700;
+
+}
+
+/* ================================
+   REGISTER SECTION
+================================ */
+
+.register-section{
+
+    padding:60px 0;
+
+}
+
+/* ================================
+   CARD
+================================ */
+
+.register-card{
+
+    border:none;
+    border-radius:20px;
+    overflow:hidden;
+    max-width: 700px;
+    margin: auto;
+    padding: 25px;
+
+    background:rgba(255,255,255,.12);
+
+    backdrop-filter:blur(18px);
+
+    color:white;
+
+}
+
+.card-body{
+
+    padding:45px;
+
+}
+
+/* ================================
+   LOGO
+================================ */
+
+.logo{
+
+    width:65px;
+    height:65px;
+
+    margin:auto;
+
+    border-radius:50%;
+
+    background:#FFD700;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    margin-bottom:20px;
+
+}
+
+.logo i{
+
+    font-size:28px;
+
+    color:#0F172A;
+
+}
+
+/* ================================
+   TITLES
+================================ */
+
+h2{
+
+    font-weight:700;
+
+}
+
+p{
+
+    color:#EAEAEA;
+
+}
+
+/* ================================
+   LABELS
+================================ */
+
+.form-label{
+
+    color:white;
+    font-weight:500;
+
+}
+
+/* ================================
+   INPUTS
+================================ */
+
+.form-control,
+.form-select{
+
+    height:42px;
+
+    border-radius:12px;
+
+    border:none;
+
+    box-shadow:none;
+
+}
+
+.form-control:focus,
+.form-select:focus{
+
+    box-shadow:0 0 0 .25rem rgba(37,99,235,.35);
+
+}
+
+/* File Input */
+
+input[type=file]{
+
+    padding:12px;
+
+}
+
+/* ================================
+   CHECKBOX
+================================ */
+
+.form-check-label{
+
+    color:white;
+
+}
+
+/* ================================
+   BUTTON
+================================ */
+
+.btn-warning{
+
+    height:55px;
+
+    border-radius:12px;
+
+    font-size:18px;
+
+    transition:.3s;
+
+}
+
+.btn-warning:hover{
+
+    background:white;
+
+    color:#0F172A;
+
+}
+
+/* ================================
+   LINKS
+================================ */
+
+a{
+
+    color:#FFD700;
+
+    text-decoration:none;
+
+}
+
+a:hover{
+
+    color:white;
+
+}
+
+/* ================================
+   RESPONSIVE
+================================ */
+
+@media(max-width:768px){
+
+.card-body{
+
+padding:30px;
+
+}
+
+.logo{
+
+width:70px;
+height:70px;
+
+}
+
+.logo i{
+
+font-size:32px;
+
+}
+
+.navbar-brand{
+
+font-size:22px;
+
+}
+
+}

@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Bid Your Item | Home</title>
+
+    <!-- Bootstrap -->
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Google Font -->
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Custom CSS -->
+
+    <link rel="stylesheet" href="../../assets/css/home.css">
+
+</head>
+
+<body>
+
+<!-- ================= PREMIUM NAVBAR ================= -->
+
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top shadow">
+
+<div class="container">
+
+<!-- Logo -->
+
+<a class="navbar-brand d-flex align-items-center" href="#">
+
+<img src="../../assets/images/byi-logo.svg"
+     alt="BYI"
+     width="45"
+     class="me-2">
+
+<span class="fw-bold fs-4">
+
+Bid Your Item
+
+</span>
+
+</a>
+
+<button class="navbar-toggler"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarMenu">
+
+<span class="navbar-toggler-icon"></span>
+
+</button>
+
+<div class="collapse navbar-collapse"
+     id="navbarMenu">
+
+<ul class="navbar-nav mx-auto">
+
+<li class="nav-item">
+
+<a class="nav-link active"
+   href="#hero">
+
+Home
+
+</a>
+
+</li>
+
+<li class="nav-item">
+
+<a class="nav-link"
+   href="#categories">
+
+Categories
+
+</a>
+
+</li>
+
+<li class="nav-item">
+
+<a class="nav-link"
+   href="#trending">
+
+Auctions
+
+</a>
+
+</li>
+
+<li class="nav-item">
+
+<a class="nav-link"
+   href="#about">
+
+About
+
+</a>
+
+</li>
+
+<li class="nav-item">
+
+<a class="nav-link"
+   href="#contact">
+
+Contact
+
+</a>
+
+</li>
+
+</ul>
+
+<!-- Search -->
+
+<form class="d-flex me-3">
+
+<input
+class="form-control search-nav"
+type="search"
+placeholder="Search Auctions">
+
+</form>
+
+<!-- Icons -->
+
+<div class="d-flex align-items-center">
+
+<button class="icon-btn me-2">
+
+<i class="bi bi-heart"></i>
+
+</button>
+
+<button class="icon-btn me-2 position-relative">
+
+<i class="bi bi-bell"></i>
+
+<span class="badge rounded-pill bg-danger">
+
+3
+
+</span>
+
+</button>
+
+<div class="dropdown">
+
+<button
+class="icon-btn dropdown-toggle"
+data-bs-toggle="dropdown">
+
+<i class="bi bi-person-circle"></i>
+
+</button>
+
+<ul class="dropdown-menu dropdown-menu-end">
+
+<li>
+
+<a class="dropdown-item" href="#">
+
+My Profile
+
+</a>
+
+</li>
+
+<li>
+
+<a class="dropdown-item" href="#">
+
+My Bids
+
+</a>
+
+</li>
+
+<li>
+
+<a class="dropdown-item" href="#">
+
+Wishlist
+
+</a>
+
+</li>
+
+<li>
+
+<hr class="dropdown-divider">
+
+</li>
+
+<li>
+
+<a class="dropdown-item text-danger"
+href="../auth/login.html">
+
+Logout
+
+</a>
+
+</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</nav>
+
+<!-- ================= HERO ================= -->
+
+<section id="hero" class="hero">
+
+<div class="container">
+
+<div class="row align-items-center">
+
+<!-- LEFT -->
+
+<div class="col-lg-6">
+
+<span class="badge premium-badge">
+
+Trusted Online Auction Platform
+
+</span>
+
+<h1>
+
+Bid Smart.
+
+Buy Better.
+
+Win Bigger.
+
+</h1>
+
+<p>
+
+Discover premium products, compete in live auctions, and win amazing deals from trusted sellers across the country.
+
+</p>
+
+<!-- Search -->
+
+<div class="search-box">
+
+<input
+type="text"
+placeholder="Search for products, brands or categories...">
+
+<button>
+
+<i class="bi bi-search"></i>
+
+Search
+
+</button>
+
+</div>
+
+<div class="hero-buttons">
+
+<button class="btn btn-warning">
+
+Start Bidding
+
+</button>
+
+<button class="btn btn-outline-light">
+
+Sell Your Item
+
+</button>
+
+</div>
+
+<!-- Statistics -->
+
+<div class="stats">
+
+<div>
+
+<h3>10K+</h3>
+
+<span>Users</span>
+
+</div>
+
+<div>
+
+<h3>5K+</h3>
+
+<span>Auctions</span>
+
+</div>
+
+<div>
+
+<h3>1K+</h3>
+
+<span>Sellers</span>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- RIGHT -->
+
+<div class="col-lg-6 text-center">
+
+<img
+src="../../assets/images/hero-auction.svg"
+class="img-fluid hero-image"
+alt="Auction">
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ================= NEXT SECTION ================= -->
+
+<section class="categories-preview">
+    <!-- ================= FEATURED CATEGORIES ================= -->
+
+<section id="categories" class="categories py-5">
+
+<div class="container">
+
+<div class="text-center mb-5">
+
+<span class="section-tag">
+
+Explore Categories
+
+</span>
+
+<h2 class="fw-bold mt-3">
+
+Browse By Category
+
+</h2>
+
+<p class="text-muted">
+
+Choose a category and start bidding instantly.
+
+</p>
+
+</div>
+
+<div class="row g-4">
+
+<!-- Electronics -->
+
+<div class="col-lg-4 col-md-6">
+
+<div class="category-card">
+
+<div class="category-icon">
+
+💻
+
+</div>
+
+<h4>Electronics</h4>
+
+<p>
+
+Laptops, Mobiles, Cameras, Smart Devices
+
+</p>
+
+<button class="btn btn-primary">
+
+Explore
+
+</button>
+
+</div>
+
+</div>
+
+<!-- Vehicles -->
+
+<div class="col-lg-4 col-md-6">
+
+<div class="category-card">
+
+<div class="category-icon">
+
+🚗
+
+</div>
+
+<h4>Vehicles</h4>
+
+<p>
+
+Cars, Bikes, Trucks and Accessories
+
+</p>
+
+<button class="btn btn-primary">
+
+Explore
+
+</button>
+
+</div>
+
+</div>
+
+<!-- Furniture -->
+
+<div class="col-lg-4 col-md-6">
+
+<div class="category-card">
+
+<div class="category-icon">
+
+🛋️
+
+</div>
+
+<h4>Furniture</h4>
+
+<p>
+
+Luxury, Office and Home Furniture
+
+</p>
+
+<button class="btn btn-primary">
+
+Explore
+
+</button>
+
+</div>
+
+</div>
+
+<!-- Fashion -->
+
+<div class="col-lg-4 col-md-6">
+
+<div class="category-card">
+
+<div class="category-icon">
+
+👕
+
+</div>
+
+<h4>Fashion</h4>
+
+<p>
+
+Branded Clothes, Shoes and Accessories
+
+</p>
+
+<button class="btn btn-primary">
+
+Explore
+
+</button>
+
+</div>
+
+</div>
+
+<!-- Real Estate -->
+
+<div class="col-lg-4 col-md-6">
+
+<div class="category-card">
+
+<div class="category-icon">
+
+🏠
+
+</div>
+
+<h4>Real Estate</h4>
+
+<p>
+
+Plots, Houses and Commercial Buildings
+
+</p>
+
+<button class="btn btn-primary">
+
+Explore
+
+</button>
+
+</div>
+
+</div>
+
+<!-- Antiques -->
+
+<div class="col-lg-4 col-md-6">
+
+<div class="category-card">
+
+<div class="category-icon">
+
+🏺
+
+</div>
+
+<h4>Antiques</h4>
+
+<p>
+
+Rare Collections, Coins and Historical Items
+
+</p>
+
+<button class="btn btn-primary">
+
+Explore
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<div class="container">
+
+<div class="section-title text-center">
+
+<h2>
+
+Featured Categories
+
+</h2>
+<!-- ================= TRENDING AUCTIONS ================= -->
+
+<section id="trending" class="trending-auctions py-5">
+
+    <div class="container">
+
+        <div class="d-flex justify-content-between align-items-center mb-5">
+
+            <div>
+
+                <span class="section-tag">
+
+                    Live Auctions
+
+                </span>
+
+                <h2 class="fw-bold mt-3">
+
+                    Trending Auctions
+
+                </h2>
+
+                <p class="text-muted">
+
+                    Bid on the hottest products before time runs out.
+
+                </p>
+
+            </div>
+
+            <button class="btn btn-primary">
+
+                View All
+
+            </button>
+
+        </div>
+
+        <div class="row g-4">
+
+            <!-- Card 1 -->
+
+            <div class="col-lg-3 col-md-6">
+
+                <div class="auction-card">
+
+                    <span class="wishlist">
+
+                        <i class="bi bi-heart"></i>
+
+                    </span>
+
+                    <img src="../../assets/images/products/laptop.png"
+                        class="img-fluid auction-image">
+
+                    <div class="auction-body">
+
+                        <h5>Gaming Laptop</h5>
+
+                        <p class="seller">
+
+                            Seller : Tech Store
+
+                        </p>
+
+                        <div class="price-row">
+
+                            <div>
+
+                                <small>Current Bid</small>
+
+                                <h4>₹52,000</h4>
+
+                            </div>
+
+                            <div>
+
+                                <small>Time Left</small>
+
+                                <h6 class="timer">02:18:45</h6>
+
+                            </div>
+
+                        </div>
+
+                        <button class="btn btn-warning w-100 bid-btn">
+
+                            Place Bid
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Card 2 -->
+
+            <div class="col-lg-3 col-md-6">
+
+                <div class="auction-card">
+
+                    <span class="wishlist">
+
+                        <i class="bi bi-heart"></i>
+
+                    </span>
+
+                    <img src="../../assets/images/products/mobile.png"
+                        class="img-fluid auction-image">
+
+                    <div class="auction-body">
+
+                        <h5>iPhone 15</h5>
+
+                        <p class="seller">
+
+                            Seller : Apple Hub
+
+                        </p>
+
+                        <div class="price-row">
+
+                            <div>
+
+                                <small>Current Bid</small>
+
+                                <h4>₹63,500</h4>
+
+                            </div>
+
+                            <div>
+
+                                <small>Time Left</small>
+
+                                <h6 class="timer">05:41:20</h6>
+
+                            </div>
+
+                        </div>
+
+                        <button class="btn btn-warning w-100 bid-btn">
+
+                            Place Bid
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Card 3 -->
+
+            <div class="col-lg-3 col-md-6">
+
+                <div class="auction-card">
+
+                    <span class="wishlist">
+
+                        <i class="bi bi-heart"></i>
+
+                    </span>
+
+                    <img src="../../assets/images/products/watch.png"
+                        class="img-fluid auction-image">
+
+                    <div class="auction-body">
+
+                        <h5>Luxury Watch</h5>
+
+                        <p class="seller">
+
+                            Seller : Time Zone
+
+                        </p>
+
+                        <div class="price-row">
+
+                            <div>
+
+                                <small>Current Bid</small>
+
+                                <h4>₹18,900</h4>
+
+                            </div>
+
+                            <div>
+
+                                <small>Time Left</small>
+
+                                <h6 class="timer">01:52:30</h6>
+
+                            </div>
+
+                        </div>
+
+                        <button class="btn btn-warning w-100 bid-btn">
+
+                            Place Bid
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Card 4 -->
+
+            <div class="col-lg-3 col-md-6">
+
+                <div class="auction-card">
+
+                    <span class="wishlist">
+
+                        <i class="bi bi-heart"></i>
+
+                    </span>
+
+                    <img src="../../assets/images/products/car.png"
+                        class="img-fluid auction-image">
+
+                    <div class="auction-body">
+
+                        <h5>BMW X5</h5>
+
+                        <p class="seller">
+
+                            Seller : Auto World
+
+                        </p>
+
+                        <div class="price-row">
+
+                            <div>
+
+                                <small>Current Bid</small>
+
+                                <h4>₹18,50,000</h4>
+
+                            </div>
+
+                            <div>
+
+                                <small>Time Left</small>
+
+                                <h6 class="timer">12:10:18</h6>
+
+                            </div>
+
+                        </div>
+
+                        <button class="btn btn-warning w-100 bid-btn">
+
+                            Place Bid
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<p>
+
+Find auctions from every category.
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="../../assets/js/home.js"></script>
+
+</body>
+
+</html>
