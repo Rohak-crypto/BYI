@@ -1,4 +1,4 @@
-
+/*
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
 
@@ -18,9 +18,7 @@ body{
 
 }
 
-/* ================================
-   NAVBAR
-================================ */
+
 
 .navbar{
 
@@ -43,9 +41,7 @@ body{
 
 }
 
-/* ================================
-   REGISTER SECTION
-================================ */
+
 
 .register-section{
 
@@ -53,9 +49,7 @@ body{
 
 }
 
-/* ================================
-   CARD
-================================ */
+
 
 .register-card{
 
@@ -80,9 +74,7 @@ body{
 
 }
 
-/* ================================
-   LOGO
-================================ */
+
 
 .logo{
 
@@ -113,9 +105,7 @@ body{
 
 }
 
-/* ================================
-   TITLES
-================================ */
+
 
 h2{
 
@@ -129,9 +119,7 @@ p{
 
 }
 
-/* ================================
-   LABELS
-================================ */
+
 
 .form-label{
 
@@ -140,9 +128,6 @@ p{
 
 }
 
-/* ================================
-   INPUTS
-================================ */
 
 .form-control,
 .form-select{
@@ -164,7 +149,7 @@ p{
 
 }
 
-/* File Input */
+
 
 input[type=file]{
 
@@ -172,9 +157,7 @@ input[type=file]{
 
 }
 
-/* ================================
-   CHECKBOX
-================================ */
+
 
 .form-check-label{
 
@@ -182,9 +165,7 @@ input[type=file]{
 
 }
 
-/* ================================
-   BUTTON
-================================ */
+
 
 .btn-warning{
 
@@ -206,9 +187,7 @@ input[type=file]{
 
 }
 
-/* ================================
-   LINKS
-================================ */
+
 
 a{
 
@@ -224,9 +203,7 @@ a:hover{
 
 }
 
-/* ================================
-   RESPONSIVE
-================================ */
+
 
 @media(max-width:768px){
 
@@ -254,5 +231,323 @@ font-size:32px;
 font-size:22px;
 
 }
+
+}
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+
+    min-height:100vh;
+
+    background:linear-gradient(135deg,#0F172A,#1E3A8A,#2563EB);
+
+}
+
+
+/* ================================
+   NAVBAR
+================================ */
+
+.navbar{
+
+    background:#0F172A;
+
+    padding:15px 0;
+
+}
+
+.navbar-brand{
+
+    color:#fff !important;
+
+    font-size:28px;
+
+    font-weight:700;
+
+}
+
+.navbar-brand i{
+
+    color:#FFD700;
+
+}
+
+
+/* ================================
+   REGISTER SECTION
+================================ */
+
+.register-section{
+
+    padding:40px 0;
+
+}
+
+
+/* ================================
+   REGISTER CARD
+================================ */
+
+.register-card{
+
+    border:none;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+    max-width:520px;
+
+    margin:auto;
+
+    padding:20px;
+
+    background:rgba(255,255,255,.12);
+
+    backdrop-filter:blur(18px);
+
+    color:white;
+
+}
+
+
+/* ================================
+   CARD BODY
+================================ */
+
+.card-body{
+
+    padding:25px;
+
+}
+
+
+/* ================================
+   LOGO
+================================ */
+
+.logo{
+
+    width:55px;
+
+    height:55px;
+
+    margin:auto;
+
+    border-radius:50%;
+
+    background:#FFD700;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    margin-bottom:15px;
+
+}
+
+.logo i{
+
+    font-size:24px;
+
+    color:#0F172A;
+
+}
+
+
+/* ================================
+   HEADING
+================================ */
+
+h2{
+
+    font-weight:700;
+
+    font-size:24px;
+
+}
+
+p{
+
+    color:#EAEAEA;
+
+    font-size:13px;
+
+}
+
+
+/* ================================
+   FORM LABEL
+================================ */
+
+.form-label{
+
+    color:white;
+
+    font-weight:500;
+
+    font-size:13px;
+
+    margin-bottom:5px;
+
+}
+
+
+/* ================================
+   FORM INPUT
+================================ */
+
+.form-control,
+.form-select{
+
+    height:40px;
+
+    border-radius:10px;
+
+    border:none;
+
+    box-shadow:none;
+
+    font-size:13px;
+
+    padding:7px 12px;
+
+}
+
+.form-control:focus,
+.form-select:focus{
+
+    box-shadow:0 0 0 .25rem rgba(37,99,235,.35);
+
+}
+
+
+/* ================================
+   FILE INPUT
+================================ */
+
+input[type=file]{
+
+    padding:9px;
+
+}
+
+
+/* ================================
+   CHECKBOX
+================================ */
+
+.form-check-label{
+
+    color:white;
+
+    font-size:12px;
+
+}
+
+
+/* ================================
+   BUTTON
+================================ */
+
+.btn-warning{
+
+    height:44px;
+
+    border-radius:10px;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.btn-warning:hover{
+
+    background:white;
+
+    color:#0F172A;
+
+}
+
+
+/* ================================
+   LINKS
+================================ */
+
+a{
+
+    color:#FFD700;
+
+    text-decoration:none;
+
+}
+
+a:hover{
+
+    color:white;
+
+}
+
+
+/* ================================
+   RESPONSIVE
+================================ */
+
+@media(max-width:768px){
+
+    .register-section{
+
+        padding:30px 15px;
+
+    }
+
+    .register-card{
+
+        max-width:420px;
+
+        padding:15px;
+
+    }
+
+    .card-body{
+
+        padding:20px;
+
+    }
+
+    .logo{
+
+        width:52px;
+
+        height:52px;
+
+    }
+
+    .logo i{
+
+        font-size:22px;
+
+    }
+
+    .navbar-brand{
+
+        font-size:22px;
+
+    }
 
 }

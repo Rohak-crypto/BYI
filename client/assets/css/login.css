@@ -1,558 +1,633 @@
 
-
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
 
+/* =========================
+   GLOBAL
+========================= */
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Poppins',sans-serif;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
 }
 
-body{
+body {
 
-    min-height:100vh;
+    min-height: 100vh;
 
-    background:linear-gradient(135deg,#041C32,#04293A,#064663);
+    background: linear-gradient(135deg, #041C32, #04293A, #064663);
 
-    overflow-x:hidden;
+    overflow-x: hidden;
 
-    position:relative;
-
-}
-
-/* ================================
-   ANIMATED BACKGROUND
-================================ */
-
-.background{
-
-    position:fixed;
-
-    width:100%;
-    height:100%;
-
-    top:0;
-    left:0;
-
-    overflow:hidden;
-
-    z-index:-1;
+    position: relative;
 
 }
 
-.circle{
 
-    position:absolute;
+/* =========================
+   BACKGROUND EFFECTS
+========================= */
 
-    border-radius:50%;
+.background {
 
-    filter:blur(80px);
+    position: fixed;
 
-    opacity:.35;
+    width: 100%;
+    height: 100%;
 
-}
+    top: 0;
+    left: 0;
 
-.one{
+    overflow: hidden;
 
-    width:300px;
-    height:300px;
-
-    background:#FFD700;
-
-    top:-80px;
-    left:-80px;
+    z-index: -1;
 
 }
 
-.two{
+.circle {
 
-    width:350px;
-    height:350px;
+    position: absolute;
 
-    background:#4F9DFF;
+    border-radius: 50%;
 
-    bottom:-120px;
-    right:-120px;
+    filter: blur(80px);
 
-}
-
-.three{
-
-    width:220px;
-    height:220px;
-
-    background:#00C2FF;
-
-    top:40%;
-    left:55%;
+    opacity: .35;
 
 }
 
-/* ================================
+.one {
+
+    width: 300px;
+    height: 300px;
+
+    background: #FFD700;
+
+    top: -80px;
+    left: -80px;
+
+}
+
+.two {
+
+    width: 350px;
+    height: 350px;
+
+    background: #4F9DFF;
+
+    bottom: -120px;
+    right: -120px;
+
+}
+
+.three {
+
+    width: 220px;
+    height: 220px;
+
+    background: #00C2FF;
+
+    top: 40%;
+    left: 55%;
+
+}
+
+
+/* =========================
    NAVBAR
-================================ */
+========================= */
 
-.navbar{
+.navbar {
 
-    background:rgba(4,28,50,.85);
+    background: rgba(4, 28, 50, .85);
 
-    backdrop-filter:blur(15px);
+    backdrop-filter: blur(15px);
 
-    padding:15px 0;
-
-}
-
-.navbar-brand{
-
-    font-size:30px;
-
-    font-weight:700;
-
-    color:#FFD700 !important;
+    padding: 15px 0;
 
 }
 
-.navbar-brand i{
+.navbar-brand {
 
-    margin-right:8px;
+    font-size: 30px;
 
-}
+    font-weight: 700;
 
-.btn-warning{
-
-    background:#FFD700;
-
-    color:#04293A;
-
-    font-weight:600;
-
-    border:none;
-
-    border-radius:10px;
-
-    padding:10px 25px;
+    color: #FFD700 !important;
 
 }
 
-.btn-warning:hover{
+.navbar-brand i {
 
-    background:white;
-
-}
-
-/* ================================
-   HERO
-================================ */
-
-.login-section{
-
-    min-height:85vh;
-    padding: 30px 0;
-
-    display:flex;
-
-    align-items:center;
+    margin-right: 8px;
 
 }
 
-.hero{
+.btn-warning {
 
-    color:white;
+    background: #FFD700;
 
-}
+    color: #04293A;
 
-.tag{
+    font-weight: 600;
 
-    background:#FFD700;
+    border: none;
 
-    color:#04293A;
+    border-radius: 10px;
 
-    padding:10px 20px;
-
-    border-radius:50px;
-
-    font-weight:700;
-
-    display:inline-block;
-
-    margin-bottom:25px;
+    padding: 10px 25px;
 
 }
 
-.hero h1{
+.btn-warning:hover {
 
-    font-size:48px;
-
-    font-weight:800;
-
-    line-height:1.1;
-
-    margin-bottom:20px;
+    background: white;
 
 }
 
-.hero p{
 
-    font-size:15px;
+/* =========================
+   LOGIN SECTION
+========================= */
 
-    color:#d8d8d8;
+.login-section {
 
-    line-height:1.8;
+    min-height: 30vh;
 
-    margin-bottom:35px;
+    padding: 10px 0;
 
-}
+    display: flex;
 
-.hero-features div{
-
-    font-size:18px;
-
-    margin-bottom:18px;
+    align-items: center;
 
 }
 
-.hero-features i{
+.hero {
 
-    color:#FFD700;
-
-    margin-right:12px;
+    color: white;
 
 }
-/* =====================================
+
+.tag {
+
+    background: #FFD700;
+
+    color: #04293A;
+
+    padding: 10px 20px;
+
+    border-radius: 50px;
+
+    font-weight: 700;
+
+    display: inline-block;
+
+    margin-bottom: 25px;
+
+}
+
+.hero h1 {
+
+    font-size: 48px;
+
+    font-weight: 800;
+
+    line-height: 1.1;
+
+    margin-bottom: 20px;
+
+}
+
+.hero p {
+
+    font-size: 15px;
+
+    color: #d8d8d8;
+
+    line-height: 1.8;
+
+    margin-bottom: 35px;
+
+}
+
+.hero-features div {
+
+    font-size: 18px;
+
+    margin-bottom: 18px;
+
+}
+
+.hero-features i {
+
+    color: #FFD700;
+
+    margin-right: 12px;
+
+}
+
+
+/* =========================
    LOGIN CARD
-===================================== */
+========================= */
 
-.login-card{
+.login-card {
 
-    background:rgba(255,255,255,0.12);
-    backdrop-filter:blur(20px);
-    -webkit-backdrop-filter:blur(20px);
+    background: rgba(255, 255, 255, 0.12);
 
-    border:1px solid rgba(255,255,255,.2);
+    backdrop-filter: blur(20px);
 
-    border-radius:25px;
+    -webkit-backdrop-filter: blur(20px);
 
-    padding:28px;
+    border: 1px solid rgba(255, 255, 255, .2);
 
-    box-shadow:0 20px 50px rgba(0,0,0,.35);
+    border-radius: 25px;
 
-    width:100%;
+    padding: 24px;
+
+    box-shadow: 0 20px 50px rgba(0, 0, 0, .35);
+
+    width: 100%;
+
+    max-width: 420px;
+
+    margin: 0 auto;
 
 }
 
-/* =====================================
+
+/* =========================
    LOGO
-===================================== */
+========================= */
 
-.logo{
+.logo {
 
-    width:65px;
-    height:65px;
+    width: 55px;
 
-    margin:auto;
+    height: 55px;
 
-    border-radius:50%;
+    margin: auto;
 
-    background:linear-gradient(135deg,#FFD700,#FFC107);
+    border-radius: 50%;
 
-    display:flex;
-    align-items:center;
-    justify-content:center;
+    background: linear-gradient(135deg, #FFD700, #FFC107);
 
-    margin-bottom:20px;
+    display: flex;
 
-}
+    align-items: center;
 
-.logo i{
+    justify-content: center;
 
-    font-size:28px;
-    color:#04293A;
+    margin-bottom: 15px;
 
 }
 
-/* =====================================
-   LOGIN TEXT
-===================================== */
+.logo i {
 
-.login-card h2{
+    font-size: 24px;
 
-    color:#fff;
-    font-weight:700;
-    margin-bottom:10px;
+    color: #04293A;
 
 }
 
-.login-card p{
 
-    color:#dcdcdc;
-    margin-bottom:30px;
+/* =========================
+   LOGIN CARD TEXT
+========================= */
 
-}
+.login-card h2 {
 
-/* =====================================
-   FORM
-===================================== */
+    color: #fff;
 
-label{
+    font-weight: 700;
 
-    color:#fff;
-    font-weight:500;
-    margin-bottom:8px;
+    font-size: 24px;
 
-}
+    margin-bottom: 7px;
 
-.form-control{
-
-    height:42px;
-
-    border-radius:12px;
-
-    border:none;
-
-    background:rgba(255,255,255,.95);
-
-    font-size:16px;
+    text-align: center;
 
 }
 
-.form-control:focus{
+.login-card p {
 
-    box-shadow:0 0 15px rgba(255,215,0,.5);
+    color: #dcdcdc;
 
-    border:none;
+    font-size: 13px;
 
-}
+    margin-bottom: 22px;
 
-.input-group-text{
-
-    background:white;
-
-    border:none;
-
-    cursor:pointer;
-
-    border-radius:0 12px 12px 0;
+    text-align: center;
 
 }
 
-/* =====================================
+
+/* =========================
+   FORM LABEL
+========================= */
+
+label {
+
+    color: #fff;
+
+    font-weight: 500;
+
+    font-size: 13px;
+
+    margin-bottom: 6px;
+
+}
+
+
+/* =========================
+   INPUT
+========================= */
+
+.form-control {
+
+    height: 40px;
+
+    border-radius: 12px;
+
+    border: none;
+
+    background: rgba(255, 255, 255, .95);
+
+    font-size: 14px;
+
+    padding: 8px 12px;
+
+}
+
+.form-control:focus {
+
+    box-shadow: 0 0 15px rgba(255, 215, 0, .5);
+
+    border: none;
+
+}
+
+.input-group-text {
+
+    background: white;
+
+    border: none;
+
+    cursor: pointer;
+
+    border-radius: 0 12px 12px 0;
+
+}
+
+
+/* =========================
    CHECKBOX
-===================================== */
+========================= */
 
-.form-check-label{
+.form-check-label {
 
-    color:#fff;
+    color: #fff;
+
+    font-size: 12px;
 
 }
 
-/* =====================================
+
+/* =========================
    LINKS
-===================================== */
+========================= */
 
-a{
+a {
 
-    color:#FFD700;
-    text-decoration:none;
+    color: #FFD700;
 
-}
-
-a:hover{
-
-    color:white;
+    text-decoration: none;
 
 }
 
-/* =====================================
+a:hover {
+
+    color: white;
+
+}
+
+
+/* =========================
    LOGIN BUTTON
-===================================== */
+========================= */
 
-.btn-login{
+.btn-login {
 
-    width:100%;
+    width: 100%;
 
-    height:46px;
+    height: 42px;
 
-    border:none;
+    border: none;
 
-    border-radius:12px;
+    border-radius: 12px;
 
-    background:linear-gradient(135deg,#FFD700,#FFC107);
+    background: linear-gradient(135deg, #FFD700, #FFC107);
 
-    color:#04293A;
+    color: #04293A;
 
-    font-size:18px;
+    font-size: 15px;
 
-    font-weight:700;
+    font-weight: 700;
 
-    transition:.35s;
-
-}
-
-.btn-login:hover{
-
-    transform:translateY(-3px);
-
-    box-shadow:0 10px 25px rgba(255,215,0,.4);
+    transition: .35s;
 
 }
 
-/* =====================================
+.btn-login:hover {
+
+    transform: translateY(-3px);
+
+    box-shadow: 0 10px 25px rgba(255, 215, 0, .4);
+
+}
+
+
+/* =========================
    DIVIDER
-===================================== */
+========================= */
 
-.divider{
+.divider {
 
-    margin:30px 0;
+    margin: 20px 0;
 
-    text-align:center;
+    text-align: center;
 
-    color:white;
+    color: white;
 
-    position:relative;
+    position: relative;
 
-}
-
-.divider::before{
-
-    content:"";
-
-    position:absolute;
-
-    left:0;
-
-    top:50%;
-
-    width:40%;
-
-    height:1px;
-
-    background:white;
+    font-size: 12px;
 
 }
 
-.divider::after{
+.divider::before {
 
-    content:"";
+    content: "";
 
-    position:absolute;
+    position: absolute;
 
-    right:0;
+    left: 0;
 
-    top:50%;
+    top: 50%;
 
-    width:40%;
+    width: 40%;
 
-    height:1px;
+    height: 1px;
 
-    background:white;
-
-}
-
-/* =====================================
-   SOCIAL BUTTONS
-===================================== */
-
-.social{
-
-    width:100%;
-
-    margin-bottom:15px;
-
-    border-radius:12px;
-
-    height:50px;
-
-    color:white;
-
-    border:1px solid rgba(255,255,255,.4);
-
-    transition:.3s;
+    background: white;
 
 }
 
-.social:hover{
+.divider::after {
 
-    background:white;
+    content: "";
 
-    color:#04293A;
+    position: absolute;
+
+    right: 0;
+
+    top: 50%;
+
+    width: 40%;
+
+    height: 1px;
+
+    background: white;
 
 }
 
-/* =====================================
+
+/* =========================
+   SOCIAL BUTTON
+========================= */
+
+.social {
+
+    width: 100%;
+
+    margin-bottom: 10px;
+
+    border-radius: 12px;
+
+    height: 42px;
+
+    color: white;
+
+    border: 1px solid rgba(255, 255, 255, .4);
+
+    transition: .3s;
+
+    font-size: 13px;
+
+}
+
+.social:hover {
+
+    background: white;
+
+    color: #04293A;
+
+}
+
+
+/* =========================
    REGISTER TEXT
-===================================== */
+========================= */
 
-.register-text{
+.register-text {
 
-    margin-top:25px;
+    margin-top: 18px;
 
-    text-align:center;
+    margin-bottom: 0;
 
-    color:white;
+    text-align: center;
 
-}
+    color: white;
 
-/* =====================================
-   RESPONSIVE
-===================================== */
-
-@media(max-width:991px){
-
-.hero{
-
-text-align:center;
-margin-bottom:50px;
+    font-size: 12px;
 
 }
 
-.hero h1{
 
-font-size:48px;
+/* =========================
+   TABLET
+========================= */
 
-}
+@media(max-width: 991px) {
 
-.login-card{
+    .hero {
 
-margin-top:20px;
+        text-align: center;
 
-}
+        margin-bottom: 40px;
 
-}
+    }
 
-@media(max-width:768px){
+    .hero h1 {
 
-.hero h1{
+        font-size: 42px;
 
-font-size:38px;
+    }
 
-}
+    .login-card {
 
-.hero p{
+        margin-top: 15px;
 
-font-size:16px;
+        max-width: 420px;
 
-}
-
-.login-card{
-
-padding:30px;
+    }
 
 }
 
-.logo{
 
-width:70px;
-height:70px;
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width: 768px) {
+
+    .hero h1 {
+
+        font-size: 36px;
+
+    }
+
+    .hero p {
+
+        font-size: 15px;
+
+    }
+
+    .login-card {
+
+        padding: 22px;
+
+        max-width: 380px;
+
+    }
+
+    .logo {
+
+        width: 52px;
+
+        height: 52px;
+
+    }
+
+    .logo i {
+
+        font-size: 22px;
+
+    }
 
 }
 
-.logo i{
 
-font-size:32px;
 
-}
-
-}

@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Bid Your Item | Dashboard</title>
+
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+        rel="stylesheet">
+
+    <!-- Google Font -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Dashboard CSS -->
+    <link
+        rel="stylesheet"
+        href="../../assets/css/dashboard.css">
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top shadow">
+
+    <div class="container">
+
+
+        <!-- LOGO -->
+
+        <a
+            class="navbar-brand d-flex align-items-center"
+            href="../home/home.html">
+
+            <img
+                src="../../assets/images/byi-logo.svg"
+                alt="BYI Logo"
+                width="42"
+                height="42"
+                class="me-2">
+
+            <span class="fw-bold">
+                Bid Your Item
+            </span>
+
+        </a>
+
+
+        <!-- MOBILE MENU BUTTON -->
+
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarMenu"
+            aria-controls="navbarMenu"
+            aria-expanded="false"
+            aria-label="Toggle navigation">
+
+            <span class="navbar-toggler-icon"></span>
+
+        </button>
+
+
+        <!-- NAVIGATION -->
+
+        <div
+            class="collapse navbar-collapse"
+            id="navbarMenu">
+
+
+            <ul class="navbar-nav mx-auto">
+
+
+                <!-- HOME -->
+
+                <li class="nav-item">
+
+                    <a
+                        class="nav-link"
+                        href="../home/home.html">
+
+                        Home
+
+                    </a>
+
+                </li>
+
+
+                <!-- CATEGORIES -->
+
+                <li class="nav-item">
+
+                    <a
+                        class="nav-link"
+                        href="../home/home.html#categories">
+
+                        Categories
+
+                    </a>
+
+                </li>
+
+
+                <!-- AUCTIONS -->
+
+                <li class="nav-item">
+
+                    <a
+                        class="nav-link"
+                        href="../home/home.html#trending">
+
+                        Auctions
+
+                    </a>
+
+                </li>
+
+
+                <!-- CONTACT -->
+
+                <li class="nav-item">
+
+                    <a
+                        class="nav-link"
+                        href="../home/home.html#contact">
+
+                        Contact
+
+                    </a>
+
+                </li>
+
+            </ul>
+
+
+            <!-- SEARCH -->
+
+            <form
+                class="d-flex me-3 navbar-search"
+                role="search">
+
+                <div class="search-nav-wrapper">
+
+                    <i class="bi bi-search"></i>
+
+                    <input
+                        class="form-control search-nav"
+                        type="search"
+                        placeholder="Search auctions..."
+                        aria-label="Search">
+
+                </div>
+
+            </form>
+
+
+            <!-- PROFILE -->
+
+            <div class="dropdown">
+
+                <button
+                    class="profile-btn dropdown-toggle"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false">
+
+                    <i class="bi bi-person-circle"></i>
+
+                    <span class="profile-name">
+                        My Account
+                    </span>
+
+                </button>
+
+
+                <ul
+                    class="dropdown-menu dropdown-menu-end profile-menu">
+
+
+                    <!-- PROFILE HEADER -->
+
+                    <li>
+
+                        <div class="profile-header">
+
+                            <div class="profile-avatar">
+
+                                <i class="bi bi-person"></i>
+
+                            </div>
+
+                            <div>
+
+                                <h6>
+                                    User Profile
+                                </h6>
+
+                                <small>
+                                    Welcome to BYI
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                    </li>
+
+
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+
+
+                    <!-- PERSONAL DETAILS -->
+
+                    <li>
+
+                        <a
+                            class="dropdown-item"
+                            href="#profile">
+
+                            <i class="bi bi-person-vcard me-2"></i>
+
+                            Personal Details
+
+                        </a>
+
+                    </li>
+
+
+                    <!-- DASHBOARD -->
+
+                    <li>
+
+                        <a
+                            class="dropdown-item active"
+                            href="dashboard.html">
+
+                            <i class="bi bi-speedometer2 me-2"></i>
+
+                            My Dashboard
+
+                        </a>
+
+                    </li>
+
+
+                    <!-- MY BIDS -->
+
+                    <li>
+
+                        <a
+                            class="dropdown-item"
+                            href="#my-bids">
+
+                            <i class="bi bi-hammer me-2"></i>
+
+                            My Bids
+
+                        </a>
+
+                    </li>
+
+
+                    <!-- WISHLIST -->
+
+                    <li>
+
+                        <a
+                            class="dropdown-item"
+                            href="#wishlist">
+
+                            <i class="bi bi-heart me-2"></i>
+
+                            My Wishlist
+
+                        </a>
+
+                    </li>
+
+
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+
+
+                    <!-- LOGOUT -->
+
+                    <li>
+
+                        <a
+                            class="dropdown-item text-danger"
+                            href="../auth/login.html">
+
+                            <i class="bi bi-box-arrow-right me-2"></i>
+
+                            Logout
+
+                        </a>
+
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+
+<!-- =====================================================
+     DASHBOARD
+===================================================== -->
+
+<main class="dashboard">
+
+
+    <!-- =================================================
+         WELCOME SECTION
+    ================================================== -->
+
+    <section class="dashboard-header">
+
+        <div class="container">
+
+            <div class="row align-items-center">
+
+
+                <!-- WELCOME TEXT -->
+
+                <div class="col-lg-8">
+
+                    <span class="section-tag">
+
+                        <i class="bi bi-speedometer2 me-1"></i>
+
+                        My Dashboard
+
+                    </span>
+
+                    <h1 class="dashboard-title">
+
+                        Welcome back,
+                        <span id="dashboardUserName">
+                            User
+                        </span>!
+
+                    </h1>
+
+                    <p class="dashboard-subtitle">
+
+                        Track your bids, manage your auctions,
+                        and keep an eye on your favourite items.
+
+                    </p>
+
+                </div>
+
+
+                <!-- QUICK ACTION -->
+
+                <div class="col-lg-4 text-lg-end">
+
+                    <a
+                        href="../home/home.html#trending"
+                        class="btn btn-warning dashboard-action-btn">
+
+                        <i class="bi bi-hammer me-2"></i>
+
+                        Browse Auctions
+
+                        <i class="bi bi-arrow-right ms-2"></i>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         STATISTICS
+    ================================================== -->
+
+    <section class="dashboard-stats">
+
+        <div class="container">
+
+            <div class="row g-4">
+
+
+                <!-- ACTIVE BIDS -->
+
+                <div class="col-lg-3 col-md-6">
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon blue">
+
+                            <i class="bi bi-hammer"></i>
+
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Active Bids
+                            </span>
+
+                            <h2 id="activeBids">
+                                08
+                            </h2>
+
+                            <small class="positive">
+
+                                <i class="bi bi-arrow-up"></i>
+
+                                2 new this week
+
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- WON AUCTIONS -->
+
+                <div class="col-lg-3 col-md-6">
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon green">
+
+                            <i class="bi bi-trophy-fill"></i>
+
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Won Auctions
+                            </span>
+
+                            <h2 id="wonAuctions">
+                                05
+                            </h2>
+
+                            <small class="positive">
+
+                                <i class="bi bi-check-circle"></i>
+
+                                Successful bids
+
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- WISHLIST -->
+
+                <div class="col-lg-3 col-md-6">
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon red">
+
+                            <i class="bi bi-heart-fill"></i>
+
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Wishlist
+                            </span>
+
+                            <h2 id="wishlistCount">
+                                12
+                            </h2>
+
+                            <small>
+
+                                Items saved
+
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- TOTAL SPENT -->
+
+                <div class="col-lg-3 col-md-6">
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon gold">
+
+                            <i class="bi bi-wallet2"></i>
+
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Total Spent
+                            </span>
+
+                            <h2 id="totalSpent">
+                                ₹1.2L
+                            </h2>
+
+                            <small>
+
+                                Across all auctions
+
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         ACTIVE BIDS
+    ================================================== -->
+
+    <section
+        class="dashboard-section"
+        id="my-bids">
+
+        <div class="container">
+
+
+            <!-- SECTION HEADER -->
+
+            <div class="section-header">
+
+                <div>
+
+                    <span class="section-tag">
+
+                        <i class="bi bi-broadcast-pin me-1"></i>
+
+                        Live Activity
+
+                    </span>
+
+                    <h2>
+                        My Active Bids
+                    </h2>
+
+                    <p>
+                        Keep track of auctions you are currently bidding on.
+                    </p>
+
+                </div>
+
+                <a
+                    href="#my-bids"
+                    class="view-link">
+
+                    View All
+
+                    <i class="bi bi-arrow-right"></i>
+
+                </a>
+
+            </div>
+
+
+
+            <!-- BID TABLE -->
+
+            <div class="dashboard-table-wrapper">
+
+                <div class="table-responsive">
+
+                    <table class="table bid-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Item
+                                </th>
+
+                                <th>
+                                    Current Bid
+                                </th>
+
+                                <th>
+                                    Your Bid
+                                </th>
+
+                                <th>
+                                    Time Left
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                                <th>
+                                    Action
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+
+                            <!-- BID 1 -->
+
+                            <tr>
+
+                                <td>
+
+                                    <div class="item-info">
+
+                                        <img
+                                            src="../../assets/images/products/laptop.png"
+                                            alt="Gaming Laptop">
+
+                                        <div>
+
+                                            <strong>
+                                                Gaming Laptop
+                                            </strong>
+
+                                            <small>
+                                                Electronics
+                                            </small>
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+
+                                <td>
+                                    <strong>
+                                        ₹52,000
+                                    </strong>
+                                </td>
+
+
+                                <td>
+                                    ₹53,500
+                                </td>
+
+
+                                <td>
+
+                                    <span class="time-left">
+                                        02:18:45
+                                    </span>
+
+                                </td>
+
+
+                                <td>
+
+                                    <span class="status winning">
+                                        Winning
+                                    </span>
+
+                                </td>
+
+
+                                <td>
+
+                                    <button
+                                        class="btn btn-sm btn-warning bid-again-btn">
+
+                                        Bid Again
+
+                                    </button>
+
+                                </td>
+
+                            </tr>
+
+
+
+                            <!-- BID 2 -->
+
+                            <tr>
+
+                                <td>
+
+                                    <div class="item-info">
+
+                                        <img
+                                            src="../../assets/images/products/mobile.png"
+                                            alt="iPhone 15">
+
+                                        <div>
+
+                                            <strong>
+                                                iPhone 15
+                                            </strong>
+
+                                            <small>
+                                                Electronics
+                                            </small>
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+
+                                <td>
+                                    <strong>
+                                        ₹63,500
+                                    </strong>
+                                </td>
+
+
+                                <td>
+                                    ₹62,000
+                                </td>
+
+
+                                <td>
+
+                                    <span class="time-left">
+                                        05:41:20
+                                    </span>
+
+                                </td>
+
+
+                                <td>
+
+                                    <span class="status outbid">
+                                        Outbid
+                                    </span>
+
+                                </td>
+
+
+                                <td>
+
+                                    <button
+                                        class="btn btn-sm btn-warning bid-again-btn">
+
+                                        Bid Again
+
+                                    </button>
+
+                                </td>
+
+                            </tr>
+
+
+
+                            <!-- BID 3 -->
+
+                            <tr>
+
+                                <td>
+
+                                    <div class="item-info">
+
+                                        <img
+                                            src="../../assets/images/products/watch.png"
+                                            alt="Luxury Watch">
+
+                                        <div>
+
+                                            <strong>
+                                                Luxury Watch
+                                            </strong>
+
+                                            <small>
+                                                Fashion
+                                            </small>
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+
+                                <td>
+                                    <strong>
+                                        ₹18,900
+                                    </strong>
+                                </td>
+
+
+                                <td>
+                                    ₹19,200
+                                </td>
+
+
+                                <td>
+
+                                    <span class="time-left">
+                                        01:52:30
+                                    </span>
+
+                                </td>
+
+
+                                <td>
+
+                                    <span class="status winning">
+                                        Winning
+                                    </span>
+
+                                </td>
+
+
+                                <td>
+
+                                    <button
+                                        class="btn btn-sm btn-warning bid-again-btn">
+
+                                        Bid Again
+
+                                    </button>
+
+                                </td>
+
+                            </tr>
+
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         BOTTOM SECTION
+    ================================================== -->
+
+    <section class="dashboard-section bottom-section">
+
+        <div class="container">
+
+            <div class="row g-4">
+
+
+                <!-- RECENTLY WON -->
+
+                <div class="col-lg-7">
+
+                    <div class="content-card">
+
+                        <div class="card-header-custom">
+
+                            <div>
+
+                                <span class="section-tag">
+                                    Success
+                                </span>
+
+                                <h3>
+                                    Recently Won
+                                </h3>
+
+                            </div>
+
+                            <a
+                                href="#won"
+                                class="view-link">
+
+                                View All
+
+                            </a>
+
+                        </div>
+
+
+                        <div class="won-list">
+
+
+                            <!-- WON ITEM 1 -->
+
+                            <div class="won-item">
+
+                                <img
+                                    src="../../assets/images/products/watch.png"
+                                    alt="Luxury Watch">
+
+                                <div class="won-details">
+
+                                    <h5>
+                                        Luxury Watch
+                                    </h5>
+
+                                    <p>
+                                        Won on 18 Aug 2026
+                                    </p>
+
+                                    <strong>
+                                        ₹19,200
+                                    </strong>
+
+                                </div>
+
+                                <span class="won-badge">
+
+                                    <i class="bi bi-check-circle-fill"></i>
+
+                                    Won
+
+                                </span>
+
+                            </div>
+
+
+                            <!-- WON ITEM 2 -->
+
+                            <div class="won-item">
+
+                                <img
+                                    src="../../assets/images/products/mobile.png"
+                                    alt="iPhone">
+
+                                <div class="won-details">
+
+                                    <h5>
+                                        iPhone 15
+                                    </h5>
+
+                                    <p>
+                                        Won on 12 Aug 2026
+                                    </p>
+
+                                    <strong>
+                                        ₹61,500
+                                    </strong>
+
+                                </div>
+
+                                <span class="won-badge">
+
+                                    <i class="bi bi-check-circle-fill"></i>
+
+                                    Won
+
+                                </span>
+
+                            </div>
+
+
+                            <!-- WON ITEM 3 -->
+
+                            <div class="won-item">
+
+                                <img
+                                    src="../../assets/images/products/laptop.png"
+                                    alt="Laptop">
+
+                                <div class="won-details">
+
+                                    <h5>
+                                        Gaming Laptop
+                                    </h5>
+
+                                    <p>
+                                        Won on 05 Aug 2026
+                                    </p>
+
+                                    <strong>
+                                        ₹48,000
+                                    </strong>
+
+                                </div>
+
+                                <span class="won-badge">
+
+                                    <i class="bi bi-check-circle-fill"></i>
+
+                                    Won
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- RECENT ACTIVITY -->
+
+                <div class="col-lg-5">
+
+                    <div class="content-card">
+
+                        <div class="card-header-custom">
+
+                            <div>
+
+                                <span class="section-tag">
+                                    Activity
+                                </span>
+
+                                <h3>
+                                    Recent Activity
+                                </h3>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="activity-list">
+
+
+                            <!-- ACTIVITY 1 -->
+
+                            <div class="activity-item">
+
+                                <div class="activity-icon blue">
+
+                                    <i class="bi bi-hammer"></i>
+
+                                </div>
+
+                                <div>
+
+                                    <strong>
+                                        Bid placed
+                                    </strong>
+
+                                    <p>
+                                        You placed ₹53,500 on Gaming Laptop.
+                                    </p>
+
+                                    <small>
+                                        10 minutes ago
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- ACTIVITY 2 -->
+
+                            <div class="activity-item">
+
+                                <div class="activity-icon red">
+
+                                    <i class="bi bi-heart-fill"></i>
+
+                                </div>
+
+                                <div>
+
+                                    <strong>
+                                        Added to wishlist
+                                    </strong>
+
+                                    <p>
+                                        Luxury Watch was added to your wishlist.
+                                    </p>
+
+                                    <small>
+                                        2 hours ago
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- ACTIVITY 3 -->
+
+                            <div class="activity-item">
+
+                                <div class="activity-icon green">
+
+                                    <i class="bi bi-trophy-fill"></i>
+
+                                </div>
+
+                                <div>
+
+                                    <strong>
+                                        Auction won
+                                    </strong>
+
+                                    <p>
+                                        You won the Luxury Watch auction.
+                                    </p>
+
+                                    <small>
+                                        Yesterday
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         QUICK ACTIONS
+    ================================================== -->
+
+    <section class="quick-actions">
+
+        <div class="container">
+
+            <div class="quick-action-card">
+
+                <div>
+
+                    <span class="section-tag">
+                        Start Exploring
+                    </span>
+
+                    <h3>
+                        Ready to find your next great deal?
+                    </h3>
+
+                    <p>
+                        Explore live auctions and place your next bid.
+                    </p>
+
+                </div>
+
+
+                <a
+                    href="../home/home.html#trending"
+                    class="btn btn-warning">
+
+                    <i class="bi bi-search me-2"></i>
+
+                    Explore Auctions
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+</main>
+
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer class="footer py-4">
+
+    <div class="container">
+
+        <div class="row align-items-center">
+
+            <div class="col-md-6">
+
+                <p class="mb-0">
+
+                    © 2026
+                    <strong>Bid Your Item</strong>.
+                    All rights reserved.
+
+                </p>
+
+            </div>
+
+            <div class="col-md-6 text-md-end">
+
+                <a
+                    href="../home/home.html"
+                    class="me-3">
+
+                    Home
+
+                </a>
+
+                <a
+                    href="../home/home.html#categories"
+                    class="me-3">
+
+                    Categories
+
+                </a>
+
+                <a
+                    href="../home/home.html#trending">
+
+                    Auctions
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+
+<!-- Bootstrap JavaScript -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
+
+
+<!-- Dashboard JavaScript -->
+
+<script
+    src="../../assets/js/dashboard.js">
+</script>
+
+
+</body>
+
+</html>
