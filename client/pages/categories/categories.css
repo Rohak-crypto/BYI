@@ -1,0 +1,75 @@
+*{box-sizing:border-box}
+:root{--brown:#432313;--brown2:#6f351a;--cream:#f7ead7;--cream2:#fff8ee;--line:#dfcbb2;--text:#302016}
+body{margin:0;background:var(--cream);color:var(--text);font-family:Inter,Arial,sans-serif}
+button,input{font:inherit}
+.navbar{height:80px;background:#32190e;color:#fff;display:flex;align-items:center;padding:0 5.8%;gap:35px;border-bottom:1px solid rgba(255,255,255,.12)}
+.brand{color:white;text-decoration:none;display:flex;align-items:center;gap:10px;min-width:270px}
+.brand-mark{font-size:36px;transform:rotate(-12deg);display:inline-block}
+.brand strong{display:block;font:28px "DM Serif Display",serif;line-height:25px}
+.brand small{font-size:8px;letter-spacing:2px;opacity:.8}
+.navbar nav{display:flex;gap:30px;align-items:center;flex:1}
+.navbar nav a{color:#f7e9d8;text-decoration:none;font-size:13px;padding:29px 0 25px;white-space:nowrap}
+.navbar nav a.active{border-bottom:2px solid #f3d8b9}
+.nav-actions{display:flex;align-items:center;gap:18px}
+.top-search{height:42px;width:205px;border:1px solid #805e4a;border-radius:25px;display:flex;align-items:center;padding:0 14px;color:#ead7c4}
+.top-search input{border:0;outline:0;background:transparent;color:white;width:165px;font-size:12px}
+.top-search input::placeholder{color:#d9c8b8}
+.login-btn,.register-btn{height:42px;padding:0 27px;border-radius:24px;border:1px solid #e5d2c0;background:transparent;color:#fff}
+.register-btn{background:#fff;color:#382013;border-color:#fff;font-weight:600}
+
+.hero{height:295px;background:
+linear-gradient(90deg,rgba(52,25,13,.96) 0%,rgba(65,31,16,.85) 45%,rgba(52,25,13,.50) 100%),
+url("https://images.unsplash.com/photo-1582562124811-c09040d0a901?auto=format&fit=crop&w=1800&q=85") center/cover;
+color:#fff;position:relative;overflow:hidden}
+.hero:after{content:"";position:absolute;right:0;top:0;width:58%;height:100%;background:linear-gradient(90deg,transparent,rgba(43,20,10,.1))}
+.hero-content{position:relative;z-index:1;padding:35px 6%;max-width:800px}
+.crumb{font-size:14px;color:#d8bfa9;margin-bottom:18px}.crumb span{margin:0 13px}
+.hero h1{font:56px "DM Serif Display",serif;margin:0 0 10px;letter-spacing:-1px}
+.hero p{font-size:18px;line-height:1.45;margin:0;color:#f5e7da}
+.hero-features{display:flex;gap:65px;margin-top:28px}
+.hero-features div{display:flex;align-items:center;gap:13px;font-size:12px;line-height:1.25}
+.hero-features span{font-size:34px;color:#f1cfad}
+
+.categories-wrap{display:flex;gap:25px;padding:25px 3.5% 35px 3.5%;max-width:1500px;margin:auto}
+.sidebar{width:240px;flex:none;background:rgba(255,251,244,.78);border:1px solid #e6d3bc;border-radius:12px;padding:10px}
+.category-search{height:40px;border:1px solid #dcc4aa;border-radius:8px;background:#fffaf4;display:flex;align-items:center;padding:0 11px;color:#3e2b20}
+.category-search input{border:0;outline:0;background:transparent;width:100%;font-size:12px;margin-left:7px}
+.category-item{display:flex;align-items:center;gap:13px;height:40px;padding:0 12px;border-radius:7px;cursor:pointer;font-size:13px;color:#3c2a1f}
+.category-item:hover{background:#f0dfcb}
+.category-item.active{background:var(--brown2);color:white}
+.category-item .icon{width:17px;text-align:center;font-size:16px}
+.discover-box{margin-top:12px;min-height:115px;background:#f3dfc3;border-radius:8px;display:flex;align-items:center;justify-content:center;gap:10px;text-align:center;font:italic 18px "DM Serif Display",serif;color:#5b2d17}
+.discover-box strong{font-size:23px}.gavel{font-size:30px}
+
+.content{flex:1;min-width:0}
+.section-head,.items-head{display:flex;justify-content:space-between;align-items:center}
+.section-head h2,.items-head h2{font:34px "DM Serif Display",serif;margin:0 0 10px;color:#301b10}
+.section-head button{border:0;background:transparent;color:#65341d;font-size:13px;cursor:pointer}
+.section-head button span{font-size:20px;margin-left:8px}
+.category-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.category-card{background:var(--cream2);border:1px solid #ead8c2;border-radius:10px;overflow:hidden;box-shadow:0 4px 14px rgba(74,39,20,.06);cursor:pointer;transition:.2s}
+.category-card:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(74,39,20,.12)}
+.category-card img{width:100%;height:130px;display:block;object-fit:cover}
+.card-info{padding:13px 15px;position:relative;min-height:74px}
+.card-info h3{margin:0 0 5px;font-size:14px}.card-info p{margin:0;color:#7a685b;font-size:11px}
+.arrow{position:absolute;right:14px;bottom:13px;width:31px;height:31px;border-radius:50%;background:var(--brown2);color:white;border:0;font-size:17px;cursor:pointer}
+
+.items-section{margin-top:35px;padding-top:25px;border-top:1px solid #decab1}.hidden{display:none!important}
+.eyebrow{font-size:10px;letter-spacing:2px;font-weight:700;color:#8a4a29}
+.items-head h2{font-size:32px;margin-top:4px}
+.back-btn{border:1px solid #b9987b;background:transparent;color:#60321d;border-radius:20px;padding:9px 15px;cursor:pointer}
+.items-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:17px}
+.item-card{background:#fff9f0;border:1px solid #e4d1b9;border-radius:11px;overflow:hidden;box-shadow:0 4px 14px rgba(70,36,17,.07)}
+.item-card img{width:100%;height:185px;object-fit:cover;display:block}
+.item-body{padding:13px 15px}.item-body h3{margin:0 0 7px;font-size:16px}
+.price-label{font-size:10px;color:#816d5e;text-transform:uppercase;letter-spacing:.6px}.price{font-size:18px;font-weight:700;color:#6d3218;margin:2px 0 10px}
+.timer{display:inline-block;background:#f0dfcc;color:#6d3218;border-radius:5px;padding:6px 8px;font-size:11px;font-weight:600}
+.bid-btn{width:100%;margin-top:11px;height:38px;border:0;border-radius:6px;background:var(--brown2);color:white;font-weight:600;cursor:pointer}.bid-btn:hover{background:#4d2413}.bid-btn:disabled{background:#9b8b80;cursor:not-allowed}
+.bottom-banner{max-width:1430px;margin:10px auto 30px;background:#42200f;color:white;border-radius:9px;min-height:105px;padding:18px 32px;display:flex;align-items:center;gap:35px}
+.banner-title{font:24px "DM Serif Display",serif;width:210px;border-right:1px solid #8a6652}.banner-feature{display:grid;grid-template-columns:38px 1fr;column-gap:8px;align-items:center;min-width:190px}.banner-feature span{grid-row:span 2;font-size:30px;color:#f0cba9}.banner-feature b{font-size:12px}.banner-feature small{font-size:10px;color:#d8c1b0}.bottom-banner button{margin-left:auto;border:0;border-radius:25px;padding:13px 25px;background:#fff7ed;color:#392013;font-weight:600}
+
+.modal{position:fixed;inset:0;background:rgba(35,17,9,.65);display:flex;align-items:center;justify-content:center;z-index:20}.modal-card{width:min(420px,90vw);background:#fff8ef;border-radius:14px;padding:28px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.3)}.modal-card h2{font:30px "DM Serif Display",serif;margin:6px 0}.modal-card input{width:100%;height:45px;border:1px solid #d8c1aa;border-radius:7px;padding:0 12px;margin:10px 0}.confirm-bid{width:100%;height:43px;background:var(--brown2);color:#fff;border:0;border-radius:7px;font-weight:600;cursor:pointer}.close-modal{position:absolute;right:15px;top:10px;border:0;background:transparent;font-size:26px;color:#60321d;cursor:pointer}.bid-message{font-size:12px;color:#6b3a20;min-height:16px}
+
+@media(max-width:1150px){.navbar{padding:0 3%;gap:15px}.brand{min-width:180px}.navbar nav{gap:15px}.nav-actions{gap:8px}.top-search{width:150px}.category-grid{grid-template-columns:repeat(2,1fr)}.items-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:800px){.navbar{height:auto;padding:15px;flex-wrap:wrap}.navbar nav{order:3;width:100%;overflow:auto}.nav-actions{margin-left:auto}.top-search{display:none}.hero h1{font-size:42px}.categories-wrap{flex-direction:column;padding:20px}.sidebar{width:100%}.category-grid{grid-template-columns:repeat(2,1fr)}.bottom-banner{margin:10px 20px 25px;flex-wrap:wrap}.banner-title{width:100%;border:0}.banner-feature{min-width:150px}.bottom-banner button{margin-left:0}}
+@media(max-width:520px){.category-grid,.items-grid{grid-template-columns:1fr}.hero{height:330px}.hero-features{gap:15px}.hero-content{padding:25px}.hero p br{display:none}}
