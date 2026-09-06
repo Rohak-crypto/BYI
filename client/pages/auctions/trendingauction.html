@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Bid Your Item - Trending Auctions</title>
+
+    <link rel="stylesheet" href="/home/user/BYI/client/assets/css/auctions.css">
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<header class="navbar">
+
+    <a href="#" class="brand">
+
+        <div class="brand-icon">⚒</div>
+
+        <div class="brand-text">
+            <strong>Bid Your Item</strong>
+            <small>BID · DISCOVER · OWN</small>
+        </div>
+
+    </a>
+
+
+    <nav class="navigation">
+
+        <a href="#">Home</a>
+
+        <a href="#" class="active">Auctions</a>
+
+        <a href="#">Categories</a>
+
+        <a href="#">Dashboard</a>
+
+        <a href="#">Help &amp; Support</a>
+
+    </nav>
+
+
+    <div class="nav-actions">
+
+        <div class="search-box">
+
+            <span class="search-icon">⌕</span>
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search auctions..."
+            >
+
+        </div>
+
+        <button class="login-btn">
+            Login
+        </button>
+
+        <button class="register-btn">
+            Register
+        </button>
+
+    </div>
+
+</header>
+
+
+<!-- ================= HERO SECTION ================= -->
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <div class="eyebrow">
+            — &nbsp; T R E N D I N G &nbsp; A U C T I O N S
+        </div>
+
+        <h1>
+            Discover What’s<br>
+            Trending Today
+        </h1>
+
+        <p>
+            Popular items. Real people. Exciting bids.<br>
+            Don’t miss out on the most watched and highest<br>
+            bidding auctions right now.
+        </p>
+
+    </div>
+
+
+    <div class="hero-image"></div>
+
+</section>
+
+
+<!-- ================= MAIN CONTENT ================= -->
+
+<main class="main-container">
+
+
+    <!-- ================= FILTER SIDEBAR ================= -->
+
+    <aside class="filters">
+
+        <div class="filter-header">
+
+            <h2>Filters</h2>
+
+            <button id="clearAll">
+                Clear All
+            </button>
+
+        </div>
+
+
+        <!-- CATEGORY -->
+
+        <section class="filter-section">
+
+            <div class="section-title">
+                Category
+                <span>⌃</span>
+            </div>
+
+
+            <label>
+                <input
+                    type="checkbox"
+                    class="category"
+                    value="Electronics"
+                >
+                Electronics
+            </label>
+
+
+            <label>
+                <input
+                    type="checkbox"
+                    class="category"
+                    value="Furniture"
+                >
+                Furniture
+            </label>
+
+
+            <label>
+                <input
+                    type="checkbox"
+                    class="category"
+                    value="Jewellery"
+                >
+                Jewellery
+            </label>
+
+
+            <label>
+                <input
+                    type="checkbox"
+                    class="category"
+                    value="Art & Collectibles"
+                >
+                Art &amp; Collectibles
+            </label>
+
+
+            <label>
+                <input
+                    type="checkbox"
+                    class="category"
+                    value="Vehicles"
+                >
+                Vehicles
+            </label>
+
+
+            <label>
+                <input
+                    type="checkbox"
+                    class="category"
+                    value="Fashion"
+                >
+                Fashion
+            </label>
+
+
+            <label>
+                <input
+                    type="checkbox"
+                    class="category"
+                    value="Home & Living"
+                >
+                Home &amp; Living
+            </label>
+
+
+            <label>
+                <input
+                    type="checkbox"
+                    class="category"
+                    value="Sports & Hobbies"
+                >
+                Sports &amp; Hobbies
+            </label>
+
+        </section>
+
+
+        <!-- PRICE RANGE -->
+
+        <section class="filter-section">
+
+            <div class="section-title">
+                Price Range
+                <span>⌃</span>
+            </div>
+
+
+            <div class="range-container">
+
+                <input
+                    type="range"
+                    id="priceRange"
+                    min="0"
+                    max="500000"
+                    value="500000"
+                >
+
+            </div>
+
+
+            <div class="range-values">
+
+                <span>₹ 0</span>
+
+                <span>₹ 5,00,000+</span>
+
+            </div>
+
+        </section>
+
+
+        <!-- AUCTION STATUS -->
+
+        <section class="filter-section">
+
+            <div class="section-title">
+                Auction Status
+                <span>⌃</span>
+            </div>
+
+
+            <label>
+
+                <input
+                    type="checkbox"
+                    class="status"
+                    value="Live Now"
+                    checked
+                >
+
+                Live Now
+
+            </label>
+
+
+            <label>
+
+                <input
+                    type="checkbox"
+                    class="status"
+                    value="Ending Soon"
+                >
+
+                Ending Soon
+
+            </label>
+
+
+            <label>
+
+                <input
+                    type="checkbox"
+                    class="status"
+                    value="Most Bids"
+                >
+
+                Most Bids
+
+            </label>
+
+
+            <label>
+
+                <input
+                    type="checkbox"
+                    class="status"
+                    value="Newly Listed"
+                >
+
+                Newly Listed
+
+            </label>
+
+        </section>
+
+    </aside>
+
+
+    <!-- ================= AUCTIONS ================= -->
+
+    <section class="auction-section">
+
+
+        <!-- TOOLBAR -->
+
+        <div class="toolbar">
+
+
+            <div class="tabs">
+
+                <button
+                    class="tab active"
+                    data-tab="Trending"
+                >
+                    Trending
+                </button>
+
+
+                <button
+                    class="tab"
+                    data-tab="Ending Soon"
+                >
+                    Ending Soon
+                </button>
+
+
+                <button
+                    class="tab"
+                    data-tab="Most Bids"
+                >
+                    Most Bids
+                </button>
+
+
+                <button
+                    class="tab"
+                    data-tab="Newly Listed"
+                >
+                    Newly Listed
+                </button>
+
+            </div>
+
+
+            <select id="sortSelect">
+
+                <option>Trending</option>
+
+                <option>Price: Low to High</option>
+
+                <option>Price: High to Low</option>
+
+                <option>Time Left</option>
+
+            </select>
+
+        </div>
+
+
+        <!-- AUCTION CARDS -->
+
+        <div
+            class="auction-grid"
+            id="auctionGrid"
+        ></div>
+
+
+        <div
+            id="emptyState"
+            class="empty-state"
+            hidden
+        >
+            No auctions match your filters.
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- TOAST -->
+
+<div
+    id="toast"
+    class="toast"
+>
+    Bid placed successfully!
+</div>
+
+
+<script src="/home/user/BYI/client/assets/js/auctions.js"></script>
+
+</body>
+</html>
+             
