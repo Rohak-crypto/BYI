@@ -3,98 +3,196 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>Bid Your Item — Login</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap"
+    rel="stylesheet"
+  >
   <link rel="stylesheet" href="../../assets/css/login.css" />
 </head>
+
 <body>
+
   <div class="page">
-    <header class="navbar">
+    <header class="header">
+
       <div class="brand">
+
         <div class="brand-mark">⚖</div>
-        <div>
+
+        <div class="brand-info">
           <div class="brand-name">Bid Your Item</div>
-          <div class="brand-tag">BID · DISCOVER · OWN</div>
+
+          <div class="brand-tag">
+            BID YOUR ITEM
+          </div>
         </div>
+
       </div>
 
-      <nav class="nav-links">
-        <a href="../../pages/home/home.html">Home</a>
-        <a href="../../pages/auctions/trendingauction.html">Auctions</a>
-        <a href="../../pages/categories/categories.html">Categories</a>
-        <a href="../../pages/dashboard/dashboard.html">Dashboard</a>
-        <a href="../../pages/help/help-support.html">Help &amp; Support</a>
-      </nav>
-
-      <div class="nav-actions">
-        <div class="search">
-          <span>⌕</span>
-          <input type="text" placeholder="Search auctions..." />
-        </div>
-      <!-- <button class="login-outline">Login</button> 
-        <button class="register" href="../../pages/auth/register.html">Register</button> -->
-      </div>
     </header>
-
     <main class="hero">
       <section class="intro">
-        <div class="eyebrow"><span></span> WELCOME BACK</div>
-        <h1>Good<br>Bidders<br><em>Great Stories</em></h1>
-        <p>Login to continue your auction journey<br>
-          and discover extraordinary items<br>
-          from around the world.</p>
-        <div class="line"></div>
-        <div class="script">Bid<br>Discover<br>Own</div>
-      </section>
 
-      <section class="login-card">
-        <h2>Login</h2>
-        <p class="subtitle">Welcome back! Please login to your account.</p>
-
-        <div class="role-switch">
-          <button class="active">User</button>
-          <button>Admin</button>
+        <div class="eyebrow">
+          <span></span>
+          WELCOME BACK
         </div>
 
+        <h1>
+          Good<br>
+          Bidders<br>
+          <em>Great Stories</em>
+        </h1>
+
+        <p>
+          Login to continue your auction journey<br>
+          and discover extraordinary items<br>
+          from around the world.
+        </p>
+
+        <div class="line"></div>
+
+        <div class="script">
+          Bid<br>
+          Discover<br>
+          Own
+        </div>
+
+      </section>
+      <section class="login-card">
+
+        <h2>Login</h2>
+
+        <p class="subtitle">
+          Welcome back! Please login to your account.
+        </p>
+
+        <div class="role-switch">
+
+          <button class="active">
+            User
+          </button>
+
+          <button>
+            Admin
+          </button>
+
+        </div>
         <form id="loginForm">
+
           <label class="field">
+
             <span class="icon">✉</span>
-            <input type="email" id="email" placeholder="Email address" required />
+
+            <input
+              type="email"
+              id="email"
+              placeholder="Email address"
+              required
+            />
+
           </label>
 
           <label class="field">
+
             <span class="icon">♙</span>
-            <input type="password" id="password" placeholder="Password" required />
-            <button type="button" class="eye" id="togglePassword">◉</button>
+
+            <input
+              type="password"
+              id="password"
+              placeholder="Password"
+              required
+            />
+
+            <button
+              type="button"
+              class="eye"
+              id="togglePassword"
+            >
+              ◉
+            </button>
+
           </label>
 
           <div class="options">
+
             <label class="remember">
-              <input type="checkbox" checked />
-              <span>Remember me</span>
+
+              <input
+                type="checkbox"
+                checked
+              />
+
+              <span>
+                Remember me
+              </span>
+
             </label>
-            <a href="#">Forgot password?</a>
+
+
+            <a href="#">
+              Forgot password?
+            </a>
+
           </div>
 
-          <button class="submit" type="submit">Login <span>→</span></button>
+          <button
+            class="submit"
+            type="submit"
+          >
+            Login
+            <span>→</span>
+          </button>
+
         </form>
 
-        <div class="or"><span></span>OR<span></span></div>
+        <div class="or">
 
-        <div class="socials">
-          <button aria-label="Google">G</button>
-          <button aria-label="Apple">●</button>
-          <button aria-label="Facebook">f</button>
+          <span></span>
+
+          OR
+
+          <span></span>
+
         </div>
 
-        <div class="signup">Don’t have an account? <a href="../../pages/auth/register.html">Register here</a></div>
-      </section>
-    </main>
-  </div>
+        <div class="socials">
 
+          <button aria-label="Google">
+            G
+          </button>
+
+          <button aria-label="Apple">
+            ●
+          </button>
+
+          <button aria-label="Facebook">
+            f
+          </button>
+
+        </div>
+
+        <div class="signup">
+
+          Don’t have an account?
+
+          <a href="../auth/register.html">
+            Register here
+          </a>
+
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
   <script src="../../assets/js/login.js"></script>
+
 </body>
 </html>
-

@@ -1,367 +1,245 @@
+<!--<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bid Your Item - Online Auction</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/home.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg py-3 custom-navbar">
+        <div class="container-fluid px-5">
+            <a class="navbar-brand d-flex align-items-center text-white" href="#">
+                <i class="fa-solid fa-gavel fs-3 me-2 accent-color"></i>
+                <div class="lh-1">
+                    <h4 class="mb-1 fw-semibold logo-text">Bid Your Item</h4>
+                    <small class="brand-tagline">BID • DISCOVER • OWN</small>
+                </div>
+            </a>
+
+            <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav mx-auto gap-4">
+                    <li class="nav-item"><a class="nav-link active" href="/client/pages/home/home.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#trending-auctions">Auctions</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#categories">Categories</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/client/pages/auctions/trendingauction.html">Auctions</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/client/pages/categories/categories.html">Categories</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/client/pages/dashboard/dashboard.html">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/client/pages/help/help-support.html">Help & Support</a></li>
+                </ul>
+                
+                <div class="d-flex align-items-center gap-3">
+                    <div class="search-container">
+                        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                        <input type="text" class="search-input" placeholder="Search auctions...">
+                    </div>
+                    
+                    <a href="#" class="btn btn-outline-light rounded-pill px-4 btn-login">Login</a>
+                    <a href="#" class="btn rounded-pill px-4 btn-register">Register</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section  id="home" class="hero-section">
+        <div class="container-fluid px-5 h-100 d-flex align-items-center">
+            <div class="row w-100">
+                <div class="col-lg-6 hero-content-wrapper">
+                    
+                    <div class="subheading mb-3">
+                        <span class="accent-line"></span> MORE THAN JUST SHOPPING
+                    </div>
+                    
+                    <h1 class="hero-title mb-3">
+                        Bid Today,<br>Own Tomorrow
+                    </h1>
+                    
+                    <p class="hero-description mb-5">
+                        Discover unique products, place your bids and experience the excitement of winning auctions from anywhere.
+                    </p>
+                    
+                    <div class="d-flex gap-3 mb-5 pb-3">
+                        <a href="#" class="btn rounded-pill px-4 py-2 btn-explore d-flex align-items-center gap-2">
+                            Explore Auctions <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                        <a href="#" class="btn rounded-pill px-4 py-2 btn-start-selling">
+                            Start Selling
+                        </a>
+                    </div>
+                    
+                    <div class="d-flex align-items-center gap-4 gap-xl-5 stats-container text-white">
+                        <div class="d-flex align-items-center gap-3">
+                            <i class="fa-solid fa-user-group fs-4 accent-color"></i>
+                            <div class="lh-sm">
+                                <h5 class="mb-0 fw-semibold">10K+</h5>
+                                <small class="text-white-50 stat-label">Active Bidders</small>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-divider"></div>
+                        
+                        <div class="d-flex align-items-center gap-3">
+                            <i class="fa-solid fa-gavel fs-4 accent-color"></i>
+                            <div class="lh-sm">
+                                <h5 class="mb-0 fw-semibold">5K+</h5>
+                                <small class="text-white-50 stat-label">Live Auctions</small>
+                            </div>
+                        </div>
+
+                        <div class="stat-divider"></div>
+                        
+                        <div class="d-flex align-items-center gap-3">
+                            <i class="fa-solid fa-shield-check fs-4 accent-color"></i>
+                            <div class="lh-sm">
+                                <h5 class="mb-0 fw-semibold">98%</h5>
+                                <small class="text-white-50 stat-label">Secure & Trusted</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html> -->
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Bid Your Item | Home</title>
+    <title>Bid Your Item - Online Auction</title>
 
     <!-- Bootstrap -->
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-        rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Bootstrap Icons -->
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
-        rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Google Font -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@1,700&display=swap"
+          rel="stylesheet">
 
-    <!-- Custom CSS -->
+    <!-- Home CSS -->
     <link rel="stylesheet" href="../../assets/css/home.css">
-
 </head>
-
 
 <body>
 
-
-<!-- =====================================================
+<!-- =========================================================
      NAVBAR
-===================================================== -->
+========================================================= -->
 
-<nav class="navbar navbar-expand-lg navbar-dark fixed-top shadow">
+<nav class="navbar navbar-expand-lg py-3 custom-navbar">
 
-    <div class="container">
+    <div class="container-fluid px-5">
 
+        <a class="navbar-brand d-flex align-items-center text-white"
+           href="#home">
 
-        <!-- LOGO -->
+            <i class="fa-solid fa-gavel fs-3 me-2 accent-color"></i>
 
-        <a class="navbar-brand d-flex align-items-center" href="#hero">
+            <div class="lh-1">
+                <h4 class="mb-1 fw-semibold logo-text">
+                    Bid Your Item
+                </h4>
 
-            <img
-                src="../../assets/images/byi-logo.svg"
-                alt="BYI Logo"
-                width="42"
-                height="42"
-                class="me-2">
-
-            <span class="fw-bold">
-                Bid Your Item
-            </span>
+                <small class="brand-tagline">
+                    BID • DISCOVER • OWN
+                </small>
+            </div>
 
         </a>
 
 
-        <!-- MOBILE MENU BUTTON -->
-
-        <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarMenu">
+        <button class="navbar-toggler bg-light"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarContent">
 
             <span class="navbar-toggler-icon"></span>
 
         </button>
 
 
-        <!-- NAVIGATION -->
+        <div class="collapse navbar-collapse"
+             id="navbarContent">
 
-        <div
-            class="collapse navbar-collapse"
-            id="navbarMenu">
-
-
-            <ul class="navbar-nav mx-auto">
-
-
-                <!-- HOME -->
+            <ul class="navbar-nav mx-auto gap-4">
 
                 <li class="nav-item">
-
-                    <a
-                        class="nav-link active"
-                        href="#hero">
-
+                    <a class="nav-link active"
+                       href="#home">
                         Home
-
                     </a>
-
                 </li>
 
-
-                <!-- CATEGORIES -->
-
                 <li class="nav-item">
-
-                    <a
-                        class="nav-link"
-                        href="#categories">
-
-                        Categories
-
-                    </a>
-
-                </li>
-
-
-                <!-- AUCTIONS -->
-
-                <li class="nav-item">
-
-                    <a
-                        class="nav-link"
-                        href="#trending">
-
+                    <a class="nav-link"
+                       href="#trending-auctions">
                         Auctions
-
                     </a>
-
                 </li>
 
-
-                <!-- CONTACT -->
-
                 <li class="nav-item">
-
-                    <a
-                        class="nav-link"
-                        href="#contact">
-
-                        Contact
-
+                    <a class="nav-link"
+                       href="#categories">
+                        Categories
                     </a>
-
                 </li>
 
-
-                <!-- LOGIN -->
+                <li class="nav-item">
+                    <a class="nav-link"
+                       href="../../pages/dashboard/dashboard.html">
+                        Dashboard
+                    </a>
+                </li>
 
                 <li class="nav-item">
-
-                    <a
-                        class="nav-link login-nav-link"
-                        href="../auth/login.html">
-
-                        Login
-
+                    <a class="nav-link"
+                       href="../../pages/help/help-support.html">
+                        Help &amp; Support
                     </a>
-
                 </li>
 
             </ul>
 
 
-            <!-- SEARCH -->
+            <div class="d-flex align-items-center gap-3">
 
-            <form
-                class="d-flex me-3 navbar-search"
-                role="search">
+                <div class="search-container">
 
-                <div class="search-nav-wrapper">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
 
-                    <i class="bi bi-search"></i>
-
-                    <input
-                        class="form-control search-nav"
-                        type="search"
-                        placeholder="Search auctions..."
-                        aria-label="Search">
+                    <input type="text"
+                           id="globalSearch"
+                           class="search-input"
+                           placeholder="Search auctions...">
 
                 </div>
 
-            </form>
 
-
-            <!-- NAVBAR ACTIONS -->
-
-            <div class="d-flex align-items-center navbar-actions">
-
-
-                <!-- WISHLIST -->
-
-                <button
-                    class="icon-btn me-2"
-                    type="button"
-                    title="Wishlist">
-
-                    <i class="bi bi-heart"></i>
-
-                </button>
-
-
-                <!-- NOTIFICATIONS -->
-
-                <button
-                    class="icon-btn me-2 position-relative"
-                    type="button"
-                    title="Notifications">
-
-                    <i class="bi bi-bell"></i>
-
-                    <span class="badge rounded-pill bg-danger notification-badge">
-                        3
-                    </span>
-
-                </button>
-
-
-                <!-- PROFILE -->
-
-                <div class="dropdown">
-
-                    <button
-                        class="profile-btn dropdown-toggle"
-                        type="button"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false">
-
-                        <i class="bi bi-person-circle"></i>
-
-                        <span class="profile-name">
-                            My Account
-                        </span>
-
-                    </button>
-
-
-                    <ul class="dropdown-menu dropdown-menu-end profile-menu">
-
-
-                        <!-- PROFILE HEADER -->
-
-                        <li>
-
-                            <div class="profile-header">
-
-                                <div class="profile-avatar">
-
-                                    <i class="bi bi-person"></i>
-
-                                </div>
-
-                                <div>
-
-                                    <h6>
-                                        User Profile
-                                    </h6>
-
-                                    <small>
-                                        Welcome to BYI
-                                    </small>
-
-                                </div>
-
-                            </div>
-
-                        </li>
-
-
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-
-
-                        <!-- PERSONAL DETAILS -->
-
-                        <li>
-
-                            <a
-                                class="dropdown-item"
-                                href="../dashboard/profile.html">
-
-                                <i class="bi bi-person-vcard me-2"></i>
-
-                                Personal Details
-
-                            </a>
-
-                        </li>
-
-
-                        <!-- DASHBOARD -->
-
-                        <li>
-
-                            <a
-                                class="dropdown-item"
-                                href="../dashboard/dashboard.html">
-
-                                <i class="bi bi-speedometer2 me-2"></i>
-
-                                My Dashboard
-
-                            </a>
-
-                        </li>
-
-
-                        <!-- MY BIDS -->
-
-                        <li>
-
-                            <a
-                                class="dropdown-item"
-                                href="#my-bids">
-
-                                <i class="bi bi-hammer me-2"></i>
-
-                                My Bids
-
-                            </a>
-
-                        </li>
-
-
-                        <!-- WISHLIST -->
-
-                        <li>
-
-                            <a
-                                class="dropdown-item"
-                                href="#wishlist">
-
-                                <i class="bi bi-heart me-2"></i>
-
-                                My Wishlist
-
-                            </a>
-
-                        </li>
-
-
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-
-
-                        <!-- LOGOUT -->
-
-                        <li>
-
-                            <a
-                                class="dropdown-item text-danger"
-                                href="../auth/login.html">
-
-                                <i class="bi bi-box-arrow-right me-2"></i>
-
-                                Logout
-
-                            </a>
-
-                        </li>
-
-                    </ul>
-
-                </div>
+                <a href="../auth/login.html"
+                   class="btn btn-outline-light rounded-pill px-4 btn-login">
+                    Login
+                </a>
+
+                <a href="../auth/register.html"
+                   class="btn rounded-pill px-4 btn-register">
+                    Register
+                </a>
 
             </div>
 
@@ -372,488 +250,704 @@
 </nav>
 
 
+<!-- =========================================================
+     LANDING / HOME SECTION
+========================================================= -->
 
-<!-- =====================================================
-     HERO SECTION
-===================================================== -->
+<section id="home" class="hero-section">
 
-<section
-    id="hero"
-    class="hero">
+    <div class="container-fluid px-5 h-100 d-flex align-items-center">
 
+        <div class="row w-100">
 
-    <div class="container">
+            <div class="col-lg-6 hero-content-wrapper">
 
-        <div class="row align-items-center">
+                <div class="subheading mb-3">
 
+                    <span class="accent-line"></span>
 
-            <!-- LEFT SIDE -->
+                    MORE THAN JUST SHOPPING
 
-            <div class="col-lg-6">
-
-
-                <span class="badge premium-badge">
-
-                    <i class="bi bi-patch-check-fill me-1"></i>
-
-                    Trusted Online Auction Platform
-
-                </span>
+                </div>
 
 
-                <h1>
+                <h1 class="hero-title mb-3">
 
-                    Bid Smart.
-                    <br>
-
-                    Buy Better.
-                    <br>
-
-                    <span>Win Bigger.</span>
+                    Bid Today,<br>
+                    Own Tomorrow
 
                 </h1>
 
 
-                <p>
+                <p class="hero-description mb-5">
 
-                    Discover premium products, join exciting live auctions,
-                    compete with trusted buyers, and win incredible deals
-                    from sellers across the country.
+                    Discover unique products, place your bids and
+                    experience the excitement of winning auctions
+                    from anywhere.
 
                 </p>
 
 
-                <!-- HERO SEARCH -->
+                <div class="d-flex gap-3 mb-5 pb-3">
 
-                <div class="search-box">
+                    <a href="#trending-auctions"
+                       class="btn rounded-pill px-4 py-2 btn-explore d-flex align-items-center gap-2">
 
-                    <i class="bi bi-search search-icon"></i>
+                        Explore Auctions
 
-                    <input
-                        type="text"
-                        placeholder="Search products, brands or categories...">
+                        <i class="fa-solid fa-arrow-right"></i>
 
-                    <button
-                        type="button"
-                        class="search-btn">
+                    </a>
 
-                        Search
 
-                        <i class="bi bi-arrow-right"></i>
+                    <a href="../auth/register.html"
+                       class="btn rounded-pill px-4 py-2 btn-start-selling">
+
+                        Start Selling
+
+                    </a>
+
+                </div>
+
+
+                <div class="d-flex align-items-center gap-4 gap-xl-5 stats-container text-white">
+
+                    <div class="d-flex align-items-center gap-3">
+
+                        <i class="fa-solid fa-user-group fs-4 accent-color"></i>
+
+                        <div class="lh-sm">
+
+                            <h5 class="mb-0 fw-semibold">
+                                10K+
+                            </h5>
+
+                            <small class="text-white-50 stat-label">
+                                Active Bidders
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-divider"></div>
+
+
+                    <div class="d-flex align-items-center gap-3">
+
+                        <i class="fa-solid fa-gavel fs-4 accent-color"></i>
+
+                        <div class="lh-sm">
+
+                            <h5 class="mb-0 fw-semibold">
+                                5K+
+                            </h5>
+
+                            <small class="text-white-50 stat-label">
+                                Live Auctions
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-divider"></div>
+
+
+                    <div class="d-flex align-items-center gap-3">
+
+                        <i class="fa-solid fa-shield-halved fs-4 accent-color"></i>
+
+                        <div class="lh-sm">
+
+                            <h5 class="mb-0 fw-semibold">
+                                98%
+                            </h5>
+
+                            <small class="text-white-50 stat-label">
+                                Secure &amp; Trusted
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     TRENDING AUCTIONS
+========================================================= -->
+
+<section id="trending-auctions"
+         class="integrated-auctions-section">
+
+    <div class="auction-hero">
+
+        <div class="auction-hero-content">
+
+            <div class="auction-eyebrow">
+                — &nbsp; T R E N D I N G &nbsp; A U C T I O N S
+            </div>
+
+            <h2>
+                Discover What's<br>
+                Trending Today
+            </h2>
+
+            <p>
+                Popular items. Real people. Exciting bids.<br>
+                Don't miss out on the most watched and highest
+                bidding auctions right now.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="auction-main-container">
+
+        <!-- FILTERS -->
+
+        <aside class="auction-filters">
+
+            <div class="auction-filter-header">
+
+                <h3>Filters</h3>
+
+                <button id="clearAll">
+                    Clear All
+                </button>
+
+            </div>
+
+
+            <section class="auction-filter-section">
+
+                <div class="auction-section-title">
+                    Category
+                    <span>⌃</span>
+                </div>
+
+
+                <label>
+                    <input type="checkbox"
+                           class="auction-category"
+                           value="Electronics">
+                    Electronics
+                </label>
+
+
+                <label>
+                    <input type="checkbox"
+                           class="auction-category"
+                           value="Furniture">
+                    Furniture
+                </label>
+
+
+                <label>
+                    <input type="checkbox"
+                           class="auction-category"
+                           value="Jewellery">
+                    Jewellery
+                </label>
+
+
+                <label>
+                    <input type="checkbox"
+                           class="auction-category"
+                           value="Art & Collectibles">
+                    Art &amp; Collectibles
+                </label>
+
+
+                <label>
+                    <input type="checkbox"
+                           class="auction-category"
+                           value="Vehicles">
+                    Vehicles
+                </label>
+
+
+                <label>
+                    <input type="checkbox"
+                           class="auction-category"
+                           value="Fashion">
+                    Fashion
+                </label>
+
+
+                <label>
+                    <input type="checkbox"
+                           class="auction-category"
+                           value="Home & Living">
+                    Home &amp; Living
+                </label>
+
+
+                <label>
+                    <input type="checkbox"
+                           class="auction-category"
+                           value="Sports & Hobbies">
+                    Sports &amp; Hobbies
+                </label>
+
+            </section>
+
+
+            <section class="auction-filter-section">
+
+                <div class="auction-section-title">
+                    Price Range
+                    <span>⌃</span>
+                </div>
+
+
+                <div class="auction-range-container">
+
+                    <input type="range"
+                           id="priceRange"
+                           min="0"
+                           max="500000"
+                           value="500000">
+
+                </div>
+
+
+                <div class="auction-range-values">
+
+                    <span>₹ 0</span>
+
+                    <span>₹ 5,00,000+</span>
+
+                </div>
+
+            </section>
+
+
+            <section class="auction-filter-section">
+
+                <div class="auction-section-title">
+                    Auction Status
+                    <span>⌃</span>
+                </div>
+
+
+                <label>
+
+                    <input type="checkbox"
+                           class="auction-status"
+                           value="Live Now"
+                           checked>
+
+                    Live Now
+
+                </label>
+
+
+                <label>
+
+                    <input type="checkbox"
+                           class="auction-status"
+                           value="Ending Soon">
+
+                    Ending Soon
+
+                </label>
+
+
+                <label>
+
+                    <input type="checkbox"
+                           class="auction-status"
+                           value="Most Bids">
+
+                    Most Bids
+
+                </label>
+
+
+                <label>
+
+                    <input type="checkbox"
+                           class="auction-status"
+                           value="Newly Listed">
+
+                    Newly Listed
+
+                </label>
+
+            </section>
+
+        </aside>
+
+
+        <!-- AUCTION CONTENT -->
+
+        <section class="auction-content">
+
+            <div class="auction-toolbar">
+
+                <div class="auction-tabs">
+
+                    <button class="auction-tab active"
+                            data-tab="Trending">
+                        Trending
+                    </button>
+
+                    <button class="auction-tab"
+                            data-tab="Ending Soon">
+                        Ending Soon
+                    </button>
+
+                    <button class="auction-tab"
+                            data-tab="Most Bids">
+                        Most Bids
+                    </button>
+
+                    <button class="auction-tab"
+                            data-tab="Newly Listed">
+                        Newly Listed
+                    </button>
+
+                </div>
+
+
+                <select id="sortSelect">
+
+                    <option>Trending</option>
+
+                    <option>
+                        Price: Low to High
+                    </option>
+
+                    <option>
+                        Price: High to Low
+                    </option>
+
+                    <option>
+                        Time Left
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="auction-grid"
+                 id="auctionGrid">
+            </div>
+
+
+            <div id="emptyState"
+                 class="auction-empty-state"
+                 hidden>
+
+                No auctions match your filters.
+
+            </div>
+
+        </section>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     CATEGORIES
+========================================================= -->
+
+<section id="categories"
+         class="integrated-categories-section">
+
+    <section class="categories-hero">
+
+        <div class="categories-hero-content">
+
+            <div class="categories-crumb">
+                Home
+                <span>›</span>
+                Categories
+            </div>
+
+
+            <h2>
+                Explore Categories
+            </h2>
+
+
+            <p>
+                Discover a wide range of unique items,
+                place your bids and own something extraordinary.
+            </p>
+
+
+            <div class="categories-hero-features">
+
+                <div>
+                    <span>◇</span>
+
+                    <b>
+                        Wide<br>
+                        Collection
+                    </b>
+                </div>
+
+
+                <div>
+                    <span>♢</span>
+
+                    <b>
+                        Trusted<br>
+                        Sellers
+                    </b>
+                </div>
+
+
+                <div>
+                    <span>♧</span>
+
+                    <b>
+                        Something<br>
+                        for Everyone
+                    </b>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <main class="categories-wrap-integrated">
+
+        <!-- CATEGORY SIDEBAR -->
+
+        <aside class="category-sidebar-integrated">
+
+            <div class="category-search-integrated">
+
+                ⌕
+
+                <input id="categorySearch"
+                       placeholder="Search categories...">
+
+            </div>
+
+
+            <div id="categoryList"></div>
+
+
+            <div class="discover-box-integrated">
+
+                <div class="gavel">
+                    ⚒
+                </div>
+
+                <div>
+                    Bid<br>
+                    <strong>Discover</strong><br>
+                    Own
+                </div>
+
+            </div>
+
+        </aside>
+
+
+        <!-- CATEGORY CONTENT -->
+
+        <section class="category-content-integrated">
+
+            <div class="category-section-head">
+
+                <h2 id="sectionTitle">
+                    All Categories
+                </h2>
+
+
+                <button id="exploreAll">
+                    Explore All
+                    <span>→</span>
+                </button>
+
+            </div>
+
+
+            <div id="categoryCards"
+                 class="category-grid-integrated">
+            </div>
+
+
+            <!-- CATEGORY ITEMS -->
+
+            <section id="itemsSection"
+                     class="items-section-integrated hidden">
+
+                <div class="items-head-integrated">
+
+                    <div>
+
+                        <span class="category-eyebrow">
+                            LIVE AUCTIONS
+                        </span>
+
+                        <h2 id="itemsTitle">
+                            Furniture Items
+                        </h2>
+
+                    </div>
+
+
+                    <button id="backCategories"
+                            class="back-btn-integrated">
+
+                        ← All Categories
 
                     </button>
 
                 </div>
 
 
-                <!-- HERO BUTTONS -->
-
-                <div class="hero-buttons">
-
-
-                    <a
-                        href="#trending"
-                        class="btn btn-warning btn-premium-primary">
-
-                        <i class="bi bi-hammer me-2"></i>
-
-                        Start Bidding
-
-                        <i class="bi bi-arrow-right ms-2"></i>
-
-                    </a>
-
-
-                    <a
-                        //href="../auth/register.html"
-                        class="btn btn-outline-light btn-premium-secondary">
-
-                        <i class="bi bi-plus-circle me-2"></i>
-
-                        Sell Your Item
-
-                    </a>
-
-
+                <div id="itemsGrid"
+                     class="items-grid-integrated">
                 </div>
 
+            </section>
 
-                <!-- STATISTICS -->
+        </section>
 
-                <div class="stats">
-
-
-                    <div class="stat-item">
-
-                        <h3>
-                            10K+
-                        </h3>
-
-                        <span>
-                            Active Users
-                        </span>
-
-                    </div>
+    </main>
 
 
-                    <div class="stat-item">
+    <!-- CATEGORY BOTTOM BANNER -->
 
-                        <h3>
-                            5K+
-                        </h3>
+    <section class="bottom-banner-integrated">
 
-                        <span>
-                            Live Auctions
-                        </span>
+        <div class="banner-title-integrated">
 
-                    </div>
-
-
-                    <div class="stat-item">
-
-                        <h3>
-                            1K+
-                        </h3>
-
-                        <span>
-                            Trusted Sellers
-                        </span>
-
-                    </div>
-
-
-                </div>
-
-            </div>
-
-
-
-            <!-- RIGHT SIDE -->
-
-            <div class="col-lg-6">
-
-
-                <div class="hero-visual">
-
-
-                    <!-- Attractive Auction Image -->
-
-                    <img
-                        src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1000&q=85"
-                        class="img-fluid hero-image"
-                        alt="Online auction marketplace">
-
-
-                    <!-- Floating Auction Card -->
-
-                    <div class="floating-card floating-card-right">
-
-                        <div class="floating-icon">
-
-                            <i class="bi bi-lightning-charge-fill"></i>
-
-                        </div>
-
-                        <div>
-
-                            <small>
-                                LIVE AUCTION
-                            </small>
-
-                            <strong>
-                                Bidding Now
-                            </strong>
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- Floating Bid Card -->
-
-                    <div class="floating-card floating-card-bottom">
-
-                        <div>
-
-                            <small>
-                                CURRENT BID
-                            </small>
-
-                            <strong>
-                                ₹52,000
-                            </strong>
-
-                        </div>
-
-                        <i class="bi bi-graph-up-arrow"></i>
-
-                    </div>
-
-
-                </div>
-
-            </div>
+            Find It.<br>
+            Bid It. Own It.
 
         </div>
 
-    </div>
 
-</section>
+        <div class="banner-feature-integrated">
 
+            <span>◇</span>
 
+            <b>
+                Unique Products
+            </b>
 
-<!-- =====================================================
-     CATEGORIES
-===================================================== -->
+            <small>
+                From verified sellers
+            </small>
 
-<section
-    id="categories"
-    class="categories py-5">
-
-
-    <div class="container">
+        </div>
 
 
-        <div class="text-center mb-5">
+        <div class="banner-feature-integrated">
+
+            <span>♢</span>
+
+            <b>
+                Safe &amp; Secure
+            </b>
+
+            <small>
+                Bidding experience
+            </small>
+
+        </div>
 
 
-            <span class="section-tag">
+        <div class="banner-feature-integrated">
 
-                Explore Categories
+            <span>♧</span>
 
+            <b>
+                A Growing Community
+            </b>
+
+            <small>
+                Of passionate buyers &amp; sellers
+            </small>
+
+        </div>
+
+
+        <button onclick="document.getElementById('trending-auctions').scrollIntoView({behavior:'smooth'})">
+
+            Start Exploring →
+
+        </button>
+
+    </section>
+
+
+    <!-- BID MODAL -->
+
+    <div id="bidModal"
+         class="category-modal hidden">
+
+        <div class="category-modal-card">
+
+            <button class="close-modal"
+                    id="closeModal">
+                ×
+            </button>
+
+
+            <span class="category-eyebrow">
+                PLACE YOUR BID
             </span>
 
 
-            <h2 class="fw-bold mt-3">
-
-                Browse By Category
-
+            <h2 id="modalItem">
+                Item
             </h2>
 
 
-            <p class="text-muted">
-
-                Find exactly what you are looking for
-                and start bidding instantly.
-
+            <p>
+                Current bid:
+                <strong id="modalCurrent">
+                    ₹0
+                </strong>
             </p>
 
 
-        </div>
+            <input id="bidAmount"
+                   type="number"
+                   min="1"
+                   placeholder="Enter your bid">
 
 
+            <button id="confirmBid"
+                    class="confirm-bid">
 
-        <div class="row g-4">
+                Place Bid
 
+            </button>
 
-            <!-- ELECTRONICS -->
 
-            <div class="col-lg-4 col-md-6">
-
-                <div class="category-card">
-
-                    <div class="category-icon">
-
-                        <i class="bi bi-laptop"></i>
-
-                    </div>
-
-                    <h4>
-                        Electronics
-                    </h4>
-
-                    <p>
-                        Laptops, mobiles, cameras and smart devices.
-                    </p>
-
-                    <a
-                        href="#trending"
-                        class="btn btn-primary category-btn">
-
-                        Explore Category
-
-                        <i class="bi bi-arrow-right"></i>
-
-                    </a>
-
-                </div>
-
-            </div>
-
-
-            <!-- VEHICLES -->
-
-            <div class="col-lg-4 col-md-6">
-
-                <div class="category-card">
-
-                    <div class="category-icon">
-
-                        <i class="bi bi-car-front-fill"></i>
-
-                    </div>
-
-                    <h4>
-                        Vehicles
-                    </h4>
-
-                    <p>
-                        Cars, bikes, trucks and vehicle accessories.
-                    </p>
-
-                    <a
-                        href="#trending"
-                        class="btn btn-primary category-btn">
-
-                        Explore Category
-
-                        <i class="bi bi-arrow-right"></i>
-
-                    </a>
-
-                </div>
-
-            </div>
-
-
-            <!-- FURNITURE -->
-
-            <div class="col-lg-4 col-md-6">
-
-                <div class="category-card">
-
-                    <div class="category-icon">
-
-                        <i class="bi bi-house-door-fill"></i>
-
-                    </div>
-
-                    <h4>
-                        Furniture
-                    </h4>
-
-                    <p>
-                        Premium home, office and luxury furniture.
-                    </p>
-
-                    <a
-                        href="#trending"
-                        class="btn btn-primary category-btn">
-
-                        Explore Category
-
-                        <i class="bi bi-arrow-right"></i>
-
-                    </a>
-
-                </div>
-
-            </div>
-
-
-            <!-- FASHION -->
-
-            <div class="col-lg-4 col-md-6">
-
-                <div class="category-card">
-
-                    <div class="category-icon">
-
-                        <i class="bi bi-bag-heart-fill"></i>
-
-                    </div>
-
-                    <h4>
-                        Fashion
-                    </h4>
-
-                    <p>
-                        Branded clothes, shoes and accessories.
-                    </p>
-
-                    <a
-                        href="#trending"
-                        class="btn btn-primary category-btn">
-
-                        Explore Category
-
-                        <i class="bi bi-arrow-right"></i>
-
-                    </a>
-
-                </div>
-
-            </div>
-
-
-            <!-- REAL ESTATE -->
-
-            <div class="col-lg-4 col-md-6">
-
-                <div class="category-card">
-
-                    <div class="category-icon">
-
-                        <i class="bi bi-buildings-fill"></i>
-
-                    </div>
-
-                    <h4>
-                        Real Estate
-                    </h4>
-
-                    <p>
-                        Plots, houses and commercial properties.
-                    </p>
-
-                    <a
-                        href="#trending"
-                        class="btn btn-primary category-btn">
-
-                        Explore Category
-
-                        <i class="bi bi-arrow-right"></i>
-
-                    </a>
-
-                </div>
-
-            </div>
-
-
-            <!-- ANTIQUES -->
-
-            <div class="col-lg-4 col-md-6">
-
-                <div class="category-card">
-
-                    <div class="category-icon">
-
-                        <i class="bi bi-gem"></i>
-
-                    </div>
-
-                    <h4>
-                        Antiques
-                    </h4>
-
-                    <p>
-                        Rare collections, coins and historical items.
-                    </p>
-
-                    <a
-                        href="#trending"
-                        class="btn btn-primary category-btn">
-
-                        Explore Category
-
-                        <i class="bi bi-arrow-right"></i>
-
-                    </a>
-
-                </div>
-
-            </div>
+            <p id="bidMessage"
+               class="bid-message">
+            </p>
 
         </div>
 
@@ -862,577 +956,33 @@
 </section>
 
 
-<section
-    id="trending"
-    class="trending-auctions py-5">
-
-
-    <div class="container">
-
-
-        <div class="d-flex justify-content-between align-items-center mb-5">
-
-
-            <div>
-
-                <span class="section-tag">
-
-                    <i class="bi bi-broadcast-pin me-1"></i>
-
-                    Live Auctions
-
-                </span>
-
-
-                <h2 class="fw-bold mt-3">
-
-                    Trending Auctions
-
-                </h2>
-
-
-                <p class="text-muted">
-
-                    Bid on the hottest products before time runs out.
-
-                </p>
-
-            </div>
-
-
-            <a
-                href="#trending"
-                class="btn btn-primary view-all-btn">
-
-                View All Auctions
-
-                <i class="bi bi-arrow-right ms-2"></i>
-
-            </a>
-
-        </div>
-
-
-
-        <div class="row g-4">
-
-
-            <!-- AUCTION 1 -->
-
-            <div class="col-lg-3 col-md-6">
-
-                <div class="auction-card">
-
-
-                    <span class="wishlist">
-
-                        <i class="bi bi-heart"></i>
-
-                    </span>
-
-
-                    <span class="live-badge">
-
-                        LIVE
-
-                    </span>
-
-
-                    <img
-                        src="../../assets/images/products/laptop.png"
-                        class="img-fluid auction-image"
-                        alt="Gaming Laptop">
-
-
-                    <div class="auction-body">
-
-
-                        <h5>
-                            Gaming Laptop
-                        </h5>
-
-
-                        <p class="seller">
-
-                            <i class="bi bi-person-circle"></i>
-
-                            Tech Store
-
-                        </p>
-
-
-                        <div class="price-row">
-
-
-                            <div>
-
-                                <small>
-                                    Current Bid
-                                </small>
-
-                                <h4>
-                                    ₹52,000
-                                </h4>
-
-                            </div>
-
-
-                            <div>
-
-                                <small>
-                                    Time Left
-                                </small>
-
-                                <h6 class="timer">
-                                    02:18:45
-                                </h6>
-
-                            </div>
-
-
-                        </div>
-
-
-                        <button
-                            class="btn btn-warning w-100 bid-btn">
-
-                            <i class="bi bi-hammer me-2"></i>
-
-                            Place Your Bid
-
-                            <i class="bi bi-arrow-right ms-2"></i>
-
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-
-            <!-- AUCTION 2 -->
-
-            <div class="col-lg-3 col-md-6">
-
-                <div class="auction-card">
-
-
-                    <span class="wishlist">
-
-                        <i class="bi bi-heart"></i>
-
-                    </span>
-
-
-                    <span class="live-badge">
-
-                        LIVE
-
-                    </span>
-
-
-                    <img
-                        src="../../assets/images/products/mobile.png"
-                        class="img-fluid auction-image"
-                        alt="iPhone 15">
-
-
-                    <div class="auction-body">
-
-
-                        <h5>
-                            iPhone 15
-                        </h5>
-
-
-                        <p class="seller">
-
-                            <i class="bi bi-person-circle"></i>
-
-                            Apple Hub
-
-                        </p>
-
-
-                        <div class="price-row">
-
-
-                            <div>
-
-                                <small>
-                                    Current Bid
-                                </small>
-
-                                <h4>
-                                    ₹63,500
-                                </h4>
-
-                            </div>
-
-
-                            <div>
-
-                                <small>
-                                    Time Left
-                                </small>
-
-                                <h6 class="timer">
-                                    05:41:20
-                                </h6>
-
-                            </div>
-
-
-                        </div>
-
-
-                        <button
-                            class="btn btn-warning w-100 bid-btn">
-
-                            <i class="bi bi-hammer me-2"></i>
-
-                            Place Your Bid
-
-                            <i class="bi bi-arrow-right ms-2"></i>
-
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-
-            <!-- AUCTION 3 -->
-
-            <div class="col-lg-3 col-md-6">
-
-                <div class="auction-card">
-
-
-                    <span class="wishlist">
-
-                        <i class="bi bi-heart"></i>
-
-                    </span>
-
-
-                    <span class="live-badge">
-
-                        LIVE
-
-                    </span>
-
-
-                    <img
-                        src="../../assets/images/products/watch.png"
-                        class="img-fluid auction-image"
-                        alt="Luxury Watch">
-
-
-                    <div class="auction-body">
-
-
-                        <h5>
-                            Luxury Watch
-                        </h5>
-
-
-                        <p class="seller">
-
-                            <i class="bi bi-person-circle"></i>
-
-                            Time Zone
-
-                        </p>
-
-
-                        <div class="price-row">
-
-
-                            <div>
-
-                                <small>
-                                    Current Bid
-                                </small>
-
-                                <h4>
-                                    ₹18,900
-                                </h4>
-
-                            </div>
-
-
-                            <div>
-
-                                <small>
-                                    Time Left
-                                </small>
-
-                                <h6 class="timer">
-                                    01:52:30
-                                </h6>
-
-                            </div>
-
-
-                        </div>
-
-
-                        <button
-                            class="btn btn-warning w-100 bid-btn">
-
-                            <i class="bi bi-hammer me-2"></i>
-
-                            Place Your Bid
-
-                            <i class="bi bi-arrow-right ms-2"></i>
-
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-
-            <!-- AUCTION 4 -->
-
-            <div class="col-lg-3 col-md-6">
-
-                <div class="auction-card">
-
-
-                    <span class="wishlist">
-
-                        <i class="bi bi-heart"></i>
-
-                    </span>
-
-
-                    <span class="live-badge">
-
-                        LIVE
-
-                    </span>
-
-
-                    <img
-                        src="../../assets/images/products/car.png"
-                        class="img-fluid auction-image"
-                        alt="BMW X5">
-
-
-                    <div class="auction-body">
-
-
-                        <h5>
-                            BMW X5
-                        </h5>
-
-
-                        <p class="seller">
-
-                            <i class="bi bi-person-circle"></i>
-
-                            Auto World
-
-                        </p>
-
-
-                        <div class="price-row">
-
-
-                            <div>
-
-                                <small>
-                                    Current Bid
-                                </small>
-
-                                <h4>
-                                    ₹18,50,000
-                                </h4>
-
-                            </div>
-
-
-                            <div>
-
-                                <small>
-                                    Time Left
-                                </small>
-
-                                <h6 class="timer">
-                                    12:10:18
-                                </h6>
-
-                            </div>
-
-
-                        </div>
-
-
-                        <button
-                            class="btn btn-warning w-100 bid-btn">
-
-                            <i class="bi bi-hammer me-2"></i>
-
-                            Place Your Bid
-
-                            <i class="bi bi-arrow-right ms-2"></i>
-
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-
-<!-- =====================================================
-     CONTACT
-===================================================== -->
-
-<section
-    id="contact"
-    class="contact-section py-5">
-
-
-    <div class="container">
-
-
-        <div class="row align-items-center">
-
-
-            <div class="col-lg-7">
-
-
-                <span class="section-tag">
-
-                    Get In Touch
-
-                </span>
-
-
-                <h2 class="fw-bold mt-3">
-
-                    Have a question about an auction?
-
-                </h2>
-
-
-                <p class="text-muted">
-
-                    Our support team is ready to help you with
-                    bidding, selling and account-related questions.
-
-                </p>
-
-            </div>
-
-
-            <div class="col-lg-5 text-lg-end">
-
-
-                <a
-                    href="mailto:support@bidyouritem.com"
-                    class="btn btn-primary contact-btn">
-
-                    <i class="bi bi-envelope-fill me-2"></i>
-
-                    Contact Support
-
-                    <i class="bi bi-arrow-right ms-2"></i>
-
-                </a>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-
-<!-- =====================================================
+<!-- =========================================================
      FOOTER
-===================================================== -->
+========================================================= -->
 
-<footer class="footer py-4">
+<footer class="integrated-footer">
 
-    <div class="container">
-
-        <div class="row align-items-center">
-
-
-            <div class="col-md-6">
-
-                <p class="mb-0">
-
-                    © 2026 <strong>Bid Your Item</strong>.
-                    All rights reserved.
-
-                </p>
-
-            </div>
-
-
-            <!--<div class="col-md-6 text-md-end">
-
-                <a href="#hero" class="me-3">
-                    Home
-                </a>
-
-                <a href="#categories" class="me-3">
-                    Categories
-                </a>
-
-                <a href="#trending" class="me-3">
-                    Auctions
-                </a>
-
-                <a href="#contact">
-                    Contact
-                </a>
-
-            </div> -->
-
-        </div>
-
+    <div>
+        <strong>Bid Your Item</strong>
+        <p>
+            Bid • Discover • Own
+        </p>
     </div>
+
+
+    <p>
+        © 2026 Bid Your Item. All rights reserved.
+    </p>
 
 </footer>
 
 
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Bootstrap JavaScript -->
-
-<script
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
-</script>
-
-
-<!-- Custom JavaScript -->
-
+<!-- Integrated Home JS -->
 <script src="../../assets/js/home.js"></script>
 
-
 </body>
-
 </html>
+

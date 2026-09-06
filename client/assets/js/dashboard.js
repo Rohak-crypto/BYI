@@ -1,7 +1,3 @@
-/* =========================================
-   BIDNEST DASHBOARD JAVASCRIPT
-========================================= */
-
 document.addEventListener("DOMContentLoaded", function () {
 
     const pages = document.querySelectorAll(".page");
@@ -10,12 +6,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const toast = document.getElementById("toast");
     const toastMessage = document.getElementById("toastMessage");
-
-
-
-    /* =========================================
-       TOAST MESSAGE
-    ========================================= */
 
     let toastTimer;
 
@@ -36,11 +26,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 2500);
     }
 
-
-
-    /* =========================================
-       OPEN PAGE
-    ========================================= */
 
     function openPage(pageName) {
 
@@ -96,12 +81,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
 
-
-
-    /* =========================================
-       LEFT SIDEBAR BUTTONS
-    ========================================= */
-
     sideButtons.forEach(function (button) {
 
         button.addEventListener("click", function () {
@@ -115,11 +94,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 
-
-    /* =========================================
-       RIGHT SIDE + OTHER PAGE BUTTONS
-    ========================================= */
-
     pageButtons.forEach(function (button) {
 
         button.addEventListener("click", function () {
@@ -131,12 +105,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
     });
-
-
-
-    /* =========================================
-       HERO BROWSE BUTTON
-    ========================================= */
 
     const heroButton = document.querySelector(".hero-btn");
 
@@ -151,12 +119,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
     }
-
-
-
-    /* =========================================
-       WISHLIST HEART BUTTONS
-    ========================================= */
 
     const heartButtons = document.querySelectorAll(
         ".heart-btn, .remove-heart"
@@ -205,11 +167,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 
-
-    /* =========================================
-       BID BUTTONS
-    ========================================= */
-
     const bidButtons = document.querySelectorAll(
         ".bid-btn, .small-action"
     );
@@ -248,11 +205,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 
-
-    /* =========================================
-       MESSAGE BUTTONS
-    ========================================= */
-
     const messageButtons =
         document.querySelectorAll(".message-btn");
 
@@ -266,12 +218,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
     });
-
-
-
-    /* =========================================
-       CREATE AUCTION
-    ========================================= */
 
     const createAuctionBtn =
         document.getElementById("createAuctionBtn");
@@ -288,11 +234,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-
-    /* =========================================
-       ADD FUNDS
-    ========================================= */
-
     const addFundsBtn =
         document.getElementById("addFundsBtn");
 
@@ -307,11 +248,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
 
-
-
-    /* =========================================
-       NOTIFICATION BUTTON
-    ========================================= */
 
     const notificationBtn =
         document.getElementById("notificationBtn");
@@ -329,9 +265,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-    /* =========================================
-       SEARCH
-    ========================================= */
 
     const searchInput =
         document.getElementById("searchInput");
@@ -368,11 +301,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-
-    /* =========================================
-       SETTINGS BUTTONS
-    ========================================= */
-
     const settingButtons =
         document.querySelectorAll(".setting-action");
 
@@ -391,11 +319,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 
-
-    /* =========================================
-       LOAD PAGE FROM HASH
-    ========================================= */
-
     const hash =
         window.location.hash.replace("#", "");
 
@@ -412,16 +335,6 @@ document.addEventListener("DOMContentLoaded", function () {
         openPage("dashboard");
 
     }
-
-
-
-    /* =========================================
-       PREVENT TOP NAVIGATION
-       -----------------------------------------
-       Home / Auctions / Categories /
-       Dashboard / Help & Support are
-       intentionally non-clickable.
-    ========================================= */
 
     const disabledNav =
         document.querySelectorAll(".nav-disabled");

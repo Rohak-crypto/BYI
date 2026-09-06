@@ -31,7 +31,7 @@ body {
   background-position: center;
 }
 
-.navbar {
+ .navbar {
   height: 79px;
   padding: 0 7%;
   display: flex;
@@ -42,7 +42,7 @@ body {
   backdrop-filter: blur(3px);
   position: relative;
   z-index: 5;
-}
+} 
 
 .brand {
   display: flex;
@@ -92,7 +92,7 @@ body {
   justify-content: flex-end;
 }
 
-.search {
+ .search {
   width: 208px;
   height: 42px;
   border: 1px solid rgba(239, 211, 180, .23);
