@@ -7,8 +7,7 @@ body{min-height:100vh}
   flex-direction:column;
   overflow-x:hidden;
   background-image:
-    linear-gradient(90deg,rgba(22,10,5,.20),rgba(22,10,5,.06) 55%,rgba(22,10,5,.18)),
-    url("auction-background.png");
+    url("../images/ref.jpeg");
   background-size:cover;
   background-position:center;
   background-attachment:fixed;
