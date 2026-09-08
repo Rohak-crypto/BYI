@@ -1,17 +1,57 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BidNest — Create Account</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="register.css">
   <title>Bid Your Item — Create Account</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../../assets/css/register.css">
 </head>
+
 <body>
   <div class="page">
 
+```
+<main class="content">
+
+  <section class="intro">
+    <div class="eyebrow">
+      <i></i> MORE THAN JUST SHOPPING
+    </div>
+
+    <h1>Join BidNest<br><em>Today</em></h1>
+
+    <p>
+      Create your account and start bidding,<br>
+      selling, and discovering extraordinary<br>
+      items from around the world.
+    </p>
+
+    <div class="benefits">
+
+      <div class="benefit">
+        <span>♟</span>
+        <div>
+          <b>Join a Trusted</b>
+          <small>Community</small>
+        </div>
+      </div>
+
+      <div class="benefit">
+        <span>⚖</span>
+        <div>
+          <b>Bid on Unique</b>
+          <small>Items</small>
     <header class="navbar">
       <a href="index.html" class="logo">
         <span class="logo-icon">⚖</span>
@@ -49,60 +89,72 @@
           <div class="benefit"><span>⚖</span><div><b>Bid on Unique</b><small>Items</small></div></div>
           <div class="benefit"><span>◆</span><div><b>Buy &amp; Sell</b><small>with Confidence</small></div></div>
         </div>
-      </section>
+      </div>
 
-      <section class="register-card">
-        <div class="user-icon">♙</div>
-        <h2>Create Your Account</h2>
-        <p class="subtitle">Join BidNest and be part of a global auction community.</p>
-
-        <form id="registerForm">
-          <div class="fields">
-            <label>
-              <span>♙</span>
-              <input id="name" type="text" placeholder="Full Name" required>
-            </label>
-
-            <label>
-              <span>✉</span>
-              <input id="email" type="email" placeholder="Email Address" required>
-            </label>
-
-            <label>
-              <span>⌕</span>
-              <input id="phone" type="tel" placeholder="Phone Number" required>
-            </label>
-
-            <label>
-              <span>♙</span>
-              <input id="password" type="password" placeholder="Create Password" minlength="6" required>
-              <button type="button" class="show" data-target="password">◉</button>
-            </label>
-
-            <label class="wide">
-              <span>♙</span>
-              <input id="confirmPassword" type="password" placeholder="Confirm Password" required>
-              <button type="button" class="show" data-target="confirmPassword">◉</button>
-            </label>
-          </div>
-
-          <label class="terms">
-            <input id="terms" type="checkbox" required>
-            <span>I agree to the <a href="#">Terms &amp; Conditions</a> and <a href="#">Privacy Policy</a></span>
-          </label>
-
-          <div id="error"></div>
-
-          <button class="create" type="submit">Create Account <b>→</b></button>
-        </form>
-
-        <div class="or"><span></span><b>OR</b><span></span></div>
-
-        <div class="socials">
-          <button type="button"><strong>G</strong><span>Continue with Google</span></button>
-          <button type="button"><strong>●</strong><span>Continue with Apple</span></button>
-          <button type="button"><strong>f</strong><span>Continue with Facebook</span></button>
+      <div class="benefit">
+        <span>◆</span>
+        <div>
+          <b>Buy &amp; Sell</b>
+          <small>with Confidence</small>
         </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <section class="register-card">
+
+    <div class="user-icon">♙</div>
+
+    <h2>Create Your Account</h2>
+
+    <p class="subtitle">
+      Join BidNest and be part of a global auction community.
+    </p>
+
+    <form id="registerForm">
+
+      <div class="fields">
+
+        <label>
+          <span>♙</span>
+          <input id="name" type="text" placeholder="Full Name" required>
+        </label>
+
+        <label>
+          <span>✉</span>
+          <input id="email" type="email" placeholder="Email Address" required>
+        </label>
+
+        <label>
+          <span>⌕</span>
+          <input id="phone" type="tel" placeholder="Phone Number" required>
+        </label>
+
+        <label>
+          <span>♙</span>
+          <input id="password" type="password"
+                 placeholder="Create Password"
+                 minlength="6" required>
+
+          <button type="button"
+                  class="show"
+                  data-target="password">◉</button>
+        </label>
+
+        <label class="wide">
+          <span>♙</span>
+
+          <input id="confirmPassword"
+                 type="password"
+                 placeholder="Confirm Password"
+                 required>
+
+          <button type="button"
+                  class="show"
+                  data-target="confirmPassword">◉</button>
+        </label>
 
         <p class="existing">Already have an account? <a href="../auth/login.html">Login here</a></p>
       </section>
@@ -120,8 +172,114 @@
         <a href="#">Privacy Policy</a><i></i>
         <a href="#">Terms of Service</a>
       </div>
-    </footer>
+
+
+      <label class="terms">
+        <input id="terms" type="checkbox" required>
+
+        <span>
+          I agree to the
+          <a href="#">Terms &amp; Conditions</a>
+          and
+          <a href="#">Privacy Policy</a>
+        </span>
+      </label>
+
+
+      <div id="error"></div>
+
+
+      <button class="create" type="submit">
+        Create Account <b>→</b>
+      </button>
+
+    </form>
+
+
+    <div class="or">
+      <span></span>
+      <b>OR</b>
+      <span></span>
+    </div>
+
+
+    <div class="socials">
+
+      <button type="button">
+        <strong>G</strong>
+        <span>Continue with Google</span>
+      </button>
+
+      <button type="button">
+        <strong>●</strong>
+        <span>Continue with Apple</span>
+      </button>
+
+      <button type="button">
+        <strong>f</strong>
+        <span>Continue with Facebook</span>
+      </button>
+
+    </div>
+
+
+    <p class="existing">
+      Already have an account?
+      <a href="index.html">Login here</a>
+    </p>
+
+  </section>
+
+</main>
+
+
+<footer>
+
+  <span>© 2025 BidNest. All rights reserved.</span>
+
+  <div class="stats">
+
+    <div>
+      <b>♟</b>
+      <span>
+        <strong>10K+</strong>
+        <small>Active Bidders</small>
+      </span>
+    </div>
+
+    <div>
+      <b>⚖</b>
+      <span>
+        <strong>5K+</strong>
+        <small>Live Auctions</small>
+      </span>
+    </div>
+
+    <div>
+      <b>◆</b>
+      <span>
+        <strong>98%</strong>
+        <small>Secure &amp; Trusted</small>
+      </span>
+    </div>
+
   </div>
+
+
+  <div class="footer-links">
+    <a href="#">Help &amp; Support</a>
+    <i></i>
+    <a href="#">Privacy Policy</a>
+    <i></i>
+    <a href="#">Terms of Service</a>
+  </div>
+
+</footer>
+```
+
+  </div>
+
+  <script src="register.js"></script>
 
   <script src="../../assets/js/register.js"></script>
 </body>

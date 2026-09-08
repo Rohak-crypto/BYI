@@ -35,6 +35,7 @@ document.getElementById("registerForm").addEventListener("submit", e => {
 
   error.textContent = "";
 
+  alert("Registration UI is ready. Connect this form to your backend.");
   const name = document.getElementById("name").value.trim();
 
   const email = document.getElementById("email").value.trim();
@@ -76,4 +77,3 @@ document.getElementById("registerForm").addEventListener("submit", e => {
   window.location.href = "../../pages/auth/login.html";
 
 });
-
