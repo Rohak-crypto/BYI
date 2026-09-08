@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BidNest | User Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/home/user/BYI/client/assets/css/dashboard.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -15,8 +22,35 @@
 
     <script src="../../assets/js/dashboard.js" defer></script>
 </head>
-
 <body>
+<div class="page-bg"></div>
+
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-icon">⚒</div>
+    <div><strong>Bid Your Item</strong><small>BID · DISCOVER · OWN</small></div>
+  </div>
+  <nav class="top-nav">
+    <button data-top="home">Home</button>
+    <button data-top="auctions">Auctions</button>
+    <button data-top="categories">Categories</button>
+    <button class="active" data-section="dashboard">Dashboard</button>
+    <button data-top="help">Help &amp; Support</button>
+  </nav>
+  <div class="top-right">
+    <label class="search-box"><span>⌕</span><input id="searchInput" placeholder="Search auctions..."></label>
+    <button class="icon-btn" id="notificationBtn" title="Notifications">♧<i></i></button>
+    <div class="profile-menu-wrap">
+      <button class="profile-trigger" id="profileTrigger">
+        <span class="avatar">R</span><span class="profile-name">Hi, Rahul</span><span class="chevron">⌄</span>
+      </button>
+      <div class="profile-dropdown" id="profileDropdown">
+        <button data-section="profile">👤 My Profile</button>
+        <button id="dropdownEditProfile">✎ Edit Profile</button>
+        <button data-section="settings">⚙ Settings</button>
+        <hr>
+        <button id="logoutBtn">↪ Logout</button>
+      </div>
 
 <header class="top-navbar">
 
@@ -67,9 +101,137 @@
         </div>
 
     </div>
-
+  </div>
 </header>
 
+<div class="layout">
+<aside class="sidebar">
+  <nav>
+    <button class="side-link active" data-section="dashboard"><span>⌂</span>Dashboard</button>
+    <button class="side-link" data-section="mybids"><span>⚒</span>My Bids</button>
+    <button class="side-link" data-section="wishlist"><span>♡</span>Wishlist</button>
+    <button class="side-link" data-section="myauctions"><span>▰</span>My Auctions</button>
+    <button class="side-link" data-section="messages"><span>▢</span>Messages <b>3</b></button>
+    <button class="side-link" data-section="wallet"><span>▣</span>Wallet</button>
+    <button class="side-link" data-section="settings"><span>⚙</span>Settings</button>
+  </nav>
+  <div class="sidebar-note">Good<br>Things<br>Find<br>New Owners</div>
+</aside>
+
+<main class="main">
+<div class="content">
+
+<section id="dashboard" class="page active-page">
+  <div class="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p>GOOD EVENING,</p><h1>User!</h1>
+      <span>Keep bidding, keep exploring. Amazing finds<br>are just a click away.</span>
+    </div>
+    <div class="hero-slogan"><br><br></div>
+  </div>
+
+  <div class="stats-grid">
+    <button class="stat-card" data-section="mybids"><span>⚒</span><strong id="activeCount">12</strong><small>Active Bids</small></button>
+    <button class="stat-card" data-section="mybids"><span>♜</span><strong>3</strong><small>Won Auctions</small></button>
+    <button class="stat-card" data-section="wishlist"><span>◷</span><strong>5</strong><small>Watching</small></button>
+    <button class="stat-card" data-section="wishlist"><span>♥</span><strong id="savedStat">18</strong><small>Saved Items</small></button>
+  </div>
+
+  <div class="section-head"><h2>My Active Bids</h2><button class="view-all" data-section="mybids">View All →</button></div>
+  <div class="table-card">
+    <div class="table-head"><span>Item</span><span>Current Bid</span><span>Your Bid</span><span>Time Left</span><span>Status</span><span>Action</span></div>
+    <div id="dashboardRows"></div>
+  </div>
+
+  <div class="section-head"><h2>Recommended for You</h2><button class="view-all" id="viewMoreBtn">View More →</button></div>
+  <div class="recommend-grid" id="recommendGrid"></div>
+</section>
+
+<section id="profile" class="page">
+  <div class="page-title"><div><p>ACCOUNT</p><h1>My Profile</h1><span>Manage your personal information and auction activity.</span></div><button class="gold-btn" id="editProfileBtn">✎ Edit Profile</button></div>
+  <div class="profile-layout">
+    <div class="profile-card profile-main">
+      <div class="profile-cover"></div>
+      <div class="profile-center"><div class="big-avatar" id="bigAvatar">R</div><h2 id="profileName">Rahul Sharma</h2><p id="profileEmail">rahul@example.com</p><em>Member since Jan 2024</em></div>
+      <div class="profile-details">
+        <div><small>Phone</small><b id="profilePhone">+91 98765 43210</b></div>
+        <div><small>Location</small><b id="profileLocation">Hyderabad, India</b></div>
+        <div><small>Address</small><b id="profileAddress">Madhapur, Hyderabad</b></div>
+      </div>
+    </div>
+    <div class="profile-card">
+      <h3>Account Overview</h3>
+      <div class="overview-line"><span>Active bids</span><b>12</b></div>
+      <div class="overview-line"><span>Won auctions</span><b>3</b></div>
+      <div class="overview-line"><span>Wishlist items</span><b id="overviewWish">18</b></div>
+      <div class="overview-line"><span>Total bids</span><b>56</b></div>
+      <button class="outline-btn full" data-section="settings">Manage account settings</button>
+    </div>
+  </div>
+</section>
+
+<section id="mybids" class="page">
+  <div class="page-title"><div><p>AUCTION ACTIVITY</p><h1>My Bids</h1><span>Edit, inspect or remove a bid.</span></div><button class="outline-btn" id="sortBidsBtn">↕ Sort</button></div>
+  <div class="filter-row"><button class="filter active" data-filter="all">All</button><button class="filter" data-filter="leading">Leading</button><button class="filter" data-filter="outbid">Outbid</button><button class="filter" data-filter="ended">Ended</button></div>
+  <div class="my-bids-grid" id="myBidsGrid"></div>
+</section>
+
+<section id="wishlist" class="page">
+  <div class="page-title"><div><p>SAVED ITEMS</p><h1>wishlist</h1><span>Your favourite auction items in one place.</span></div></div>
+  <div class="recommend-grid" id="wishlistGrid"></div>
+</section>
+
+<section id="myauctions" class="page">
+  <div class="page-title"><div><p>SELLER AREA</p><h1>My Auctions</h1><span>Manage the items you have listed for auction.</span></div><button class="gold-btn" id="sellItemBtn">＋ Sell an Item</button></div>
+  <div class="empty-card"><div>⚒</div><h2>Your seller dashboard</h2><p>You currently have 2 active listings and 1 completed auction.</p><button class="outline-btn" id="manageListingsBtn">Manage Listings</button></div>
+</section>
+
+<section id="messages" class="page">
+  <div class="page-title"><div><p>INBOX</p><h1>Messages</h1><span>Questions and updates from buyers and sellers.</span></div></div>
+  <div class="message-list">
+    <button class="message-item" data-message="Auction seller"><b>Vintage Camera seller</b><span>Your question about the camera has a new reply.</span><small>10 min ago</small></button>
+    <button class="message-item" data-message="Auction seller"><b>Classic Painting seller</b><span>Thank you for your interest in the painting.</span><small>1 hour ago</small></button>
+    <button class="message-item" data-message="BidNest Support"><b>BidNest Support</b><span>Your account notification preferences were updated.</span><small>Yesterday</small></button>
+  </div>
+</section>
+
+<section id="wallet" class="page">
+  <div class="page-title"><div><p>PAYMENTS</p><h1>Wallet</h1><span>Manage your demo auction wallet.</span></div><button class="gold-btn" id="addFundsBtn">＋ Add Funds</button></div>
+  <div class="wallet-card"><small>AVAILABLE BALANCE</small><h2>₹25,000</h2><div class="wallet-actions"><button class="outline-btn" id="transactionBtn">View Transactions</button><button class="gold-btn" id="withdrawBtn">Withdraw</button></div></div>
+</section>
+
+<section id="notifications" class="page">
+  <div class="page-title"><div><p>UPDATES</p><h1>Notifications</h1><span>Stay updated about bids and auctions.</span></div><button class="outline-btn" id="markReadBtn">✓ Mark all read</button></div>
+  <div class="notification-list" id="notificationList"></div>
+</section>
+
+<section id="settings" class="page">
+  <div class="page-title"><div><p>PREFERENCES</p><h1>Settings</h1><span>Control your BidNest dashboard experience.</span></div><button class="gold-btn" id="saveSettingsBtn">Save Settings</button></div>
+  <div class="settings-grid">
+    <div class="settings-card"><h3>Appearance</h3><p>Choose how BidNest looks.</p><label class="setting-row"><span><b>Dark interface</b><small>Use the dark auction theme</small></span><input type="checkbox" id="darkToggle" checked><i></i></label></div>
+    <div class="settings-card"><h3>Notifications</h3><p>Choose which alerts you receive.</p><label class="setting-row"><span><b>Bid alerts</b><small>Notify me when I am outbid</small></span><input type="checkbox" id="bidAlert" checked><i></i></label><label class="setting-row"><span><b>Auction reminders</b><small>Remind me before an auction ends</small></span><input type="checkbox" id="auctionAlert" checked><i></i></label></div>
+    <div class="settings-card"><h3>Privacy</h3><p>Manage account visibility.</p><label class="setting-row"><span><b>Public profile</b><small>Allow other users to view your profile</small></span><input type="checkbox" id="publicProfile" checked><i></i></label></div>
+    <div class="settings-card"><h3>Account</h3><p>Quick account actions.</p><button class="outline-btn full" id="changePasswordBtn">🔒 Change Password</button><button class="danger-btn full" id="deleteAccountBtn">Delete Account</button></div>
+  </div>
+</section>
+
+</div>
+</main>
+
+<aside class="rightbar">
+  <div class="user-card">
+    <div class="user-top"><div class="round-avatar">R</div><div><h3 id="sideProfileName">Rahul Sharma</h3><p id="sideProfileEmail">rahul@example.com</p><button class="mini-btn" id="sideEditProfile">Edit Profile</button></div></div>
+    <div class="user-stats"><div><small>Member Since</small><b>Jan 2024</b></div><div><small>Total Bids</small><b>56</b></div><div><small>Won Items</small><b>8</b></div></div>
+  </div>
+  <div class="quick-card"><h2>Quick Actions</h2><button data-top="auctions">⌕ <span>Browse Auctions</span>›</button><button id="quickSell">⊕ <span>Sell an Item</span>›</button><button id="quickFunds">▣ <span>Add Funds</span>›</button><button data-section="messages">▢ <span>My Messages</span><b>3</b></button></div>
+  <div class="activity-card"><div class="activity-head"><h2>Recent Activity</h2><button id="activityViewAll">View All</button></div>
+    <div class="activity"><img src="camera.jpg"><span>You placed a bid on <b>Vintage Camera</b></span><small>10 min ago</small></div>
+    <div class="activity"><img src="chair.jpg"><span>You are now watching <b>Antique Wooden Chair</b></span><small>1 hour ago</small></div>
+    <div class="activity"><img src="painting.jpg"><span>You won the auction <b>Classic Painting</b></span><small>2 days ago</small></div>
+    <div class="activity"><img src="necklace.jpg"><span>Your bid was outbid <b>Diamond Necklace</b></span><small>2 days ago</small></div>
+  </div>
+</aside>
 
 
 <div class="layout">
@@ -1611,5 +1773,8 @@
 
 </div>
 
+<div class="modal-backdrop" id="modalBackdrop"><div class="modal"><button class="modal-close" id="modalClose">×</button><div id="modalContent"></div></div></div>
+<div class="toast" id="toast"></div>
+<script src="/home/user/BYI/client/assets/js/dashboard.js"></script>
 </body>
 </html>
