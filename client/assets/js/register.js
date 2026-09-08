@@ -2,6 +2,7 @@ document.querySelectorAll(".show").forEach(button => {
   button.addEventListener("click", () => {
     const input = document.getElementById(button.dataset.target);
     const visible = input.type === "text";
+
     input.type = visible ? "password" : "text";
     button.textContent = visible ? "◉" : "◌";
   });
@@ -9,6 +10,7 @@ document.querySelectorAll(".show").forEach(button => {
 
 document.getElementById("registerForm").addEventListener("submit", e => {
   e.preventDefault();
+
   const password = document.getElementById("password").value;
   const confirm = document.getElementById("confirmPassword").value;
   const error = document.getElementById("error");
@@ -19,6 +21,6 @@ document.getElementById("registerForm").addEventListener("submit", e => {
   }
 
   error.textContent = "";
+
   alert("Registration UI is ready. Connect this form to your backend.");
 });
-
