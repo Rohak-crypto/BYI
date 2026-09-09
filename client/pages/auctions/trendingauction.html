@@ -7,6 +7,89 @@
     <title>Bid Your Item - Trending Auctions</title>
 
     <link rel="stylesheet" href="/home/user/BYI/client/assets/css/auctions.css">
+
+<style>
+/* ===== PLACE BID POPUP ===== */
+#bidModal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background: rgba(35, 20, 12, 0.65);
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+#bidModal.show {
+    display: flex;
+}
+
+.bid-modal-box {
+    width: min(420px, 100%);
+    background: #fffaf1;
+    border-radius: 16px;
+    padding: 28px;
+    box-sizing: border-box;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0,0,0,.35);
+}
+
+.bid-modal-box h2 {
+    margin: 0 0 8px;
+    color: #4b2e20;
+}
+
+#bidModalItem {
+    margin: 0 0 20px;
+    color: #725441;
+}
+
+#bidAmountInput {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 14px;
+    border: 1px solid #cdb9a5;
+    border-radius: 9px;
+    font-size: 16px;
+    margin: 8px 0 16px;
+}
+
+#confirmBidBtn {
+    width: 100%;
+    border: 0;
+    border-radius: 9px;
+    padding: 13px;
+    background: #4b2e20;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+#confirmBidBtn:hover {
+    opacity: .9;
+}
+
+#closeBidBtn {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    border: 0;
+    background: transparent;
+    color: #4b2e20;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+#bidError {
+    display: none;
+    color: #a33;
+    margin: 0 0 12px;
+    font-size: 13px;
+}
+</style>
+
 </head>
 
 <body>
@@ -402,6 +485,109 @@
     Bid placed successfully!
 </div>
 
+
+
+<!-- PLACE BID MODAL -->
+<div id="bidModal">
+    <div class="bid-modal-box">
+        <button id="closeBidBtn" type="button">&times;</button>
+        <h2>Place Your Bid</h2>
+        <p id="bidModalItem">Enter your bid amount.</p>
+        <label for="bidAmountInput">Bid Amount</label>
+        <input id="bidAmountInput" type="number" min="1" step="1" placeholder="Enter amount">
+        <p id="bidError">Please enter a valid bid amount.</p>
+        <button id="confirmBidBtn" type="button">Confirm Bid</button>
+    </div>
+</div>
+
+<script>
+(function () {
+    let currentBidButton = null;
+
+    const modal = document.getElementById("bidModal");
+    const itemText = document.getElementById("bidModalItem");
+    const input = document.getElementById("bidAmountInput");
+    const error = document.getElementById("bidError");
+
+    function openBid(button) {
+        currentBidButton = button;
+
+        let card = button.closest(".auction-card");
+        let itemName = "Selected auction";
+        let currentPrice = 0;
+
+        if (card) {
+            const title = card.querySelector("h3, h2, .auction-title, .item-name");
+            if (title) itemName = title.textContent.trim();
+
+            const priceEl = card.querySelector(".price, .current-bid, .bid-price, .auction-price");
+            if (priceEl) {
+                const match = priceEl.textContent.replace(/,/g, "").match(/[0-9]+(?:\.[0-9]+)?/);
+                if (match) currentPrice = Number(match[0]);
+            }
+        }
+
+        itemText.textContent = itemName + (currentPrice ? " • Current bid: ₹ " + currentPrice.toLocaleString("en-IN") : "");
+        input.value = "";
+        input.min = currentPrice + 1;
+        error.style.display = "none";
+        modal.classList.add("show");
+        setTimeout(() => input.focus(), 50);
+    }
+
+    function closeBid() {
+        modal.classList.remove("show");
+        currentBidButton = null;
+    }
+
+    /*
+      Capture clicks before the old auctions.js Place Bid handler.
+      This makes the button work even if the cards are generated dynamically.
+    */
+    document.addEventListener("click", function (event) {
+        const button = event.target.closest("button, a");
+        if (!button) return;
+
+        const label = button.textContent.trim().replace(/\s+/g, " ");
+        if (!/^place bid$/i.test(label)) return;
+
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        openBid(button);
+    }, true);
+
+    document.getElementById("closeBidBtn").addEventListener("click", closeBid);
+
+    modal.addEventListener("click", function (event) {
+        if (event.target === modal) closeBid();
+    });
+
+    document.getElementById("confirmBidBtn").addEventListener("click", function () {
+        const amount = Number(input.value);
+        const minimum = Number(input.min || 1);
+
+        if (!amount || amount < minimum) {
+            error.textContent = "Please enter a bid of at least ₹ " + minimum.toLocaleString("en-IN") + ".";
+            error.style.display = "block";
+            return;
+        }
+
+        closeBid();
+
+        const toast = document.getElementById("toast");
+        if (toast) {
+            toast.textContent = "Bid placed successfully! ₹ " + amount.toLocaleString("en-IN");
+            toast.classList.add("show");
+            setTimeout(() => toast.classList.remove("show"), 2200);
+        }
+    });
+
+    input.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") document.getElementById("confirmBidBtn").click();
+        if (event.key === "Escape") closeBid();
+    });
+})();
+</script>
 
 <script src="/home/user/BYI/client/assets/js/auctions.js"></script>
 
