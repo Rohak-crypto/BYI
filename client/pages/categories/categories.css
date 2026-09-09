@@ -1,4 +1,4 @@
-/* Categories.css */
+
 *{box-sizing:border-box}
 :root{--brown:#432313;--brown2:#6f351a;--cream:#f7ead7;--cream2:#fff8ee;--line:#dfcbb2;--text:#302016}
 body{margin:0;background:var(--cream);color:var(--text);font-family:Inter,Arial,sans-serif}
