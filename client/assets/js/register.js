@@ -1,100 +1,79 @@
+document.querySelectorAll(".show").forEach(button => {
 
-const registerForm = document.getElementById("registerForm");
+  button.addEventListener("click", () => {
 
-registerForm.addEventListener("submit", function (e) {
+    const input = document.getElementById(button.dataset.target);
 
-    e.preventDefault();
+    const visible = input.type === "text";
 
-    const firstName = document.getElementById("firstName").value.trim();
-    const lastName = document.getElementById("lastName").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const mobile = document.getElementById("mobile").value.trim();
-    const password = document.getElementById("password").value;
-    const confirmPassword = document.getElementById("confirmPassword").value;
-    const dob = document.getElementById("dob").value;
-    const gender = document.getElementById("gender").value;
-    const terms = document.getElementById("terms");
+    input.type = visible ? "password" : "text";
 
-    // First Name
-    if(firstName === ""){
+    button.textContent = visible ? "◉" : "◌";
 
-        alert("Please enter First Name.");
-        return;
+  });
 
-    }
+});
+document.getElementById("registerForm").addEventListener("submit", e => {
 
-    // Last Name
-    if(lastName === ""){
+  e.preventDefault();
 
-        alert("Please enter Last Name.");
-        return;
+  const password = document.getElementById("password").value;
 
-    }
+  const confirm = document.getElementById("confirmPassword").value;
 
-    // Email Validation
-    const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+  const error = document.getElementById("error");
 
-    if(!email.match(emailPattern)){
 
-        alert("Please enter a valid Email Address.");
-        return;
+  if (password !== confirm) {
 
-    }
+    error.textContent = "Passwords do not match.";
 
-    // Mobile Validation
-    const mobilePattern = /^[6-9]\d{9}$/;
+    return;
 
-    if(!mobile.match(mobilePattern)){
+  }
 
-        alert("Please enter a valid 10-digit Mobile Number.");
-        return;
 
-    }
+  error.textContent = "";
 
-    // Password Length
-    if(password.length < 6){
+  alert("Registration UI is ready. Connect this form to your backend.");
+  const name = document.getElementById("name").value.trim();
 
-        alert("Password should contain at least 6 characters.");
-        return;
+  const email = document.getElementById("email").value.trim();
 
-    }
+  const phone = document.getElementById("phone").value.trim();
 
-    // Confirm Password
-    if(password !== confirmPassword){
+  const users = JSON.parse(localStorage.getItem("users")) || [];
 
-        alert("Passwords do not match.");
-        return;
+  const existingUser = users.find(
+    user => user.email.toLowerCase() === email.toLowerCase()
+  );
 
-    }
 
-    // DOB
-    if(dob === ""){
+  if (existingUser) {
 
-        alert("Please select Date of Birth.");
-        return;
+    error.textContent = "An account with this email already exists.";
 
-    }
+    return;
 
-    // Gender
-    if(gender === ""){
+  }
 
-        alert("Please select Gender.");
-        return;
+  const newUser = {
 
-    }
+    name: name,
 
-    // Terms
-    if(!terms.checked){
+    email: email,
 
-        alert("Please accept Terms & Conditions.");
-        return;
+    phone: phone,
 
-    }
+    password: password
 
-    alert("Registration Successful!");
+  };
 
-    // Redirect to Login Page
+  users.push(newUser);
 
-    window.location.href = "login.html";
+  localStorage.setItem("users", JSON.stringify(users));
+
+  alert("Registration Successful!");
+  window.location.href = "../../pages/auth/login.html";
 
 });

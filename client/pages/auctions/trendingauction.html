@@ -8,12 +8,95 @@
 
     <link rel="stylesheet" href="/home/user/BYI/client/assets/css/auctions.css">
 
+<<<<<<< HEAD
+=======
+<style>
+/* ===== PLACE BID POPUP ===== */
+#bidModal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background: rgba(35, 20, 12, 0.65);
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+#bidModal.show {
+    display: flex;
+}
+
+.bid-modal-box {
+    width: min(420px, 100%);
+    background: #fffaf1;
+    border-radius: 16px;
+    padding: 28px;
+    box-sizing: border-box;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0,0,0,.35);
+}
+
+.bid-modal-box h2 {
+    margin: 0 0 8px;
+    color: #4b2e20;
+}
+
+#bidModalItem {
+    margin: 0 0 20px;
+    color: #725441;
+}
+
+#bidAmountInput {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 14px;
+    border: 1px solid #cdb9a5;
+    border-radius: 9px;
+    font-size: 16px;
+    margin: 8px 0 16px;
+}
+
+#confirmBidBtn {
+    width: 100%;
+    border: 0;
+    border-radius: 9px;
+    padding: 13px;
+    background: #4b2e20;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+#confirmBidBtn:hover {
+    opacity: .9;
+}
+
+#closeBidBtn {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    border: 0;
+    background: transparent;
+    color: #4b2e20;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+#bidError {
+    display: none;
+    color: #a33;
+    margin: 0 0 12px;
+    font-size: 13px;
+}
+</style>
+
+    <link rel="stylesheet" href="../../assets/css/auctions.css">
+>>>>>>> 96a088cbde43b8970c614a3a119969247c48c99c
 </head>
 
 <body>
-
-<!-- ================= NAVBAR ================= -->
-
 <header class="navbar">
 
     <a href="#" class="brand">
@@ -26,23 +109,13 @@
         </div>
 
     </a>
-
-
-    <nav class="navigation">
-
-        <a href="#">Home</a>
-
-        <a href="#" class="active">Auctions</a>
-
-        <a href="#">Categories</a>
-
-        <a href="#">Dashboard</a>
-
-        <a href="#">Help &amp; Support</a>
-
-    </nav>
-
-
+   <nav class="nav-links">
+        <a href="../../pages/home/home.html">Home</a>
+        <a href="../../pages/auctions/trendingauction.html">Auctions</a>
+        <a href="../../pages/categories/categories.html">Categories</a>
+        <a href="../../pages/dashboard/dashboard.html">Dashboard</a>
+        <a href="../../pages/help/help-support.html">Help &amp; Support</a>
+      </nav>
     <div class="nav-actions">
 
         <div class="search-box">
@@ -57,20 +130,17 @@
 
         </div>
 
-        <button class="login-btn">
+        <button class="login-btn" href="/client/pages/auth/login.html">
             Login
         </button>
 
-        <button class="register-btn">
+        <button class="register-btn" href="/client/pages/auth/register.html">
             Register
         </button>
 
     </div>
 
 </header>
-
-
-<!-- ================= HERO SECTION ================= -->
 
 <section class="hero">
 
@@ -97,14 +167,7 @@
     <div class="hero-image"></div>
 
 </section>
-
-
-<!-- ================= MAIN CONTENT ================= -->
-
 <main class="main-container">
-
-
-    <!-- ================= FILTER SIDEBAR ================= -->
 
     <aside class="filters">
 
@@ -118,8 +181,6 @@
 
         </div>
 
-
-        <!-- CATEGORY -->
 
         <section class="filter-section">
 
@@ -210,9 +271,6 @@
 
         </section>
 
-
-        <!-- PRICE RANGE -->
-
         <section class="filter-section">
 
             <div class="section-title">
@@ -243,9 +301,6 @@
             </div>
 
         </section>
-
-
-        <!-- AUCTION STATUS -->
 
         <section class="filter-section">
 
@@ -311,43 +366,28 @@
 
     </aside>
 
-
-    <!-- ================= AUCTIONS ================= -->
-
     <section class="auction-section">
 
-
-        <!-- TOOLBAR -->
-
         <div class="toolbar">
-
-
             <div class="tabs">
-
                 <button
                     class="tab active"
                     data-tab="Trending"
                 >
                     Trending
                 </button>
-
-
                 <button
                     class="tab"
                     data-tab="Ending Soon"
                 >
                     Ending Soon
                 </button>
-
-
                 <button
                     class="tab"
                     data-tab="Most Bids"
                 >
                     Most Bids
                 </button>
-
-
                 <button
                     class="tab"
                     data-tab="Newly Listed"
@@ -371,10 +411,6 @@
             </select>
 
         </div>
-
-
-        <!-- AUCTION CARDS -->
-
         <div
             class="auction-grid"
             id="auctionGrid"
@@ -392,9 +428,6 @@
     </section>
 
 </main>
-
-
-<!-- TOAST -->
 
 <div
     id="toast"
@@ -508,6 +541,7 @@
 </script>
 
 <script src="/home/user/BYI/client/assets/js/auctions.js"></script>
+<script src="../../assets/js/auctions.js"></script>
 
 </body>
 </html>

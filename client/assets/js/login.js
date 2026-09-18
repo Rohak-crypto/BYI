@@ -1,118 +1,74 @@
 
+const password = document.getElementById("password");
 
-document.addEventListener("DOMContentLoaded", () => {
+const toggle = document.getElementById("togglePassword");
 
-    const loginForm = document.getElementById("loginForm");
-    const email = document.getElementById("email");
-    const password = document.getElementById("password");
-    const togglePassword = document.getElementById("togglePassword");
+const form = document.getElementById("loginForm");
 
-   
+toggle.addEventListener("click", () => {
 
-    togglePassword.addEventListener("click", () => {
+  const hidden = password.type === "password";
 
-        const icon = togglePassword.querySelector("i");
+  password.type = hidden ? "text" : "password";
 
-        if (password.type === "password") {
-
-            password.type = "text";
-
-            icon.classList.remove("bi-eye");
-            icon.classList.add("bi-eye-slash");
-
-        } else {
-
-            password.type = "password";
-
-            icon.classList.remove("bi-eye-slash");
-            icon.classList.add("bi-eye");
-
-        }
-
-    });
-
-    // ===============================
-    // Email Validation
-    // ===============================
-
-    function validateEmail(value) {
-
-        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-        return regex.test(value);
-
-    }
-
-    // ===============================
-    // Login Validation
-    // ===============================
-
-    loginForm.addEventListener("submit", function(e){
-
-        e.preventDefault();
-
-        const emailValue = email.value.trim();
-        const passwordValue = password.value.trim();
-
-        if(emailValue === ""){
-
-            alert("Please enter your email.");
-
-            email.focus();
-
-            return;
-
-        }
-
-        if(!validateEmail(emailValue)){
-
-            alert("Please enter a valid email address.");
-
-            email.focus();
-
-            return;
-
-        }
-
-        if(passwordValue === ""){
-
-            alert("Please enter your password.");
-
-            password.focus();
-
-            return;
-
-        }
-
-        if(passwordValue.length < 6){
-
-            alert("Password must contain at least 6 characters.");
-
-            password.focus();
-
-            return;
-
-        }
-
-        // Success
-
-        const btn = document.querySelector(".btn-login");
-
-        btn.innerHTML = `
-        <span class="spinner-border spinner-border-sm"></span>
-        Logging In...
-        `;
-
-        btn.disabled = true;
-
-        setTimeout(() => {
-
-            alert("Login Successful!");
-
-            window.location.href = "../home/home.html";
-
-        },1500);
-
-    });
+  toggle.textContent = hidden ? "◌" : "◉";
 
 });
+document.querySelectorAll(".role-switch button").forEach(button => {
+
+  button.addEventListener("click", () => {
+
+    document.querySelectorAll(".role-switch button")
+
+      .forEach(btn => btn.classList.remove("active"));
+
+    button.classList.add("active");
+
+  });
+
+});
+form.addEventListener("submit", (event) => {
+
+  event.preventDefault();
+
+  const email = document.getElementById("email").value.trim();
+
+  const enteredPassword = password.value;
+
+  if (!email || !enteredPassword) {
+
+    alert("Please enter your email and password.");
+
+    return;
+
+  }
+
+  const users = JSON.parse(localStorage.getItem("users")) || [];
+
+  const user = users.find(
+
+    registeredUser =>
+
+      registeredUser.email.toLowerCase() === email.toLowerCase() &&
+
+      registeredUser.password === enteredPassword
+
+  );
+
+  if (!user) {
+
+    alert("Incorrect email or password. Please try again.");
+
+    return;
+
+  }
+
+  localStorage.setItem("loggedInUser", JSON.stringify(user));
+
+
+  alert("Login Successful!");
+
+  window.location.href = "../../pages/home/home.html";
+
+});
+

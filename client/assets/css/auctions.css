@@ -1,10 +1,6 @@
 @import url(
     'https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap'
 );
-
-
-/* ================= GENERAL ================= */
-
 * {
     box-sizing: border-box;
 }
@@ -107,10 +103,6 @@ input,
 select {
     font-family: inherit;
 }
-
-
-/* ================= NAVBAR ================= */
-
 .navbar {
 
     height: 78px;
@@ -130,10 +122,6 @@ select {
     border-bottom: 1px solid rgba(255,255,255,0.09);
 
 }
-
-
-/* LOGO */
-
 .brand {
 
     display: flex;
@@ -149,8 +137,6 @@ select {
     min-width: 275px;
 
 }
-
-
 .brand-icon {
 
     font-size: 32px;
@@ -160,8 +146,6 @@ select {
     color: #e6c29a;
 
 }
-
-
 .brand-text strong {
 
     display: block;
@@ -173,8 +157,6 @@ select {
     line-height: 25px;
 
 }
-
-
 .brand-text small {
 
     display: block;
@@ -189,9 +171,6 @@ select {
 
 }
 
-
-/* NAVIGATION */
-
 .navigation {
 
     display: flex;
@@ -203,8 +182,6 @@ select {
     height: 100%;
 
 }
-
-
 .navigation a {
 
     position: relative;
@@ -224,8 +201,6 @@ select {
     white-space: nowrap;
 
 }
-
-
 .navigation a.active::after {
 
     content: "";
@@ -244,9 +219,6 @@ select {
 
 }
 
-
-/* NAV ACTIONS */
-
 .nav-actions {
 
     margin-left: auto;
@@ -258,10 +230,6 @@ select {
     gap: 18px;
 
 }
-
-
-/* SEARCH */
-
 .search-box {
 
     width: 208px;
@@ -281,8 +249,6 @@ select {
     gap: 9px;
 
 }
-
-
 .search-icon {
 
     font-size: 25px;
@@ -290,8 +256,6 @@ select {
     color: #eeeeee;
 
 }
-
-
 .search-box input {
 
     border: 0;
@@ -307,17 +271,11 @@ select {
     font-size: 12px;
 
 }
-
-
 .search-box input::placeholder {
 
     color: #dddddd;
 
 }
-
-
-/* LOGIN */
-
 .login-btn {
 
     height: 42px;
@@ -335,10 +293,6 @@ select {
     cursor: pointer;
 
 }
-
-
-/* REGISTER */
-
 .register-btn {
 
     height: 42px;
@@ -359,9 +313,6 @@ select {
 
 }
 
-
-/* ================= HERO ================= */
-
 .hero {
 
     height: 298px;
@@ -375,8 +326,6 @@ select {
     color: white;
 
 }
-
-
 .hero::after {
 
     content: "";
@@ -398,9 +347,6 @@ select {
 
 }
 
-
-/* HERO TEXT */
-
 .hero-content {
 
     position: relative;
@@ -410,8 +356,6 @@ select {
     padding: 31px 6.1%;
 
 }
-
-
 .eyebrow {
 
     font-size: 10px;
@@ -452,9 +396,6 @@ select {
 
 }
 
-
-/* HERO IMAGE */
-
 .hero-image {
 
     position: absolute;
@@ -467,17 +408,13 @@ select {
 
     height: 100%;
 
-    background-image: url("/home/user/BYI/client/assets/images/hero-art.jpg");
+    background-image: url("../../assets/images/hero-art.jpg");
 
     background-position: center;
 
     background-size: cover;
 
 }
-
-
-/* ================= MAIN ================= */
-
 .main-container {
 
     display: grid;
@@ -490,9 +427,6 @@ select {
 
 }
 
-
-/* ================= FILTERS ================= */
-
 .filters {
 
     background: #fbf6ee;
@@ -504,7 +438,6 @@ select {
     align-self: start;
 
 }
-
 
 .filter-header {
 
@@ -520,7 +453,6 @@ select {
 
 }
 
-
 .filter-header h2 {
 
     font-family: "Playfair Display", serif;
@@ -530,7 +462,6 @@ select {
     margin: 0;
 
 }
-
 
 .filter-header button {
 
@@ -547,8 +478,6 @@ select {
 }
 
 
-/* FILTER SECTION */
-
 .filter-section {
 
     padding: 13px 0 10px;
@@ -557,13 +486,11 @@ select {
 
 }
 
-
 .filter-section:last-child {
 
     border-bottom: 0;
 
 }
-
 
 .section-title {
 
@@ -578,7 +505,6 @@ select {
     justify-content: space-between;
 
 }
-
 
 .filters label {
 
@@ -597,9 +523,6 @@ select {
     cursor: pointer;
 
 }
-
-
-/* CHECKBOX */
 
 .filters input[type="checkbox"] {
 
@@ -621,7 +544,6 @@ select {
 
 }
 
-
 .filters input[type="checkbox"]:checked {
 
     background: #382015;
@@ -629,7 +551,6 @@ select {
     border-color: #382015;
 
 }
-
 
 .filters input[type="checkbox"]:checked::after {
 
@@ -646,9 +567,6 @@ select {
     top: 0;
 
 }
-
-
-/* PRICE */
 
 .range-container {
 
@@ -677,9 +595,6 @@ select {
     color: #65594f;
 
 }
-
-
-/* ================= TOOLBAR ================= */
 
 .toolbar {
 
@@ -732,9 +647,6 @@ select {
 
 }
 
-
-/* SORT */
-
 #sortSelect {
 
     border: 1px solid #d8cdbf;
@@ -753,9 +665,6 @@ select {
 
 }
 
-
-/* ================= AUCTION GRID ================= */
-
 .auction-grid {
 
     display: grid;
@@ -767,8 +676,6 @@ select {
 
 }
 
-
-/* CARD */
 
 .card {
 
@@ -784,7 +691,6 @@ select {
 }
 
 
-/* CARD IMAGE */
 
 .card-image {
 
@@ -809,8 +715,6 @@ select {
 
 }
 
-
-/* LIVE */
 
 .live-badge {
 
@@ -842,9 +746,6 @@ select {
     margin-right: 4px;
 
 }
-
-
-/* HEART */
 
 .heart {
 
@@ -878,8 +779,6 @@ select {
 }
 
 
-/* CARD BODY */
-
 .card-body {
 
     padding: 8px 14px 12px;
@@ -909,7 +808,6 @@ select {
 }
 
 
-/* CARD META */
 
 .card-meta {
 
@@ -955,8 +853,6 @@ select {
 }
 
 
-/* BID BUTTON */
-
 .bid-button {
 
     width: 100%;
@@ -986,9 +882,6 @@ select {
 
 }
 
-
-/* EMPTY */
-
 .empty-state {
 
     text-align: center;
@@ -998,9 +891,6 @@ select {
     padding: 50px;
 
 }
-
-
-/* ================= TOAST ================= */
 
 .toast {
 
@@ -1039,8 +929,6 @@ select {
 
 }
 
-
-/* ================= RESPONSIVE ================= */
 
 @media(max-width:1200px) {
 

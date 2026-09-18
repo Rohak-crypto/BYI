@@ -1,8 +1,3 @@
-/* =====================================================
-   Bid Your Item AUCTION DATA
-===================================================== */
-
-
 const auctions = [
 
     {
@@ -10,7 +5,7 @@ const auctions = [
         category: "Fashion",
         price: 45000,
         time: 2 * 3600 + 15 * 60 + 30,
-        image: "/home/user/BYI/client/assets/images/watch.jpg",
+        image: "../../assets/images/watch.jpg",
         tags: ["Trending", "Live Now"]
     },
 
@@ -19,7 +14,7 @@ const auctions = [
         category: "Electronics",
         price: 22500,
         time: 1 * 3600 + 40 * 60 + 12,
-        image: "/home/user/BYI/client/assets/images/camera.jpg",
+        image: "../../assets/images/camera.jpg",
         tags: ["Trending", "Live Now", "Most Bids"]
     },
 
@@ -28,7 +23,7 @@ const auctions = [
         category: "Furniture",
         price: 12800,
         time: 3 * 3600 + 20 * 60 + 45,
-        image: "/home/user/BYI/client/assets/images/chair.jpg",
+        image: "../../assets/images/chair.jpg",
         tags: ["Trending", "Live Now"]
     },
 
@@ -37,7 +32,7 @@ const auctions = [
         category: "Jewellery",
         price: 75000,
         time: 50 * 60 + 10,
-        image: "/home/user/BYI/client/assets/images/necklace.jpg",
+        image: "../../assets/images/necklace.jpg",
         tags: ["Trending", "Live Now", "Ending Soon"]
     },
 
@@ -46,7 +41,7 @@ const auctions = [
         category: "Art & Collectibles",
         price: 60000,
         time: 4 * 3600 + 12 * 60 + 22,
-        image: "/home/user/BYI/client/assets/images/painting.jpg",
+        image: "../../assets/images/painting.jpg",
         tags: ["Trending", "Live Now", "Newly Listed"]
     },
 
@@ -55,7 +50,7 @@ const auctions = [
         category: "Vehicles",
         price: 280000,
         time: 1 * 3600 + 10 * 60 + 5,
-        image: "/home/user/BYI/client/assets/images/car.jpg",
+        image: "../../assets/images/car.jpg",
         tags: ["Trending", "Live Now", "Ending Soon"]
     },
 
@@ -64,7 +59,7 @@ const auctions = [
         category: "Fashion",
         price: 18000,
         time: 2 * 3600 + 45 * 60 + 18,
-        image: "/home/user/BYI/client/assets/images/handbag.jpg",
+        image: "../../assets/images/handbag.jpg",
         tags: ["Trending", "Live Now"]
     },
 
@@ -73,7 +68,7 @@ const auctions = [
         category: "Electronics",
         price: 38000,
         time: 1 * 3600 + 5 * 60 + 18,
-        image: "/home/user/BYI/client/assets/images/phone.jpg",
+        image: "../../assets/images/phone.jpg",
         tags: ["Trending", "Live Now", "Most Bids"]
     },
 
@@ -82,7 +77,7 @@ const auctions = [
         category: "Collectibles",
         price: 32000,
         time: 3 * 3600 + 15 * 60 + 40,
-        image: "/home/user/BYI/client/assets/images/gramophone.jpg",
+        image: "../../assets/images/gramophone.jpg",
         tags: ["Trending", "Live Now", "Newly Listed"]
     },
 
@@ -91,16 +86,11 @@ const auctions = [
         category: "Furniture",
         price: 55000,
         time: 5 * 3600 + 20 * 60 + 15,
-        image: "/home/user/BYI/client/assets/images/sofa.jpg",
+        image: "../../assets/images/sofa.jpg",
         tags: ["Trending", "Live Now"]
     }
 
 ];
-
-
-/* =====================================================
-   VARIABLES
-===================================================== */
 
 let activeTab = "Trending";
 
@@ -115,21 +105,12 @@ const toast =
     document.getElementById("toast");
 
 
-/* =====================================================
-   FORMAT PRICE
-===================================================== */
-
 function formatMoney(number) {
 
     return "₹ " +
         number.toLocaleString("en-IN");
 
 }
-
-
-/* =====================================================
-   FORMAT TIMER
-===================================================== */
 
 function formatTime(seconds) {
 
@@ -157,11 +138,6 @@ function formatTime(seconds) {
     return `${hours}:${minutes}:${secs}`;
 
 }
-
-
-/* =====================================================
-   DISPLAY AUCTIONS
-===================================================== */
 
 function renderAuctions() {
 
@@ -207,8 +183,6 @@ function renderAuctions() {
             .getElementById("sortSelect")
             .value;
 
-
-    /* FILTER */
 
     let filteredAuctions =
         auctions.filter(auction => {
@@ -262,8 +236,6 @@ function renderAuctions() {
         });
 
 
-    /* SORT */
-
     if (
         sortType ===
         "Price: Low to High"
@@ -301,9 +273,6 @@ function renderAuctions() {
         );
 
     }
-
-
-    /* CREATE HTML */
 
     auctionGrid.innerHTML =
         filteredAuctions.map(
@@ -398,17 +367,10 @@ function renderAuctions() {
         ).join("");
 
 
-    /* EMPTY MESSAGE */
-
     emptyState.hidden =
         filteredAuctions.length !== 0;
 
 }
-
-
-/* =====================================================
-   FAVORITE BUTTON
-===================================================== */
 
 function toggleFavorite(button) {
 
@@ -428,11 +390,6 @@ function toggleFavorite(button) {
     }
 
 }
-
-
-/* =====================================================
-   PLACE BID
-===================================================== */
 
 function placeBid(itemName) {
 
@@ -454,10 +411,6 @@ function placeBid(itemName) {
 
 }
 
-
-/* =====================================================
-   TAB BUTTONS
-===================================================== */
 
 document
     .querySelectorAll(".tab")
@@ -494,10 +447,6 @@ document
     });
 
 
-/* =====================================================
-   CATEGORY FILTER
-===================================================== */
-
 document
     .querySelectorAll(".category")
     .forEach(
@@ -508,10 +457,6 @@ document
             )
     );
 
-
-/* =====================================================
-   STATUS FILTER
-===================================================== */
 
 document
     .querySelectorAll(".status")
@@ -524,10 +469,6 @@ document
     );
 
 
-/* =====================================================
-   PRICE RANGE
-===================================================== */
-
 document
     .getElementById("priceRange")
     .addEventListener(
@@ -535,10 +476,6 @@ document
         renderAuctions
     );
 
-
-/* =====================================================
-   SEARCH
-===================================================== */
 
 document
     .getElementById("searchInput")
@@ -548,10 +485,6 @@ document
     );
 
 
-/* =====================================================
-   SORT
-===================================================== */
-
 document
     .getElementById("sortSelect")
     .addEventListener(
@@ -559,10 +492,6 @@ document
         renderAuctions
     );
 
-
-/* =====================================================
-   CLEAR ALL
-===================================================== */
 
 document
     .getElementById("clearAll")
@@ -591,8 +520,6 @@ document
                 );
 
 
-            /* Keep Live Now selected */
-
             document
                 .querySelector(
                     ".status[value='Live Now']"
@@ -612,10 +539,6 @@ document
         }
     );
 
-
-/* =====================================================
-   LIVE COUNTDOWN
-===================================================== */
 
 setInterval(
     () => {
@@ -655,11 +578,6 @@ setInterval(
     },
     1000
 );
-
-
-/* =====================================================
-   INITIAL LOAD
-===================================================== */
 
 renderAuctions();
 
