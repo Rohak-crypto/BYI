@@ -1,0 +1,12 @@
+{
+  "name": "bid-your-item-server",
+  "version": "1.0.0",
+  "description": "Backend server for Bid Your Item",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
