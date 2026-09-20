@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bid Your Item- Categories</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/categories.css">
+</head>
+<body>
+
+<header class="navbar">
+  <a class="brand" href="#">
+    <span class="brand-mark">⚒</span>
+    <span><strong>Bid Your Item</strong><small>BID · DISCOVER · OWN</small></span>
+  </a>
+
+  <nav class="nav-links">
+        <a href="../../pages/home/home.html">Home</a>
+        <a href="../../pages/auctions/trendingauction.html">Auctions</a>
+        <a href="../../pages/categories/categories.html">Categories</a>
+        <a href="../../pages/dashboard/dashboard.html">Dashboard</a>
+        <a href="../../pages/help/help-support.html">Help &amp; Support</a>
+      </nav>
+
+  <div class="nav-actions">
+    <div class="top-search">⌕ <input id="topSearch" placeholder="Search auctions..." aria-label="Search auctions"></div>
+   <!--- <button class="login-btn">Login</button>
+    <button class="register-btn">Register</button> -->
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-content">
+    <div class="crumb">Home <span>›</span> Categories</div>
+    <h1>Explore Categories</h1>
+    <p>Discover a wide range of unique items, place your<br> bids and own something extraordinary.</p>
+    <div class="hero-features">
+      <div><span>◇</span><b>Wide<br>Collection</b></div>
+      <div><span>♢</span><b>Trusted<br>Sellers</b></div>
+      <div><span>♧</span><b>Something<br>for Everyone</b></div>
+    </div>
+  </div>
+</section>
+
+<main class="categories-wrap">
+  <aside class="sidebar">
+    <div class="category-search">⌕ <input id="categorySearch" placeholder="Search categories..."></div>
+    <div id="categoryList"></div>
+    <div class="discover-box">
+      <div class="gavel">⚒</div>
+      <div>Bid<br><strong>Discover</strong><br>Own</div>
+    </div>
+  </aside>
+
+  <section class="content">
+    <div class="section-head">
+      <h2 id="sectionTitle">All Categories</h2>
+      <button id="exploreAll">Explore All <span>→</span></button>
+    </div>
+    <div id="categoryCards" class="category-grid"></div>
+
+    <section id="itemsSection" class="items-section hidden">
+      <div class="items-head">
+        <div>
+          <span class="eyebrow">LIVE AUCTIONS</span>
+          <h2 id="itemsTitle">Furniture Items</h2>
+        </div>
+        <button id="backCategories" class="back-btn">← All Categories</button>
+      </div>
+      <div id="itemsGrid" class="items-grid"></div>
+    </section>
+  </section>
+</main>
+
+<section class="bottom-banner">
+  <div class="banner-title">Find It.<br>Bid It. Own It.</div>
+  <div class="banner-feature"><span>◇</span><b>Unique Products</b><small>From verified sellers</small></div>
+  <div class="banner-feature"><span>♢</span><b>Safe &amp; Secure</b><small>Bidding experience</small></div>
+  <div class="banner-feature"><span>♧</span><b>A Growing Community</b><small>Of passionate buyers &amp; sellers</small></div>
+  <button>Start Exploring →</button>
+</section>
+
+<div id="bidModal" class="modal hidden">
+  <div class="modal-card">
+    <button class="close-modal" id="closeModal">×</button>
+    <span class="eyebrow">PLACE YOUR BID</span>
+    <h2 id="modalItem">Item</h2>
+    <p>Current bid: <strong id="modalCurrent">₹0</strong></p>
+    <input id="bidAmount" type="number" min="1" placeholder="Enter your bid">
+    <button id="confirmBid" class="confirm-bid">Place Bid</button>
+    <p id="bidMessage" class="bid-message"></p>
+  </div>
+</div>
+
+<script src="../../assets/js/categories.js"></script>
+</body>
+</html>
