@@ -4,8 +4,6 @@
 * {
     box-sizing: border-box;
 }
-
-/* ===== PLACE BID POPUP ===== */
 #bidModal {
     display: none;
     position: fixed;
@@ -80,9 +78,14 @@
 
 #bidError {
     display: none;
-    color: #a33;
-    margin: 0 0 12px;
+    color: #b42318;
+    background: #fff0ee;
+    border: 1px solid #f3c2bd;
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin: 0 0 14px;
     font-size: 13px;
+    font-weight: 600;
 }
 
 body {

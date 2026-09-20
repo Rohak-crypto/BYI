@@ -341,7 +341,6 @@
 
     </section>
 
-</main>
 
 <div
     id="toast"
@@ -350,109 +349,32 @@
     Bid placed successfully!
 </div>
 
-
-
-<!-- PLACE BID MODAL -->
 <div id="bidModal">
     <div class="bid-modal-box">
         <button id="closeBidBtn" type="button">&times;</button>
+
         <h2>Place Your Bid</h2>
+
         <p id="bidModalItem">Enter your bid amount.</p>
+
         <label for="bidAmountInput">Bid Amount</label>
-        <input id="bidAmountInput" type="number" min="1" step="1" placeholder="Enter amount">
+
+        <input
+            id="bidAmountInput"
+            type="number"
+            min="1"
+            step="1"
+            placeholder="Enter amount"
+        >
+
         <p id="bidError">Please enter a valid bid amount.</p>
-        <button id="confirmBidBtn" type="button">Confirm Bid</button>
+
+        <button id="confirmBidBtn" type="button">
+            Confirm Bid
+        </button>
     </div>
 </div>
-
-<script>
-(function () {
-    let currentBidButton = null;
-
-    const modal = document.getElementById("bidModal");
-    const itemText = document.getElementById("bidModalItem");
-    const input = document.getElementById("bidAmountInput");
-    const error = document.getElementById("bidError");
-
-    function openBid(button) {
-        currentBidButton = button;
-
-        let card = button.closest(".auction-card");
-        let itemName = "Selected auction";
-        let currentPrice = 0;
-
-        if (card) {
-            const title = card.querySelector("h3, h2, .auction-title, .item-name");
-            if (title) itemName = title.textContent.trim();
-
-            const priceEl = card.querySelector(".price, .current-bid, .bid-price, .auction-price");
-            if (priceEl) {
-                const match = priceEl.textContent.replace(/,/g, "").match(/[0-9]+(?:\.[0-9]+)?/);
-                if (match) currentPrice = Number(match[0]);
-            }
-        }
-
-        itemText.textContent = itemName + (currentPrice ? " • Current bid: ₹ " + currentPrice.toLocaleString("en-IN") : "");
-        input.value = "";
-        input.min = currentPrice + 1;
-        error.style.display = "none";
-        modal.classList.add("show");
-        setTimeout(() => input.focus(), 50);
-    }
-
-    function closeBid() {
-        modal.classList.remove("show");
-        currentBidButton = null;
-    }
-
-    /*
-      Capture clicks before the old auctions.js Place Bid handler.
-      This makes the button work even if the cards are generated dynamically.
-    */
-    document.addEventListener("click", function (event) {
-        const button = event.target.closest("button, a");
-        if (!button) return;
-
-        const label = button.textContent.trim().replace(/\s+/g, " ");
-        if (!/^place bid$/i.test(label)) return;
-
-        event.preventDefault();
-        event.stopImmediatePropagation();
-        openBid(button);
-    }, true);
-
-    document.getElementById("closeBidBtn").addEventListener("click", closeBid);
-
-    modal.addEventListener("click", function (event) {
-        if (event.target === modal) closeBid();
-    });
-
-    document.getElementById("confirmBidBtn").addEventListener("click", function () {
-        const amount = Number(input.value);
-        const minimum = Number(input.min || 1);
-
-        if (!amount || amount < minimum) {
-            error.textContent = "Please enter a bid of at least ₹ " + minimum.toLocaleString("en-IN") + ".";
-            error.style.display = "block";
-            return;
-        }
-
-        closeBid();
-
-        const toast = document.getElementById("toast");
-        if (toast) {
-            toast.textContent = "Bid placed successfully! ₹ " + amount.toLocaleString("en-IN");
-            toast.classList.add("show");
-            setTimeout(() => toast.classList.remove("show"), 2200);
-        }
-    });
-
-    input.addEventListener("keydown", function (event) {
-        if (event.key === "Enter") document.getElementById("confirmBidBtn").click();
-        if (event.key === "Escape") closeBid();
-    });
-})();
-</script>
+</main>
 <script src="/assets/js/auctions.js"></script>
 
 </body>

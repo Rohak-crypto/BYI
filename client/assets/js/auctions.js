@@ -5,7 +5,7 @@ const auctions = [
         category: "Fashion",
         price: 45000,
         time: 2 * 3600 + 15 * 60 + 30,
-        image: "../../assets/images/watch.jpg",
+        image: "assets/images/watch.jpg",
         tags: ["Trending", "Live Now"]
     },
 
@@ -14,7 +14,7 @@ const auctions = [
         category: "Electronics",
         price: 22500,
         time: 1 * 3600 + 40 * 60 + 12,
-        image: "../../assets/images/camera.jpg",
+        image: "assets/images/camera.jpg",
         tags: ["Trending", "Live Now", "Most Bids"]
     },
 
@@ -23,7 +23,7 @@ const auctions = [
         category: "Furniture",
         price: 12800,
         time: 3 * 3600 + 20 * 60 + 45,
-        image: "../../assets/images/chair.jpg",
+        image: "assets/images/chair.jpg",
         tags: ["Trending", "Live Now"]
     },
 
@@ -32,7 +32,7 @@ const auctions = [
         category: "Jewellery",
         price: 75000,
         time: 50 * 60 + 10,
-        image: "../../assets/images/necklace.jpg",
+        image: "assets/images/necklace.jpg",
         tags: ["Trending", "Live Now", "Ending Soon"]
     },
 
@@ -41,7 +41,7 @@ const auctions = [
         category: "Art & Collectibles",
         price: 60000,
         time: 4 * 3600 + 12 * 60 + 22,
-        image: "../../assets/images/painting.jpg",
+        image: "assets/images/painting.jpg",
         tags: ["Trending", "Live Now", "Newly Listed"]
     },
 
@@ -50,7 +50,7 @@ const auctions = [
         category: "Vehicles",
         price: 280000,
         time: 1 * 3600 + 10 * 60 + 5,
-        image: "../../assets/images/car.jpg",
+        image: "assets/images/car.jpg",
         tags: ["Trending", "Live Now", "Ending Soon"]
     },
 
@@ -59,7 +59,7 @@ const auctions = [
         category: "Fashion",
         price: 18000,
         time: 2 * 3600 + 45 * 60 + 18,
-        image: "../../assets/images/handbag.jpg",
+        image: "assets/images/handbag.jpg",
         tags: ["Trending", "Live Now"]
     },
 
@@ -68,7 +68,7 @@ const auctions = [
         category: "Electronics",
         price: 38000,
         time: 1 * 3600 + 5 * 60 + 18,
-        image: "../../assets/images/phone.jpg",
+        image: "assets/images/phone.jpg",
         tags: ["Trending", "Live Now", "Most Bids"]
     },
 
@@ -77,7 +77,7 @@ const auctions = [
         category: "Collectibles",
         price: 32000,
         time: 3 * 3600 + 15 * 60 + 40,
-        image: "../../assets/images/gramophone.jpg",
+        image: "assets/images/gramophone.jpg",
         tags: ["Trending", "Live Now", "Newly Listed"]
     },
 
@@ -86,14 +86,16 @@ const auctions = [
         category: "Furniture",
         price: 55000,
         time: 5 * 3600 + 20 * 60 + 15,
-        image: "../../assets/images/sofa.jpg",
+        image: "assets/images/sofa.jpg",
         tags: ["Trending", "Live Now"]
     }
 
 ];
 
-let activeTab = "Trending";
 
+
+let activeTab = "Trending";
+let selectedAuction = null;
 
 const auctionGrid =
     document.getElementById("auctionGrid");
@@ -101,140 +103,329 @@ const auctionGrid =
 const emptyState =
     document.getElementById("emptyState");
 
-const toast =
-    document.getElementById("toast");
+const priceRange =
+    document.getElementById("priceRange");
 
+const sortSelect =
+    document.getElementById("sortSelect");
+
+const searchInput =
+    document.getElementById("globalSearch");
+
+const clearAllButton =
+    document.getElementById("clearAll");
+
+const bidModal =
+    document.getElementById("bidModal");
+
+const modalItem =
+    document.getElementById("modalItem");
+
+const modalCurrent =
+    document.getElementById("modalCurrent");
+
+const bidAmount =
+    document.getElementById("bidAmount");
+
+const confirmBidButton =
+    document.getElementById("confirmBid");
+
+const closeModalButton =
+    document.getElementById("closeModal");
+
+const bidMessage =
+    document.getElementById("bidMessage");
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+let toastElement =
+    document.getElementById("auctionToast");
+
+
+if (!toastElement) {
+
+    toastElement =
+        document.createElement("div");
+
+    toastElement.id =
+        "auctionToast";
+
+    toastElement.className =
+        "auction-toast";
+
+    document.body.appendChild(
+        toastElement
+    );
+
+}
+
+
+/* =========================================================
+   FORMAT MONEY
+========================================================= */
 
 function formatMoney(number) {
 
     return "₹ " +
-        number.toLocaleString("en-IN");
+        Number(number).toLocaleString("en-IN");
 
 }
 
-function formatTime(seconds) {
 
-    seconds = Math.max(0, seconds);
+/* =========================================================
+   FORMAT TIME
+========================================================= */
+
+function formatTime(totalSeconds) {
+
+    totalSeconds =
+        Math.max(
+            0,
+            Math.floor(Number(totalSeconds))
+        );
 
 
     const hours =
-        String(Math.floor(seconds / 3600))
-        .padStart(2, "0");
+        String(
+            Math.floor(
+                totalSeconds / 3600
+            )
+        ).padStart(2, "0");
 
 
     const minutes =
         String(
             Math.floor(
-                (seconds % 3600) / 60
+                (totalSeconds % 3600) / 60
             )
         ).padStart(2, "0");
 
 
-    const secs =
-        String(seconds % 60)
-        .padStart(2, "0");
+    const seconds =
+        String(
+            totalSeconds % 60
+        ).padStart(2, "0");
 
 
-    return `${hours}:${minutes}:${secs}`;
+    return `${hours}:${minutes}:${seconds}`;
 
 }
 
+
+/* =========================================================
+   SHOW TOAST
+========================================================= */
+
+function showAuctionToast(message) {
+
+    if (!toastElement) {
+        return;
+    }
+
+
+    toastElement.textContent =
+        message;
+
+
+    toastElement.classList.add(
+        "show"
+    );
+
+
+    clearTimeout(
+        toastElement.hideTimer
+    );
+
+
+    toastElement.hideTimer =
+        setTimeout(
+            () => {
+
+                toastElement.classList.remove(
+                    "show"
+                );
+
+            },
+            2500
+        );
+
+}
+
+
+/* =========================================================
+   GET SELECTED CATEGORIES
+========================================================= */
+
+function getSelectedCategories() {
+
+    return [
+        ...document.querySelectorAll(
+            ".auction-category:checked"
+        )
+    ].map(
+        checkbox => checkbox.value
+    );
+
+}
+
+
+/* =========================================================
+   GET SELECTED STATUS
+========================================================= */
+
+function getSelectedStatuses() {
+
+    return [
+        ...document.querySelectorAll(
+            ".auction-status:checked"
+        )
+    ].map(
+        checkbox => checkbox.value
+    );
+
+}
+
+
+/* =========================================================
+   FILTER + SORT + RENDER
+========================================================= */
+
 function renderAuctions() {
 
+    if (!auctionGrid) {
+        return;
+    }
+
+
+    /* -----------------------------------------------------
+       SEARCH
+    ----------------------------------------------------- */
 
     const searchText =
-        document
-            .getElementById("searchInput")
-            .value
-            .trim()
-            .toLowerCase();
+        searchInput
+            ? searchInput.value
+                .trim()
+                .toLowerCase()
+            : "";
 
+
+    /* -----------------------------------------------------
+       CATEGORY FILTER
+    ----------------------------------------------------- */
 
     const selectedCategories =
-        [
-            ...document.querySelectorAll(
-                ".category:checked"
-            )
-        ].map(
-            checkbox => checkbox.value
-        );
+        getSelectedCategories();
 
+
+    /* -----------------------------------------------------
+       STATUS FILTER
+    ----------------------------------------------------- */
 
     const selectedStatuses =
-        [
-            ...document.querySelectorAll(
-                ".status:checked"
-            )
-        ].map(
-            checkbox => checkbox.value
-        );
+        getSelectedStatuses();
 
+
+    /* -----------------------------------------------------
+       PRICE FILTER
+    ----------------------------------------------------- */
 
     const maximumPrice =
-        Number(
-            document
-                .getElementById("priceRange")
-                .value
+        priceRange
+            ? Number(priceRange.value)
+            : 500000;
+
+
+    /* -----------------------------------------------------
+       SORT
+    ----------------------------------------------------- */
+
+    const sortType =
+        sortSelect
+            ? sortSelect.value
+            : "Trending";
+
+
+    /* -----------------------------------------------------
+       FILTER AUCTIONS
+    ----------------------------------------------------- */
+
+    let filteredAuctions =
+        auctions.filter(
+            auction => {
+
+
+                /* Search */
+
+                const searchableText =
+                    (
+                        auction.name +
+                        " " +
+                        auction.category
+                    )
+                    .toLowerCase();
+
+
+                const matchesSearch =
+                    !searchText ||
+                    searchableText.includes(
+                        searchText
+                    );
+
+
+                /* Category */
+
+                const matchesCategory =
+                    selectedCategories.length === 0 ||
+                    selectedCategories.includes(
+                        auction.category
+                    );
+
+
+                /* Price */
+
+                const matchesPrice =
+                    auction.price <=
+                    maximumPrice;
+
+
+                /* Status */
+
+                const matchesStatus =
+                    selectedStatuses.length === 0 ||
+                    selectedStatuses.some(
+                        status =>
+                            auction.tags.includes(
+                                status
+                            )
+                    );
+
+
+                /* Active Tab */
+
+                const matchesTab =
+                    auction.tags.includes(
+                        activeTab
+                    );
+
+
+                return (
+                    matchesSearch &&
+                    matchesCategory &&
+                    matchesPrice &&
+                    matchesStatus &&
+                    matchesTab
+                );
+
+            }
         );
 
 
-    const sortType =
-        document
-            .getElementById("sortSelect")
-            .value;
-
-
-    let filteredAuctions =
-        auctions.filter(auction => {
-
-
-            const matchesSearch =
-                !searchText ||
-
-                (
-                    auction.name +
-                    " " +
-                    auction.category
-                )
-                .toLowerCase()
-                .includes(searchText);
-
-
-            const matchesCategory =
-                selectedCategories.length === 0 ||
-
-                selectedCategories.includes(
-                    auction.category
-                );
-
-
-            const matchesPrice =
-                auction.price <= maximumPrice;
-
-
-            const matchesStatus =
-                selectedStatuses.length === 0 ||
-
-                selectedStatuses.some(
-                    status =>
-                        auction.tags.includes(status)
-                );
-
-
-            const matchesTab =
-                auction.tags.includes(activeTab);
-
-
-            return (
-                matchesSearch &&
-                matchesCategory &&
-                matchesPrice &&
-                matchesStatus &&
-                matchesTab
-            );
-
-        });
-
+    /* =====================================================
+       SORTING
+    ===================================================== */
 
     if (
         sortType ===
@@ -249,7 +440,7 @@ function renderAuctions() {
     }
 
 
-    if (
+    else if (
         sortType ===
         "Price: High to Low"
     ) {
@@ -262,7 +453,7 @@ function renderAuctions() {
     }
 
 
-    if (
+    else if (
         sortType ===
         "Time Left"
     ) {
@@ -274,264 +465,665 @@ function renderAuctions() {
 
     }
 
+
+    /* =====================================================
+       CREATE CARDS
+    ===================================================== */
+
     auctionGrid.innerHTML =
         filteredAuctions.map(
-            auction => `
-
-        <article class="card">
-
-            <div class="card-image">
-
-                <img
-                    src="${auction.image}"
-                    alt="${auction.name}"
-                >
-
-                <span class="live-badge">
-                    LIVE
-                </span>
+            auction => {
 
 
-                <button
-                    class="heart"
-                    onclick="toggleFavorite(this)"
-                    aria-label="Favorite"
-                >
-                    ♡
-                </button>
-
-            </div>
+                const originalIndex =
+                    auctions.indexOf(
+                        auction
+                    );
 
 
-            <div class="card-body">
+                return `
 
-                <h3>
-                    ${auction.name}
-                </h3>
+                    <article class="card">
 
+                        <div class="card-image">
 
-                <div class="category-name">
-                    ${auction.category}
-                </div>
+                            <img
+                                src="${auction.image}"
+                                alt="${auction.name}"
+                                onerror="this.style.display='none';"
+                            >
 
+                            <span class="live-badge">
+                                LIVE
+                            </span>
 
-                <div class="card-meta">
+                            <button
+                                class="heart"
+                                type="button"
+                                aria-label="Favorite"
+                                onclick="toggleFavorite(this)"
+                            >
+                                ♡
+                            </button>
 
-                    <div>
-
-                        <span class="meta-label">
-                            Current Bid
-                        </span>
-
-                        <span class="bid-price">
-                            ${formatMoney(
-                                auction.price
-                            )}
-                        </span>
-
-                    </div>
-
-
-                    <div>
-
-                        <span class="meta-label">
-                            Time Left
-                        </span>
-
-                        <span
-                            class="time"
-                            data-time="${auction.time}"
-                        >
-                            ${formatTime(
-                                auction.time
-                            )}
-                        </span>
-
-                    </div>
-
-                </div>
+                        </div>
 
 
-                <button
-                    class="bid-button"
-                    onclick="placeBid('${auction.name}')"
-                >
-                    Place Bid
-                </button>
+                        <div class="card-body">
 
-            </div>
+                            <h3>
+                                ${auction.name}
+                            </h3>
 
-        </article>
 
-    `
+                            <div class="category-name">
+                                ${auction.category}
+                            </div>
+
+
+                            <div class="card-meta">
+
+                                <div>
+
+                                    <span class="meta-label">
+                                        Current Bid
+                                    </span>
+
+                                    <span class="bid-price">
+                                        ${formatMoney(
+                                            auction.price
+                                        )}
+                                    </span>
+
+                                </div>
+
+
+                                <div>
+
+                                    <span class="meta-label">
+                                        Time Left
+                                    </span>
+
+                                    <span
+                                        class="time"
+                                        data-auction-index="${originalIndex}"
+                                    >
+                                        ${formatTime(
+                                            auction.time
+                                        )}
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <button
+                                class="bid-button"
+                                type="button"
+                                onclick="placeBid(${originalIndex})"
+                            >
+                                Place Bid
+                            </button>
+
+                        </div>
+
+                    </article>
+
+                `;
+
+            }
         ).join("");
 
 
-    emptyState.hidden =
-        filteredAuctions.length !== 0;
+    /* =====================================================
+       EMPTY STATE
+    ===================================================== */
 
-}
+    if (emptyState) {
 
-function toggleFavorite(button) {
-
-    button.classList.toggle("saved");
-
-
-    if (
-        button.classList.contains("saved")
-    ) {
-
-        button.textContent = "♥";
-
-    } else {
-
-        button.textContent = "♡";
+        emptyState.hidden =
+            filteredAuctions.length !== 0;
 
     }
 
 }
 
-function placeBid(itemName) {
 
-    toast.textContent =
-        `Bid window opened for ${itemName}`;
+function toggleFavorite(button) {
+
+    if (!button) {
+        return;
+    }
 
 
-    toast.classList.add("show");
+    button.classList.toggle(
+        "saved"
+    );
+
+
+    if (
+        button.classList.contains(
+            "saved"
+        )
+    ) {
+
+        button.textContent =
+            "♥";
+
+        showAuctionToast(
+            "Added to favorites"
+        );
+
+    }
+
+    else {
+
+        button.textContent =
+            "♡";
+
+        showAuctionToast(
+            "Removed from favorites"
+        );
+
+    }
+
+}
+
+function placeBid(auctionIndex) {
+
+    const auction =
+        auctions[auctionIndex];
+
+
+    if (!auction) {
+        return;
+    }
+
+
+    selectedAuction =
+        auction;
+
+
+    if (modalItem) {
+
+        modalItem.textContent =
+            auction.name;
+
+    }
+
+
+    if (modalCurrent) {
+
+        modalCurrent.textContent =
+            formatMoney(
+                auction.price
+            );
+
+    }
+
+
+    if (bidAmount) {
+
+        bidAmount.value =
+            "";
+
+        bidAmount.min =
+            auction.price + 1;
+
+        bidAmount.placeholder =
+            `Enter more than ${formatMoney(
+                auction.price
+            )}`;
+
+    }
+
+
+    if (bidMessage) {
+
+        bidMessage.textContent =
+            "";
+
+        bidMessage.className =
+            "bid-message";
+
+    }
+
+
+    if (bidModal) {
+
+        bidModal.classList.remove(
+            "hidden"
+        );
+
+        bidModal.classList.add(
+            "show"
+        );
+
+    }
 
 
     setTimeout(
         () => {
 
-            toast.classList.remove("show");
+            if (bidAmount) {
+                bidAmount.focus();
+            }
 
         },
-        1800
+        100
+    );
+
+}
+
+function closeBidModal() {
+
+    if (bidModal) {
+
+        bidModal.classList.remove(
+            "show"
+        );
+
+        bidModal.classList.add(
+            "hidden"
+        );
+
+    }
+
+
+    selectedAuction =
+        null;
+
+}
+
+
+function confirmBid() {
+
+    if (!selectedAuction) {
+        return;
+    }
+
+
+    const enteredAmount =
+        Number(
+            bidAmount
+                ? bidAmount.value
+                : 0
+        );
+
+
+    const currentBid =
+        Number(
+            selectedAuction.price
+        );
+
+
+
+    if (
+        !enteredAmount ||
+        enteredAmount <= 0
+    ) {
+
+        showBidMessage(
+            "Please enter a valid bid amount.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    if (
+        enteredAmount <=
+        currentBid
+    ) {
+
+        showBidMessage(
+            `Please bid higher than ${formatMoney(
+                currentBid
+            )}.`,
+            "error"
+        );
+
+        if (bidAmount) {
+            bidAmount.focus();
+        }
+
+        return;
+    }
+
+
+    selectedAuction.price =
+        enteredAmount;
+
+
+    const itemName =
+        selectedAuction.name;
+
+
+    closeBidModal();
+
+
+    renderAuctions();
+
+
+    showAuctionToast(
+        `Bid placed successfully on ${itemName}`
+    );
+
+}
+
+
+
+function showBidMessage(
+    message,
+    type
+) {
+
+    if (!bidMessage) {
+        return;
+    }
+
+
+    bidMessage.textContent =
+        message;
+
+
+    bidMessage.className =
+        `bid-message ${type}`;
+
+}
+
+
+
+if (closeModalButton) {
+
+    closeModalButton.addEventListener(
+        "click",
+        closeBidModal
+    );
+
+}
+
+
+
+if (confirmBidButton) {
+
+    confirmBidButton.addEventListener(
+        "click",
+        confirmBid
+    );
+
+}
+
+
+if (bidAmount) {
+
+    bidAmount.addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                event.key === "Enter"
+            ) {
+
+                event.preventDefault();
+
+                confirmBid();
+
+            }
+
+
+            if (
+                event.key === "Escape"
+            ) {
+
+                closeBidModal();
+
+            }
+
+        }
+    );
+
+}
+
+
+
+if (bidModal) {
+
+    bidModal.addEventListener(
+        "click",
+        event => {
+
+            if (
+                event.target ===
+                bidModal
+            ) {
+
+                closeBidModal();
+
+            }
+
+        }
     );
 
 }
 
 
 document
-    .querySelectorAll(".tab")
-    .forEach(tab => {
+    .querySelectorAll(
+        ".auction-tab"
+    )
+    .forEach(
+        tab => {
+
+            tab.addEventListener(
+                "click",
+                () => {
 
 
-        tab.addEventListener(
-            "click",
-            () => {
+                    /* Remove active */
+
+                    document
+                        .querySelectorAll(
+                            ".auction-tab"
+                        )
+                        .forEach(
+                            item =>
+                                item.classList.remove(
+                                    "active"
+                                )
+                        );
 
 
-                document
-                    .querySelectorAll(".tab")
-                    .forEach(
-                        item =>
-                            item.classList.remove(
-                                "active"
-                            )
+                    /* Add active */
+
+                    tab.classList.add(
+                        "active"
                     );
 
 
-                tab.classList.add("active");
+                    /* Change tab */
+
+                    activeTab =
+                        tab.dataset.tab;
 
 
-                activeTab =
-                    tab.dataset.tab;
+                    /* Render */
 
+                    renderAuctions();
 
-                renderAuctions();
+                }
+            );
 
-            }
-        );
-
-    });
-
-
-document
-    .querySelectorAll(".category")
-    .forEach(
-        checkbox =>
-            checkbox.addEventListener(
-                "change",
-                renderAuctions
-            )
+        }
     );
 
 
+
 document
-    .querySelectorAll(".status")
+    .querySelectorAll(
+        ".auction-category"
+    )
     .forEach(
-        checkbox =>
+        checkbox => {
+
             checkbox.addEventListener(
                 "change",
                 renderAuctions
-            )
+            );
+
+        }
     );
 
 
+
 document
-    .getElementById("priceRange")
-    .addEventListener(
+    .querySelectorAll(
+        ".auction-status"
+    )
+    .forEach(
+        checkbox => {
+
+            checkbox.addEventListener(
+                "change",
+                renderAuctions
+            );
+
+        }
+    );
+
+
+if (priceRange) {
+
+    priceRange.addEventListener(
         "input",
         renderAuctions
     );
 
+}
 
-document
-    .getElementById("searchInput")
-    .addEventListener(
+
+if (searchInput) {
+
+    searchInput.addEventListener(
         "input",
         renderAuctions
     );
 
+}
 
-document
-    .getElementById("sortSelect")
-    .addEventListener(
+
+
+if (sortSelect) {
+
+    sortSelect.addEventListener(
         "change",
         renderAuctions
     );
 
+}
 
-document
-    .getElementById("clearAll")
-    .addEventListener(
+
+if (clearAllButton) {
+
+    clearAllButton.addEventListener(
         "click",
         () => {
 
 
-            document
-                .querySelectorAll(
-                    ".category"
-                )
-                .forEach(
-                    checkbox =>
-                        checkbox.checked = false
-                );
-
+            /* Clear categories */
 
             document
                 .querySelectorAll(
-                    ".status"
+                    ".auction-category"
                 )
                 .forEach(
-                    checkbox =>
-                        checkbox.checked = false
+                    checkbox => {
+
+                        checkbox.checked =
+                            false;
+
+                    }
+                );
+            document
+                .querySelectorAll(
+                    ".auction-status"
+                )
+                .forEach(
+                    checkbox => {
+
+                        checkbox.checked =
+                            false;
+
+                    }
+                );
+            const liveNow =
+                document.querySelector(
+                    ".auction-status[value='Live Now']"
                 );
 
 
-            document
-                .querySelector(
-                    ".status[value='Live Now']"
-                )
-                .checked = true;
+            if (liveNow) {
+
+                liveNow.checked =
+                    true;
+
+            }
+
+            if (priceRange) {
+
+                priceRange.value =
+                    priceRange.max ||
+                    500000;
+
+            }
+
+            if (searchInput) {
+
+                searchInput.value =
+                    "";
+
+            }
+
+            if (sortSelect) {
+
+                sortSelect.value =
+                    "Trending";
+
+            }
+            activeTab =
+                "Trending";
 
 
             document
-                .getElementById(
-                    "priceRange"
+                .querySelectorAll(
+                    ".auction-tab"
                 )
-                .value = 500000;
+                .forEach(
+                    tab => {
+
+                        tab.classList.remove(
+                            "active"
+                        );
+
+                    }
+                );
+
+
+            const trendingTab =
+                document.querySelector(
+                    ".auction-tab[data-tab='Trending']"
+                );
+
+
+            if (trendingTab) {
+
+                trendingTab.classList.add(
+                    "active"
+                );
+
+            }
 
 
             renderAuctions();
@@ -539,38 +1131,49 @@ document
         }
     );
 
-
+}
 setInterval(
     () => {
+
+        auctions.forEach(
+            auction => {
+
+                if (auction.time > 0) {
+
+                    auction.time--;
+
+                }
+
+            }
+        );
 
 
         document
             .querySelectorAll(
-                "[data-time]"
+                ".time[data-auction-index]"
             )
             .forEach(
                 timer => {
 
-
-                    const currentTime =
+                    const index =
                         Number(
-                            timer.dataset.time
+                            timer.dataset.auctionIndex
                         );
 
 
-                    const nextTime =
-                        Math.max(
-                            0,
-                            currentTime - 1
-                        );
+                    const auction =
+                        auctions[index];
 
 
-                    timer.dataset.time =
-                        nextTime;
+                    if (!auction) {
+                        return;
+                    }
 
 
                     timer.textContent =
-                        formatTime(nextTime);
+                        formatTime(
+                            auction.time
+                        );
 
                 }
             );
@@ -578,13 +1181,4 @@ setInterval(
     },
     1000
 );
-
 renderAuctions();
-
-
-  
-
-    
-
-       
-      
