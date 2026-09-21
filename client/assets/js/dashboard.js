@@ -1,1626 +1,1921 @@
-const auctions = [
-    {
-        id: 1,
-        name: "Luxury Wrist Watch",
-        cat: "Fashion",
-        current: 42000,
-        your: 40000,
-        time: "02:15:30",
-        status: "leading",
-        img: "../../assets/images/watch.jpg",
-        desc: "Premium luxury wrist watch with a classic stainless-steel finish."
-    },
-    {
-        id: 2,
-        name: "Vintage Camera",
-        cat: "Electronics",
-        current: 21000,
-        your: 20000,
-        time: "01:40:12",
-        status: "outbid",
-        img: "../../assets/images/camera.jpg",
-        desc: "Classic vintage camera in excellent collectible condition."
-    },
-    {
-        id: 3,
-        name: "Antique Wooden Chair",
-        cat: "Furniture",
-        current: 12800,
-        your: 12800,
-        time: "03:20:45",
-        status: "leading",
-        img: "../../assets/images/chair.jpg",
-        desc: "Beautiful handcrafted antique wooden chair with timeless detailing."
-    },
-    {
-        id: 4,
-        name: "Diamond Necklace",
-        cat: "Jewellery",
-        current: 73000,
-        your: 70000,
-        time: "00:50:10",
-        status: "outbid",
-        img: "../../assets/images/necklace.jpg",
-        desc: "Elegant diamond necklace presented in a premium jewellery case."
-    },
-    {
-        id: 5,
-        name: "Classic Painting",
-        cat: "Art & Collectibles",
-        current: 60000,
-        your: 60000,
-        time: "2h left",
-        status: "leading",
-        img: "../../assets/images/painting.jpg",
-        desc: "A decorative classic painting suitable for collectors and art lovers."
-    },
-    {
-        id: 6,
-        name: "Vintage Car Model",
-        cat: "Collectibles",
-        current: 28500,
-        your: 25000,
-        time: "5h left",
-        status: "outbid",
-        img: "../../assets/images/car.jpg",
-        desc: "Detailed vintage automobile collectible model."
-    },
-    {
-        id: 7,
-        name: "Leather Handbag",
-        cat: "Fashion",
-        current: 18000,
-        your: 15000,
-        time: "1h left",
-        status: "leading",
-        img: "../../assets/images/handbag.jpg",
-        desc: "Premium leather handbag with a timeless everyday design."
-    },
-    {
-        id: 8,
-        name: "Gramophone",
-        cat: "Electronics",
-        current: 32000,
-        your: 28000,
-        time: "4h left",
-        status: "leading",
-        img: "../../assets/images/gramophone.jpg",
-        desc: "Classic gramophone collectible with vintage character."
-    }
-];
 
-let wishlist = new Set([5, 6, 7, 8]);
-let currentFilter = "all";
+(() => {
+    "use strict";
 
-let profile = {
-    name: "Rohak",
-    email: "rohak@example.com",
-    phone: "+91 98765 43210",
-    location: "Hyderabad, India",
-    address: "Madhapur, Hyderabad"
-};
-
-const $ = selector => document.querySelector(selector);
-
-const $$ = selector => [...document.querySelectorAll(selector)];
-
-const money = value => "₹" + Number(value).toLocaleString("en-IN");
-
-function toast(message) {
-    const toastBox = $("#toast");
-    const toastMessage = $("#toastMessage");
-
-    if (!toastBox) {
-        return;
-    }
-
-    if (toastMessage) {
-        toastMessage.textContent = message;
-    } else {
-        toastBox.textContent = message;
-    }
-
-    toastBox.classList.add("show");
-
-    clearTimeout(window.dashboardToastTimer);
-
-    window.dashboardToastTimer = setTimeout(() => {
-        toastBox.classList.remove("show");
-    }, 2500);
-}
-
-function openModal(content) {
-    const backdrop = $("#modalBackdrop");
-    const modal = backdrop?.querySelector(".custom-modal");
-    const modalContent = $("#modalContent");
-
-    if (!backdrop || !modal || !modalContent) {
-        return;
-    }
-
-    modalContent.innerHTML = content;
-
-    backdrop.style.display = "flex";
-    backdrop.style.opacity = "1";
-    backdrop.style.visibility = "visible";
-    backdrop.style.background = "rgba(8, 4, 2, 0.92)";
-    backdrop.style.filter = "none";
-    backdrop.style.backdropFilter = "none";
-    backdrop.style.webkitBackdropFilter = "none";
-
-    modal.style.display = "block";
-    modal.style.opacity = "1";
-    modal.style.visibility = "visible";
-    modal.style.background = "#211008";
-    modal.style.backgroundColor = "#211008";
-    modal.style.filter = "none";
-    modal.style.backdropFilter = "none";
-    modal.style.webkitBackdropFilter = "none";
-
-    modalContent.style.display = "block";
-    modalContent.style.opacity = "1";
-    modalContent.style.visibility = "visible";
-    modalContent.style.background = "#211008";
-    modalContent.style.backgroundColor = "#211008";
-    modalContent.style.filter = "none";
-
-    modalContent.querySelectorAll("*").forEach(element => {
-        element.style.opacity = "1";
-        element.style.visibility = "visible";
-        element.style.filter = "none";
-    });
-
-    backdrop.classList.add("show");
-    document.body.classList.add("modal-open");
-}
-
-function closeModal() {
-    const backdrop = $("#modalBackdrop");
-
-    if (!backdrop) {
-        return;
-    }
-
-    backdrop.classList.remove("show");
-    backdrop.style.display = "none";
-
-    document.body.classList.remove("modal-open");
-}
-
-function navigateTop(target) {
-    if (target === "home") {
-        window.location.href = "../../index.html";
-        return;
-    }
-
-    if (target === "auctions") {
-        window.location.href = "../../index.html#trending-auctions";
-        return;
-    }
-
-    if (target === "categories") {
-        window.location.href = "../../index.html#categories";
-        return;
-    }
-
-    if (target === "help") {
-        window.location.href = "../help/help-support.html";
-    }
-}
-
-function showSection(id) {
-    const section = document.getElementById(id);
-
-    if (!section) {
-        return;
-    }
-
-    $$(".dashboard-section").forEach(item => {
-        item.classList.remove("active-section");
-    });
-
-    section.classList.add("active-section");
-
-    $$(".side-link[data-section]").forEach(button => {
-        button.classList.toggle(
-            "active",
-            button.dataset.section === id
-        );
-    });
-
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
-}
-
-function updateProfileUI() {
-    const values = {
-        "#profileName": profile.name,
-        "#profileEmail": profile.email,
-        "#profilePhone": profile.phone,
-        "#profileLocation": profile.location,
-        "#profileAddress": profile.address
+    let dashboardData = {
+        user: null,
+        stats: {},
+        bids: [],
+        wishlist: [],
+        myAuctions: [],
+        notifications: [],
+        messages: [],
+        transactions: [],
+        orders: []
     };
 
-    Object.entries(values).forEach(([selector, value]) => {
-        const element = $(selector);
+    let selectedAuction = null;
 
-        if (element) {
-            element.textContent = value;
+    const $ = (selector) => document.querySelector(selector);
+
+    const $$ = (selector) => [...document.querySelectorAll(selector)];
+
+
+    function money(value) {
+        return "₹" + Number(value || 0).toLocaleString("en-IN", {
+            maximumFractionDigits: 2
+        });
+    }
+
+
+    function escapeHTML(value) {
+        return String(value ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+
+    function formatDate(date) {
+        if (!date) return "-";
+
+        const d = new Date(date);
+
+        if (Number.isNaN(d.getTime())) {
+            return "-";
+        }
+
+        return d.toLocaleDateString("en-IN", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric"
+        });
+    }
+
+
+    function timeRemaining(endAt) {
+        if (!endAt) return "-";
+
+        const end = new Date(endAt).getTime();
+        const now = Date.now();
+
+        const difference = end - now;
+
+        if (difference <= 0) {
+            return "Ended";
+        }
+
+        const totalMinutes = Math.floor(difference / 60000);
+
+        const days = Math.floor(totalMinutes / 1440);
+        const hours = Math.floor((totalMinutes % 1440) / 60);
+        const minutes = totalMinutes % 60;
+
+        if (days > 0) {
+            return `${days}d ${hours}h`;
+        }
+
+        if (hours > 0) {
+            return `${hours}h ${minutes}m`;
+        }
+
+        return `${minutes}m`;
+    }
+
+
+    function imagePath(image) {
+        if (!image) {
+            return "../../assets/images/watch.jpg";
+        }
+
+        if (
+            image.startsWith("http://") ||
+            image.startsWith("https://") ||
+            image.startsWith("/")
+        ) {
+            return image;
+        }
+
+        return image.startsWith("../../")
+            ? image
+            : `../../${image.replace(/^\/+/, "")}`;
+    }
+
+
+    function getUser() {
+        try {
+            return JSON.parse(
+                localStorage.getItem(BYI_API.userKey)
+            );
+        } catch {
+            return null;
+        }
+    }
+
+    function toast(message, type = "success") {
+
+        const element = $("#toast");
+        const messageElement = $("#toastMessage");
+
+        if (!element || !messageElement) return;
+
+        messageElement.textContent = message;
+
+        element.classList.remove("show", "error");
+
+        if (type === "error") {
+            element.classList.add("error");
+        }
+
+        requestAnimationFrame(() => {
+            element.classList.add("show");
+        });
+
+        setTimeout(() => {
+            element.classList.remove("show");
+        }, 3000);
+    }
+
+
+    function openModal(content) {
+
+        const backdrop = $("#modalBackdrop");
+        const modalContent = $("#modalContent");
+
+        if (!backdrop || !modalContent) return;
+
+        modalContent.innerHTML = content;
+
+        backdrop.classList.add("show");
+        backdrop.setAttribute("aria-hidden", "false");
+    }
+
+
+    function closeModal() {
+
+        const backdrop = $("#modalBackdrop");
+
+        if (!backdrop) return;
+
+        backdrop.classList.remove("show");
+        backdrop.setAttribute("aria-hidden", "true");
+
+        selectedAuction = null;
+    }
+
+    function checkAuthentication() {
+
+        if (!BYI_API.isLoggedIn()) {
+            window.location.href = "../auth/login.html";
+            return false;
+        }
+
+        return true;
+    }
+
+    function showSection(sectionId) {
+
+        const sections = $$(".dashboard-section");
+
+        sections.forEach(section => {
+            section.classList.remove("active-section");
+        });
+
+        const target = document.getElementById(sectionId);
+
+        if (target) {
+            target.classList.add("active-section");
+        }
+
+        $$(".side-link[data-section]").forEach(button => {
+            button.classList.toggle(
+                "active",
+                button.dataset.section === sectionId
+            );
+        });
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    }
+
+
+    document.querySelectorAll(".top-nav-link[data-top]").forEach(button => {
+    button.addEventListener("click", () => {
+        const page = button.dataset.top;
+
+        switch (page) {
+            case "home":
+                window.location.href = "../../index.html";
+                break;
+
+            case "auctions":
+                window.location.href = "../auctions/auctions.html";
+                break;
+
+            case "categories":
+                window.location.href = "../categories/categories.html";
+                break;
         }
     });
+});
 
-    $$(".user-mini-info strong").forEach(element => {
-        element.textContent = profile.name;
-    });
+    async function loadDashboard() {
 
-    const sidebarName = $(".sidebar-profile strong");
+        if (!checkAuthentication()) {
+            return;
+        }
 
-    if (sidebarName) {
-        sidebarName.textContent = profile.name;
+        try {
+
+            const [
+                dashboardResponse,
+                ordersResponse
+            ] = await Promise.all([
+                BYI_API.request("/api/dashboard"),
+                BYI_API.request("/api/orders/won")
+            ]);
+
+
+            if (!dashboardResponse.success) {
+                throw new Error(
+                    dashboardResponse.message ||
+                    "Failed to load dashboard."
+                );
+            }
+
+
+            dashboardData.user =
+                dashboardResponse.user || getUser();
+
+            dashboardData.stats =
+                dashboardResponse.stats || {};
+
+            dashboardData.bids =
+                dashboardResponse.bids || [];
+
+            dashboardData.wishlist =
+                dashboardResponse.wishlist || [];
+
+            dashboardData.myAuctions =
+                dashboardResponse.myAuctions || [];
+
+            dashboardData.notifications =
+                dashboardResponse.notifications || [];
+
+            dashboardData.messages =
+                dashboardResponse.messages || [];
+
+            dashboardData.transactions =
+                dashboardResponse.transactions || [];
+
+            dashboardData.orders =
+                ordersResponse.orders || [];
+
+
+            renderUser();
+
+            renderStats();
+
+            renderDashboardBids();
+
+            renderMyBids();
+
+            renderWishlist();
+
+            renderMyAuctions();
+
+            renderMessages();
+
+            renderNotifications();
+
+            renderWallet();
+
+            renderTransactions();
+
+            renderRecommendations();
+
+            renderActivity();
+
+            updateBadges();
+
+
+        } catch (error) {
+
+            console.error("Dashboard loading error:", error);
+
+            toast(
+                error.message ||
+                "Unable to load dashboard.",
+                "error"
+            );
+        }
     }
 
-    const rightName = $(".right-user-card h3");
+    function renderUser() {
 
-    if (rightName) {
-        rightName.textContent = profile.name;
-    }
-}
+        const user = dashboardData.user;
 
-function updateCounts() {
-    const savedStat = $("#savedStat");
-    const overviewWish = $("#overviewWish");
+        if (!user) return;
 
-    if (savedStat) {
-        savedStat.textContent = wishlist.size;
-    }
+        const name = user.name || "User";
 
-    if (overviewWish) {
-        overviewWish.textContent = wishlist.size;
-    }
+        const role = user.role || "buyer";
 
-    const wishlistBadge = document.querySelector(
-        '[data-section="wishlist"] .side-badge'
-    );
+        const roleText =
+            role.charAt(0).toUpperCase() +
+            role.slice(1);
 
-    if (wishlistBadge) {
-        wishlistBadge.textContent = wishlist.size;
-    }
-}
 
-function imageError(image) {
-    if (!image) {
-        return;
-    }
+        const elements = {
 
-    image.onerror = null;
-    image.src = "../../assets/images/watch.jpg";
-}
+            "#topUserName": name,
 
-function statusText(status) {
-    if (status === "leading") {
-        return "Leading";
-    }
+            "#topUserRole": roleText,
 
-    if (status === "outbid") {
-        return "Outbid";
-    }
+            "#sidebarUserName": name,
 
-    return "Ended";
-}
+            "#welcomeUserName": name,
 
-function toggleWishlist(id) {
-    if (wishlist.has(id)) {
-        wishlist.delete(id);
-        toast("Removed from Watching");
-    } else {
-        wishlist.add(id);
-        toast("Added to Watching");
-    }
+            "#rightUserName": name,
 
-    renderAll();
-    bindDynamicButtons();
-}
+            "#rightUserRole":
+                `${roleText} Account`,
 
-function createMiniCard(auction) {
-    const saved = wishlist.has(auction.id);
+            "#profileDisplayName": name,
 
-    return `
-        <article class="auction-mini-card">
-            <div class="auction-mini-image">
-                <img
-                    src="${auction.img}"
-                    alt="${auction.name}"
-                    onerror="imageError(this)"
-                >
-                <span class="live-badge">Live Now</span>
-            </div>
+            "#profileRole": roleText,
 
-            <div class="auction-mini-content">
-                <span class="category-label">${auction.cat}</span>
+            "#profileFullName": name,
 
-                <h4>${auction.name}</h4>
+            "#profileEmail":
+                user.email || "-",
 
-                <div class="auction-mini-price">
-                    <div>
-                        <span>Current bid</span>
-                        <strong>${money(auction.current)}</strong>
-                    </div>
+            "#profilePhone":
+                user.phone || "-",
 
-                    <button
-                        class="mini-btn"
-                        data-bid="${auction.id}">
-                        Bid Now
-                    </button>
-                </div>
+            "#profileMemberSince":
+                formatDate(user.created_at)
 
-                <button
-                    class="mini-btn wishlist-mini-btn"
-                    data-heart="${auction.id}">
-                    ${saved ? "♥ Watching" : "♡ Watch"}
-                </button>
-            </div>
-        </article>
-    `;
-}
+        };
 
-function renderDashboard() {
-    const container = $("#dashboardRows");
 
-    if (!container) {
-        return;
-    }
+        Object.entries(elements).forEach(
+            ([selector, value]) => {
 
-    container.innerHTML = auctions
-        .slice(0, 4)
-        .map(auction => `
-            <tr>
-                <td>
-                    <div class="table-item">
-                        <img
-                            src="${auction.img}"
-                            alt="${auction.name}"
-                            onerror="imageError(this)"
-                        >
+                const element = $(selector);
 
-                        <div>
-                            <strong>${auction.name}</strong>
-                            <small>${auction.cat}</small>
-                        </div>
-                    </div>
-                </td>
-
-                <td>${money(auction.current)}</td>
-
-                <td>${money(auction.your)}</td>
-
-                <td>${auction.time}</td>
-
-                <td>
-                    <span class="status-badge ${auction.status === "leading" ? "active" : "warning"}">
-                        ${statusText(auction.status)}
-                    </span>
-                </td>
-
-                <td>
-                    <button
-                        class="mini-btn"
-                        data-details="${auction.id}">
-                        View
-                    </button>
-                </td>
-            </tr>
-        `)
-        .join("");
-}
-
-function renderRecommendations() {
-    const container = $("#recommendGrid");
-
-    if (!container) {
-        return;
-    }
-
-    container.innerHTML = auctions
-        .slice(4, 7)
-        .map(createMiniCard)
-        .join("");
-}
-
-function renderMyBids() {
-    const container = $("#myBidsGrid");
-
-    if (!container) {
-        return;
-    }
-
-    let list = auctions;
-
-    if (currentFilter !== "all") {
-        list = auctions.filter(
-            auction => auction.status === currentFilter
+                if (element) {
+                    element.textContent = value;
+                }
+            }
         );
     }
 
-    if (!list.length) {
-        container.innerHTML = `
-            <div class="empty-state">
-                <div class="empty-icon">
-                    <i class="fa-solid fa-gavel"></i>
-                </div>
 
-                <h3>No bids found</h3>
+    function renderStats() {
 
-                <p>Try another filter.</p>
-            </div>
+        const stats = dashboardData.stats;
+
+        const values = {
+
+            "#activeBidsStat":
+                stats.active_bids || 0,
+
+            "#wonAuctionsStat":
+                stats.won_auctions || 0,
+
+            "#watchingStat":
+                stats.watching || 0,
+
+            "#savedStat":
+                stats.saved_items || 0
+
+        };
+
+
+        Object.entries(values).forEach(
+            ([selector, value]) => {
+
+                const element = $(selector);
+
+                if (element) {
+                    element.textContent = value;
+                }
+            }
+        );
+    }
+
+
+    function createBidRow(bid) {
+
+        const status =
+            bid.bid_status ||
+            bid.status ||
+            "outbid";
+
+
+        const statusClass =
+            status === "leading"
+                ? "active"
+                : status === "ended"
+                    ? "ended"
+                    : "warning";
+
+
+        return `
+            <tr>
+
+                <td>
+
+                    <div class="table-item">
+
+                        <img
+                            src="${escapeHTML(imagePath(bid.img))}"
+                            alt="${escapeHTML(bid.name)}">
+
+                        <div>
+
+                            <strong>
+                                ${escapeHTML(bid.name)}
+                            </strong>
+
+                            <small>
+                                ${escapeHTML(bid.category || "Auction")}
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </td>
+
+
+                <td>
+                    ${money(bid.your)}
+                </td>
+
+
+                <td>
+                    ${money(bid.current)}
+                </td>
+
+
+                <td>
+                    ${timeRemaining(bid.end_at)}
+                </td>
+
+
+                <td>
+
+                    <span
+                        class="status-badge ${statusClass}">
+
+                        ${
+                            status === "leading"
+                                ? "Leading"
+                                : status === "ended"
+                                    ? "Ended"
+                                    : "Outbid"
+                        }
+
+                    </span>
+
+                </td>
+
+            </tr>
         `;
-
-        return;
     }
 
-    container.innerHTML = `
-        <div class="table-responsive">
-            <table class="dashboard-table">
-                <thead>
-                    <tr>
-                        <th>ITEM</th>
-                        <th>CURRENT BID</th>
-                        <th>YOUR BID</th>
-                        <th>TIME LEFT</th>
-                        <th>STATUS</th>
-                        <th>ACTION</th>
-                    </tr>
-                </thead>
 
-                <tbody>
-                    ${list.map(auction => `
-                        <tr>
-                            <td>
-                                <div class="table-item">
-                                    <img
-                                        src="${auction.img}"
-                                        alt="${auction.name}"
-                                        onerror="imageError(this)"
-                                    >
 
-                                    <div>
-                                        <strong>${auction.name}</strong>
-                                        <small>${auction.cat}</small>
-                                    </div>
-                                </div>
-                            </td>
+    function renderDashboardBids() {
 
-                            <td>${money(auction.current)}</td>
+        const container = $("#dashboardRows");
 
-                            <td>${money(auction.your)}</td>
+        if (!container) return;
 
-                            <td>${auction.time}</td>
 
-                            <td>
-                                <span class="status-badge ${auction.status === "leading" ? "active" : "warning"}">
-                                    ${statusText(auction.status)}
-                                </span>
-                            </td>
+        const activeBids =
+            dashboardData.bids
+                .filter(bid => {
 
-                            <td>
-                                <button
-                                    class="mini-btn"
-                                    data-editbid="${auction.id}">
-                                    Edit
-                                </button>
+                    return (
+                        bid.auction_status === "live" &&
+                        new Date(bid.end_at).getTime() > Date.now()
+                    );
+                })
+                .slice(0, 5);
 
-                                <button
-                                    class="mini-btn"
-                                    data-details="${auction.id}">
-                                    Details
-                                </button>
 
-                                <button
-                                    class="mini-btn"
-                                    data-removebid="${auction.id}">
-                                    Remove
-                                </button>
-                            </td>
-                        </tr>
-                    `).join("")}
-                </tbody>
-            </table>
-        </div>
-    `;
-}
+        if (!activeBids.length) {
 
-function renderWishlist() {
-    const container = $("#wishlistGrid");
+            container.innerHTML = `
+                <tr>
+                    <td colspan="5">
+                        You don't have any active bids.
+                    </td>
+                </tr>
+            `;
 
-    if (!container) {
-        return;
-    }
-
-    const list = auctions.filter(
-        auction => wishlist.has(auction.id)
-    );
-
-    if (!list.length) {
-        container.innerHTML = `
-            <div class="empty-state">
-                <div class="empty-icon">
-                    <i class="fa-regular fa-heart"></i>
-                </div>
-
-                <h3>Nothing in your wishlist</h3>
-
-                <p>
-                    Tap the heart or Watch button on an auction
-                    to save it here.
-                </p>
-            </div>
-        `;
-
-        return;
-    }
-
-    container.innerHTML = list
-        .map(createMiniCard)
-        .join("");
-}
-
-function renderNotifications() {
-    const container = $("#notificationList");
-
-    if (!container) {
-        return;
-    }
-
-    const notifications = [
-        {
-            icon: "fa-solid fa-gavel",
-            title: "You have been outbid",
-            text: "Someone placed a higher bid on Vintage Camera.",
-            time: "2 minutes ago",
-            unread: true
-        },
-        {
-            icon: "fa-solid fa-trophy",
-            title: "Congratulations!",
-            text: "You won the Antique Wooden Chair auction.",
-            time: "1 hour ago",
-            unread: true
-        },
-        {
-            icon: "fa-regular fa-clock",
-            title: "Auction ending soon",
-            text: "Diamond Necklace ends in less than an hour.",
-            time: "3 hours ago",
-            unread: true
-        },
-        {
-            icon: "fa-regular fa-heart",
-            title: "Watching update",
-            text: "A saved item has received a new bid.",
-            time: "Yesterday",
-            unread: false
+            return;
         }
-    ];
 
-    container.innerHTML = notifications
-        .map(notification => `
-            <div class="notification-item ${notification.unread ? "unread" : ""}">
-                <div class="notification-icon">
-                    <i class="${notification.icon}"></i>
-                </div>
 
-                <div>
-                    <strong>${notification.title}</strong>
-                    <p>${notification.text}</p>
-                    <small>${notification.time}</small>
-                </div>
-            </div>
-        `)
-        .join("");
-}
-
-function renderAll() {
-    renderDashboard();
-    renderRecommendations();
-    renderMyBids();
-    renderWishlist();
-    renderNotifications();
-    updateCounts();
-    updateProfileUI();
-}
-
-function showAuctionDetails(id) {
-    const auction = auctions.find(
-        item => item.id === id
-    );
-
-    if (!auction) {
-        return;
+        container.innerHTML =
+            activeBids.map(createBidRow).join("");
     }
 
-    const saved = wishlist.has(id);
 
-    openModal(`
-        <div class="auction-modal-content">
-            <div class="modal-item-header">
-                <span class="category-label">${auction.cat}</span>
 
-                <h2>${auction.name}</h2>
-            </div>
+    function renderMyBids() {
 
-            <img
-                class="modal-auction-image"
-                src="${auction.img}"
-                alt="${auction.name}"
-                onerror="imageError(this)"
-            >
+        const container = $("#myBidsGrid");
 
-            <div class="modal-item-info">
-                <p>${auction.desc}</p>
+        if (!container) return;
 
-                <div class="modal-price-box">
-                    <span>Current bid</span>
-                    <strong>${money(auction.current)}</strong>
-                </div>
 
-                <div class="modal-time-box">
-                    <span>Time left</span>
-                    <strong>${auction.time}</strong>
-                </div>
-            </div>
+        if (!dashboardData.bids.length) {
 
-            <div class="modal-actions">
-                <button
-                    class="secondary-btn"
-                    id="modalWish">
-                    ${saved ? "♥ Watching" : "♡ Add to Watching"}
-                </button>
+            container.innerHTML = `
+                <tr>
+                    <td colspan="5">
+                        You haven't placed any bids yet.
+                    </td>
+                </tr>
+            `;
 
-                <button
-                    class="primary-btn"
-                    id="modalBid">
-                    <i class="fa-solid fa-gavel"></i>
-                    Place Bid
-                </button>
-            </div>
-        </div>
-    `);
+            return;
+        }
 
-    $("#modalWish")?.addEventListener("click", () => {
-        toggleWishlist(id);
-        closeModal();
-    });
 
-    $("#modalBid")?.addEventListener("click", () => {
-        closeModal();
-        placeBid(id);
-    });
-}
-
-function placeBid(id) {
-    const auction = auctions.find(
-        item => item.id === id
-    );
-
-    if (!auction) {
-        return;
+        container.innerHTML =
+            dashboardData.bids
+                .map(createBidRow)
+                .join("");
     }
 
-    const minimum = auction.current + 100;
 
-    openModal(`
-        <div class="modal-form-content">
-            <h2>Place Bid</h2>
 
-            <p>${auction.name}</p>
+    async function renderRecommendations() {
 
-            <div class="modal-price-box">
-                <span>Current bid</span>
-                <strong>${money(auction.current)}</strong>
-            </div>
+        const container = $("#recommendGrid");
 
-            <div class="form-group">
-                <label for="newBid">Your bid amount</label>
+        if (!container) return;
 
-                <input
-                    id="newBid"
-                    type="number"
-                    min="${minimum}"
-                    value="${minimum}"
-                >
-            </div>
 
-            <div class="modal-actions">
-                <button
-                    class="secondary-btn"
-                    id="cancelBid">
-                    Cancel
-                </button>
+        try {
 
-                <button
-                    class="primary-btn"
-                    id="confirmBid">
-                    Confirm Bid
-                </button>
-            </div>
-        </div>
-    `);
+            const response =
+                await BYI_API.request(
+                    "/api/auctions"
+                );
 
-    $("#cancelBid")?.addEventListener(
-        "click",
-        closeModal
-    );
 
-    $("#confirmBid")?.addEventListener(
-        "click",
-        () => {
-            const value = Number(
-                $("#newBid")?.value
+            const auctions =
+                response.auctions ||
+                response.data ||
+                [];
+
+
+            const liveAuctions =
+                auctions
+                    .filter(auction =>
+                        auction.status === "live"
+                    )
+                    .slice(0, 3);
+
+
+            if (!liveAuctions.length) {
+
+                container.innerHTML = `
+                    <p>No live auctions available.</p>
+                `;
+
+                return;
+            }
+
+
+            container.innerHTML =
+                liveAuctions
+                    .map(createAuctionCard)
+                    .join("");
+
+
+        } catch (error) {
+
+            console.error(
+                "Recommendation error:",
+                error
             );
 
-            if (!Number.isFinite(value) || value < minimum) {
-                toast(
-                    `Your bid must be at least ${money(minimum)}`
-                );
-                return;
-            }
-
-            auction.your = value;
-            auction.current = value;
-            auction.status = "leading";
-
-            closeModal();
-            renderAll();
-            bindDynamicButtons();
-
-            toast("Bid placed successfully");
+            container.innerHTML = `
+                <p>Unable to load recommendations.</p>
+            `;
         }
-    );
-}
-
-function editBid(id) {
-    const auction = auctions.find(
-        item => item.id === id
-    );
-
-    if (!auction) {
-        return;
     }
 
-    const minimum =
-        auction.status === "outbid"
-            ? auction.current + 100
-            : auction.your;
 
-    openModal(`
-        <div class="modal-form-content">
-            <h2>Edit Your Bid</h2>
+    function createAuctionCard(auction) {
 
-            <p>${auction.name}</p>
+        return `
+            <article
+                class="auction-mini-card"
+                data-auction-id="${auction.id}">
 
-            <div class="form-group">
-                <label for="editBidValue">
-                    Bid amount
-                </label>
-
-                <input
-                    id="editBidValue"
-                    type="number"
-                    min="${minimum}"
-                    value="${auction.your}"
-                >
-            </div>
-
-            <div class="modal-actions">
-                <button
-                    class="secondary-btn"
-                    id="cancelEdit">
-                    Cancel
-                </button>
-
-                <button
-                    class="primary-btn"
-                    id="saveBid">
-                    Save Bid
-                </button>
-            </div>
-        </div>
-    `);
-
-    $("#cancelEdit")?.addEventListener(
-        "click",
-        closeModal
-    );
-
-    $("#saveBid")?.addEventListener(
-        "click",
-        () => {
-            const value = Number(
-                $("#editBidValue")?.value
-            );
-
-            if (!Number.isFinite(value) || value <= 0) {
-                toast("Enter a valid bid amount");
-                return;
-            }
-
-            if (
-                auction.status === "outbid" &&
-                value <= auction.current
-            ) {
-                toast(
-                    `Your bid must be above ${money(auction.current)}`
-                );
-                return;
-            }
-
-            auction.your = value;
-
-            if (value >= auction.current) {
-                auction.current = value;
-                auction.status = "leading";
-            }
-
-            closeModal();
-            renderAll();
-            bindDynamicButtons();
-
-            toast("Bid updated successfully");
-        }
-    );
-}
-
-function removeBid(id) {
-    const auction = auctions.find(
-        item => item.id === id
-    );
-
-    if (!auction) {
-        return;
-    }
-
-    const confirmed = window.confirm(
-        `Remove "${auction.name}" from My Bids?`
-    );
-
-    if (!confirmed) {
-        return;
-    }
-
-    auction.status = "ended";
-
-    renderAll();
-    bindDynamicButtons();
-
-    toast("Bid removed");
-}
-
-function editProfile() {
-    openModal(`
-        <div class="modal-form-content">
-            <h2>Edit Profile</h2>
-
-            <div class="form-grid">
-                <div class="form-group">
-                    <label>Full name</label>
-                    <input
-                        id="fName"
-                        value="${profile.name}"
-                    >
-                </div>
-
-                <div class="form-group">
-                    <label>Email</label>
-                    <input
-                        id="fEmail"
-                        value="${profile.email}"
-                    >
-                </div>
-
-                <div class="form-group">
-                    <label>Phone</label>
-                    <input
-                        id="fPhone"
-                        value="${profile.phone}"
-                    >
-                </div>
-
-                <div class="form-group">
-                    <label>Location</label>
-                    <input
-                        id="fLocation"
-                        value="${profile.location}"
-                    >
-                </div>
-
-                <div class="form-group">
-                    <label>Address</label>
-                    <textarea id="fAddress">${profile.address}</textarea>
-                </div>
-            </div>
-
-            <div class="modal-actions">
-                <button
-                    class="secondary-btn"
-                    id="cancelProfile">
-                    Cancel
-                </button>
-
-                <button
-                    class="primary-btn"
-                    id="saveProfile">
-                    Save Changes
-                </button>
-            </div>
-        </div>
-    `);
-
-    $("#cancelProfile")?.addEventListener(
-        "click",
-        closeModal
-    );
-
-    $("#saveProfile")?.addEventListener(
-        "click",
-        () => {
-            profile.name =
-                $("#fName")?.value.trim() || "Rohak";
-
-            profile.email =
-                $("#fEmail")?.value.trim() ||
-                profile.email;
-
-            profile.phone =
-                $("#fPhone")?.value.trim() ||
-                profile.phone;
-
-            profile.location =
-                $("#fLocation")?.value.trim() ||
-                profile.location;
-
-            profile.address =
-                $("#fAddress")?.value.trim() ||
-                profile.address;
-
-            updateProfileUI();
-            closeModal();
-
-            toast("Profile updated successfully");
-        }
-    );
-}
-
-function showInfo(title, message) {
-    openModal(`
-        <div class="modal-form-content">
-            <h2>${title}</h2>
-
-            <p class="modal-info-text">
-                ${message}
-            </p>
-
-            <div class="modal-actions">
-                <button
-                    class="primary-btn"
-                    id="infoOk">
-                    OK
-                </button>
-            </div>
-        </div>
-    `);
-
-    $("#infoOk")?.addEventListener(
-        "click",
-        closeModal
-    );
-}
-
-function renderSearch(query) {
-    const results = $("#searchResults");
-
-    if (!results) {
-        return;
-    }
-
-    const search = query.trim().toLowerCase();
-
-    if (!search) {
-        results.classList.remove("show");
-        results.innerHTML = "";
-        return;
-    }
-
-    const matches = auctions.filter(
-        auction =>
-            `${auction.name} ${auction.cat}`
-                .toLowerCase()
-                .includes(search)
-    );
-
-    if (!matches.length) {
-        results.innerHTML = `
-            <div class="search-empty">
-                No auctions found for "${query}"
-            </div>
-        `;
-    } else {
-        results.innerHTML = matches
-            .slice(0, 6)
-            .map(auction => `
-                <button
-                    class="search-result"
-                    data-search-id="${auction.id}">
+                <div class="auction-mini-image">
 
                     <img
-                        src="${auction.img}"
-                        alt="${auction.name}"
-                        onerror="imageError(this)"
-                    >
+                        src="${escapeHTML(imagePath(auction.image_url || auction.img))}"
+                        alt="${escapeHTML(auction.title || auction.name)}">
 
-                    <div>
-                        <b>${auction.name}</b>
-                        <small>
-                            ${auction.cat} · ${auction.time}
-                        </small>
+                    <span class="live-badge">
+                        Live
+                    </span>
+
+                </div>
+
+
+                <div class="auction-mini-content">
+
+                    <span class="category-label">
+                        ${escapeHTML(auction.category || "Auction")}
+                    </span>
+
+                    <h3>
+                        ${escapeHTML(auction.title || auction.name)}
+                    </h3>
+
+
+                    <div class="auction-mini-price">
+
+                        <span>
+                            Current Bid
+                        </span>
+
+                        <strong>
+                            ${money(
+                                auction.current_bid ||
+                                auction.current
+                            )}
+                        </strong>
+
                     </div>
 
-                    <strong>
-                        ${money(auction.current)}
-                    </strong>
-                </button>
-            `)
-            .join("");
+
+                    <button
+                        type="button"
+                        class="mini-btn"
+                        data-bid-auction="${auction.id}">
+
+                        Place Bid
+
+                    </button>
+
+                </div>
+
+            </article>
+        `;
     }
 
-    results.classList.add("show");
 
-    $$("[data-search-id]").forEach(button => {
-        button.addEventListener("click", () => {
-            results.classList.remove("show");
 
-            showAuctionDetails(
-                Number(button.dataset.searchId)
-            );
-        });
-    });
-}
+    function renderWishlist() {
 
-function performSearch() {
-    const input = $("#searchInput");
+        const container = $("#wishlistGrid");
 
-    if (!input) {
-        return;
-    }
+        if (!container) return;
 
-    const query = input.value.trim();
 
-    if (!query) {
-        toast("Type an auction name or category");
-        input.focus();
-        return;
-    }
+        if (!dashboardData.wishlist.length) {
 
-    const matches = auctions.filter(
-        auction =>
-            `${auction.name} ${auction.cat}`
-                .toLowerCase()
-                .includes(query.toLowerCase())
-    );
+            container.innerHTML = `
+                <div class="content-card">
+                    <div class="empty-state">
 
-    $("#searchResults")?.classList.remove("show");
+                        <div class="empty-icon">
+                            <i class="fa-regular fa-heart"></i>
+                        </div>
 
-    if (matches.length === 1) {
-        showAuctionDetails(matches[0].id);
-        return;
-    }
+                        <h2>Your Wishlist Is Empty</h2>
 
-    openModal(`
-        <div class="modal-form-content">
-            <h2>Search Results</h2>
+                        <p>
+                            Save auctions you want to watch later.
+                        </p>
 
-            <p>
-                ${matches.length}
-                auction${matches.length === 1 ? "" : "s"}
-                found for "${query}".
-            </p>
-
-            <div class="search-modal-list">
-                ${
-                    matches.length
-                        ? matches.map(auction => `
-                            <button
-                                class="search-result modal-result"
-                                data-modal-search="${auction.id}">
-
-                                <img
-                                    src="${auction.img}"
-                                    alt="${auction.name}"
-                                    onerror="imageError(this)"
-                                >
-
-                                <div>
-                                    <b>${auction.name}</b>
-                                    <small>${auction.cat}</small>
-                                </div>
-
-                                <strong>
-                                    ${money(auction.current)}
-                                </strong>
-                            </button>
-                        `).join("")
-                        : `
-                            <div class="search-empty">
-                                No matching auctions found.
-                            </div>
-                        `
-                }
-            </div>
-        </div>
-    `);
-
-    $$("[data-modal-search]").forEach(button => {
-        button.addEventListener("click", () => {
-            showAuctionDetails(
-                Number(button.dataset.modalSearch)
-            );
-        });
-    });
-}
-
-function bindDynamicButtons() {
-    $$("[data-heart]").forEach(button => {
-        button.onclick = event => {
-            event.preventDefault();
-            event.stopPropagation();
-
-            toggleWishlist(
-                Number(button.dataset.heart)
-            );
-        };
-    });
-
-    $$("[data-details]").forEach(button => {
-        button.onclick = event => {
-            event.preventDefault();
-            event.stopPropagation();
-
-            showAuctionDetails(
-                Number(button.dataset.details)
-            );
-        };
-    });
-
-    $$("[data-bid]").forEach(button => {
-        button.onclick = event => {
-            event.preventDefault();
-            event.stopPropagation();
-
-            placeBid(
-                Number(button.dataset.bid)
-            );
-        };
-    });
-
-    $$("[data-editbid]").forEach(button => {
-        button.onclick = event => {
-            event.preventDefault();
-            event.stopPropagation();
-
-            editBid(
-                Number(button.dataset.editbid)
-            );
-        };
-    });
-
-    $$("[data-removebid]").forEach(button => {
-        button.onclick = event => {
-            event.preventDefault();
-            event.stopPropagation();
-
-            removeBid(
-                Number(button.dataset.removebid)
-            );
-        };
-    });
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-    const menuToggle = $("#menuToggle");
-    const sidebar = $(".sidebar");
-
-    if (menuToggle && sidebar) {
-        menuToggle.addEventListener("click", event => {
-            event.stopPropagation();
-            sidebar.classList.toggle("open");
-        });
-    }
-
-    $$(".side-link[data-section]").forEach(button => {
-        button.addEventListener("click", () => {
-            showSection(button.dataset.section);
-
-            if (window.innerWidth <= 800) {
-                sidebar?.classList.remove("open");
-            }
-        });
-    });
-
-    $$("[data-top]").forEach(button => {
-        button.addEventListener("click", event => {
-            event.preventDefault();
-            navigateTop(button.dataset.top);
-        });
-    });
-
-    $("#notificationBtn")?.addEventListener(
-        "click",
-        () => showSection("notifications")
-    );
-
-    $("#editProfileBtn")?.addEventListener(
-        "click",
-        editProfile
-    );
-
-    $("#createAuctionBtn")?.addEventListener(
-        "click",
-        () => {
-            showInfo(
-                "Create Auction",
-                "The auction creation form is ready to be connected to your Node.js backend."
-            );
-        }
-    );
-
-    $("#addFundsBtn")?.addEventListener(
-        "click",
-        () => {
-            showInfo(
-                "Add Funds",
-                "This is a frontend demo. No real payment is processed."
-            );
-        }
-    );
-
-    $("#transactionsBtn")?.addEventListener(
-        "click",
-        () => {
-            showInfo(
-                "Transactions",
-                "Your wallet transaction history will appear here after backend integration."
-            );
-        }
-    );
-
-    $("#transactionBtn")?.addEventListener(
-        "click",
-        () => {
-            showInfo(
-                "Transactions",
-                "Transaction history will be connected to the backend."
-            );
-        }
-    );
-
-    $("#withdrawBtn")?.addEventListener(
-        "click",
-        () => {
-            showInfo(
-                "Withdraw",
-                "Withdrawal functionality will be connected to the backend."
-            );
-        }
-    );
-
-    $("#manageListingsBtn")?.addEventListener(
-        "click",
-        () => {
-            showInfo(
-                "My Auctions",
-                "Your active and completed auction listings will appear here."
-            );
-        }
-    );
-
-    $("#sellItemBtn")?.addEventListener(
-        "click",
-        () => {
-            showInfo(
-                "Sell an Item",
-                "The seller form can be connected to your Node.js backend."
-            );
-        }
-    );
-
-    $("#changePasswordBtn")?.addEventListener(
-        "click",
-        () => {
-            openModal(`
-                <div class="modal-form-content">
-                    <h2>Change Password</h2>
-
-                    <div class="form-group">
-                        <label>Current Password</label>
-                        <input
-                            type="password"
-                            id="currentPassword"
-                        >
-                    </div>
-
-                    <div class="form-group">
-                        <label>New Password</label>
-                        <input
-                            type="password"
-                            id="newPassword"
-                        >
-                    </div>
-
-                    <div class="form-group">
-                        <label>Confirm Password</label>
-                        <input
-                            type="password"
-                            id="confirmPassword"
-                        >
-                    </div>
-
-                    <div class="modal-actions">
-                        <button
-                            class="secondary-btn"
-                            id="cancelPassword">
-                            Cancel
-                        </button>
-
-                        <button
-                            class="primary-btn"
-                            id="updatePassword">
-                            Update Password
-                        </button>
                     </div>
                 </div>
-            `);
+            `;
 
-            $("#cancelPassword")?.addEventListener(
-                "click",
-                closeModal
-            );
-
-            $("#updatePassword")?.addEventListener(
-                "click",
-                () => {
-                    const newPassword =
-                        $("#newPassword")?.value;
-
-                    const confirmPassword =
-                        $("#confirmPassword")?.value;
-
-                    if (!newPassword) {
-                        toast("Enter a new password");
-                        return;
-                    }
-
-                    if (newPassword !== confirmPassword) {
-                        toast("Passwords do not match");
-                        return;
-                    }
-
-                    closeModal();
-                    toast("Password updated successfully");
-                }
-            );
+            return;
         }
-    );
 
-    $("#deleteAccountBtn")?.addEventListener(
-        "click",
-        () => {
-            const confirmed = window.confirm(
-                "Are you sure you want to delete this demo account?"
-            );
 
-            if (confirmed) {
-                toast("Account deletion request submitted");
+        container.innerHTML =
+            dashboardData.wishlist
+                .map(item => `
+
+                    <article
+                        class="auction-mini-card"
+                        data-auction-id="${item.id}">
+
+                        <div class="auction-mini-image">
+
+                            <img
+                                src="${escapeHTML(imagePath(item.img))}"
+                                alt="${escapeHTML(item.name)}">
+
+                        </div>
+
+
+                        <div class="auction-mini-content">
+
+                            <span class="category-label">
+                                ${escapeHTML(item.category || "Auction")}
+                            </span>
+
+                            <h3>
+                                ${escapeHTML(item.name)}
+                            </h3>
+
+
+                            <div class="auction-mini-price">
+
+                                <span>
+                                    Current Bid
+                                </span>
+
+                                <strong>
+                                    ${money(item.current)}
+                                </strong>
+
+                            </div>
+
+
+                            <button
+                                type="button"
+                                class="mini-btn"
+                                data-view-auction="${item.id}">
+
+                                View Auction
+
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="secondary-btn"
+                                data-remove-wishlist="${item.id}">
+
+                                Remove
+
+                            </button>
+
+                        </div>
+
+                    </article>
+
+                `)
+                .join("");
+    }
+
+
+
+    function renderMyAuctions() {
+
+        const container = $("#myAuctionsGrid");
+
+        const empty = $("#myAuctionsEmpty");
+
+        if (!container) return;
+
+
+        if (!dashboardData.myAuctions.length) {
+
+            container.innerHTML = "";
+
+            if (empty) {
+                empty.style.display = "";
             }
+
+            return;
         }
-    );
 
-    $("#saveSettingsBtn")?.addEventListener(
-        "click",
-        () => {
-            const settings = {
-                bidAlerts: $("#bidAlert")?.checked ?? true,
-                auctionAlerts: $("#auctionAlert")?.checked ?? true,
-                publicProfile: $("#publicProfile")?.checked ?? true,
-                darkMode: $("#darkToggle")?.checked ?? true
-            };
 
-            localStorage.setItem(
-                "bidYourItemSettings",
-                JSON.stringify(settings)
-            );
-
-            toast("Settings saved successfully");
+        if (empty) {
+            empty.style.display = "none";
         }
-    );
 
-    $("#darkToggle")?.addEventListener(
-        "change",
-        () => {
-            if ($("#darkToggle").checked) {
-                document.body.classList.remove("light-mode");
-            } else {
-                document.body.classList.add("light-mode");
-            }
+
+        container.innerHTML =
+            dashboardData.myAuctions
+                .map(auction => `
+
+                    <article
+                        class="auction-mini-card">
+
+                        <div class="auction-mini-image">
+
+                            <img
+                                src="${escapeHTML(imagePath(auction.image_url))}"
+                                alt="${escapeHTML(auction.title)}">
+
+                        </div>
+
+
+                        <div class="auction-mini-content">
+
+                            <span class="category-label">
+                                ${escapeHTML(auction.category)}
+                            </span>
+
+                            <h3>
+                                ${escapeHTML(auction.title)}
+                            </h3>
+
+
+                            <div class="auction-mini-price">
+
+                                <span>
+                                    Current Bid
+                                </span>
+
+                                <strong>
+                                    ${money(auction.current_bid)}
+                                </strong>
+
+                            </div>
+
+
+                            <small>
+                                ${Number(auction.bid_count || 0)}
+                                bid(s)
+                            </small>
+
+                        </div>
+
+                    </article>
+
+                `)
+                .join("");
+    }
+
+
+    function renderMessages() {
+
+        const container = $("#messageList");
+
+        if (!container) return;
+
+
+        if (!dashboardData.messages.length) {
+
+            container.innerHTML = `
+                <p>No messages yet.</p>
+            `;
+
+            return;
         }
-    );
 
-    $$("[data-message]").forEach(button => {
-        button.addEventListener("click", () => {
-            showInfo(
-                "Message",
-                "This is a demo message. Connect your Node.js backend to enable real-time messaging."
-            );
-        });
-    });
 
-    $$(".quick-action").forEach(button => {
-        button.addEventListener("click", () => {
-            const target = button.dataset.action;
+        container.innerHTML =
+            dashboardData.messages
+                .map(message => `
 
-            if (target === "sell") {
-                showInfo(
-                    "Sell an Item",
-                    "Your seller form can be connected here."
-                );
-            } else if (target === "wallet") {
-                showSection("wallet");
-            } else if (target === "wishlist") {
-                showSection("wishlist");
-            } else if (target === "messages") {
-                showSection("messages");
-            } else if (target === "bids") {
-                showSection("mybids");
-            } else {
-                toast("Action selected");
-            }
-        });
-    });
+                    <div class="message-item">
 
-    $$(".quick-card").forEach(button => {
-        button.addEventListener("click", () => {
-            const id = button.id;
+                        <div class="message-avatar">
 
-            if (id === "addFundsBtn") {
-                showInfo(
-                    "Add Funds",
-                    "This is a frontend demo. No real payment is processed."
-                );
-            }
+                            <i class="fa-solid fa-user"></i>
 
-            if (
-                id === "transactionsBtn" ||
-                id === "transactionBtn"
-            ) {
-                showInfo(
-                    "Transactions",
-                    "Transaction history will be connected to the backend."
-                );
-            }
-        });
-    });
+                        </div>
 
-    $$(".filter").forEach(button => {
-        button.addEventListener("click", () => {
-            $$(".filter").forEach(item => {
-                item.classList.remove("active");
+
+                        <div class="message-content">
+
+                            <strong>
+                                ${escapeHTML(
+                                    message.sender_name ||
+                                    "User"
+                                )}
+                            </strong>
+
+                            <p>
+                                ${escapeHTML(
+                                    message.body
+                                )}
+                            </p>
+
+                            <small>
+                                ${formatDate(message.created_at)}
+                            </small>
+
+                        </div>
+
+
+                        ${
+                            Number(message.is_read) === 0
+                                ? `<span class="unread-dot"></span>`
+                                : ""
+                        }
+
+                    </div>
+
+                `)
+                .join("");
+    }
+
+
+
+    function renderNotifications() {
+
+        const container = $("#notificationList");
+
+        if (!container) return;
+
+
+        if (!dashboardData.notifications.length) {
+
+            container.innerHTML = `
+                <p>No notifications yet.</p>
+            `;
+
+            return;
+        }
+
+
+        container.innerHTML =
+            dashboardData.notifications
+                .map(notification => `
+
+                    <div
+                        class="notification-item ${
+                            Number(notification.is_read) === 0
+                                ? "unread"
+                                : ""
+                        }"
+                        data-notification-id="${notification.id}">
+
+                        <div class="notification-icon">
+
+                            <i class="fa-solid fa-bell"></i>
+
+                        </div>
+
+
+                        <div>
+
+                            <strong>
+                                ${escapeHTML(notification.title)}
+                            </strong>
+
+                            <p>
+                                ${escapeHTML(notification.message)}
+                            </p>
+
+                            <small>
+                                ${formatDate(notification.created_at)}
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                `)
+                .join("");
+    }
+
+
+
+    function renderWallet() {
+
+        const balance =
+            dashboardData.stats.wallet_balance || 0;
+
+        const element = $("#walletBalance");
+
+        if (element) {
+            element.textContent = money(balance);
+        }
+    }
+
+
+
+    function renderTransactions() {
+
+        const container = $("#transactionRows");
+
+        if (!container) return;
+
+
+        if (!dashboardData.transactions.length) {
+
+            container.innerHTML = `
+                <tr>
+                    <td colspan="5">
+                        No transactions found.
+                    </td>
+                </tr>
+            `;
+
+            return;
+        }
+
+
+        container.innerHTML =
+            dashboardData.transactions
+                .map(transaction => {
+
+                    const credit =
+                        transaction.type === "credit";
+
+
+                    return `
+                        <tr>
+
+                            <td>
+                                ${formatDate(
+                                    transaction.created_at
+                                )}
+                            </td>
+
+                            <td>
+                                ${escapeHTML(
+                                    transaction.description ||
+                                    "Wallet transaction"
+                                )}
+                            </td>
+
+                            <td>
+                                ${credit
+                                    ? "Credit"
+                                    : "Debit"}
+                            </td>
+
+                            <td>
+                                ${credit ? "+" : "-"}
+                                ${money(transaction.amount)}
+                            </td>
+
+                            <td>
+                                ${escapeHTML(
+                                    transaction.status
+                                )}
+                            </td>
+
+                        </tr>
+                    `;
+                })
+                .join("");
+    }
+
+
+
+    function renderActivity() {
+
+        const container = $("#activityList");
+
+        if (!container) return;
+
+
+        const activity = [];
+
+
+        dashboardData.bids.slice(0, 3)
+            .forEach(bid => {
+
+                activity.push({
+                    icon: "fa-gavel",
+                    title: "Placed a bid",
+                    item: bid.name,
+                    date: bid.created_at || bid.end_at
+                });
+
             });
 
-            button.classList.add("active");
 
-            currentFilter =
-                button.dataset.filter || "all";
+        dashboardData.wishlist.slice(0, 2)
+            .forEach(item => {
 
-            renderMyBids();
-            bindDynamicButtons();
-        });
-    });
+                activity.push({
+                    icon: "fa-heart",
+                    title: "Added to wishlist",
+                    item: item.name,
+                    date: item.created_at
+                });
 
-    $("#searchInput")?.addEventListener(
-        "input",
-        event => {
-            renderSearch(event.target.value);
+            });
+
+
+        if (!activity.length) {
+
+            container.innerHTML =
+                "<p>No recent activity.</p>";
+
+            return;
         }
-    );
 
-    $("#searchInput")?.addEventListener(
-        "keydown",
-        event => {
-            if (event.key === "Enter") {
-                event.preventDefault();
-                performSearch();
-            }
+
+        container.innerHTML =
+            activity.slice(0, 5)
+                .map(item => `
+
+                    <div class="activity-item">
+
+                        <div class="activity-icon">
+
+                            <i class="fa-solid ${item.icon}"></i>
+
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                ${escapeHTML(item.title)}
+                            </strong>
+
+                            <p>
+                                ${escapeHTML(item.item)}
+                            </p>
+
+                            <small>
+                                ${formatDate(item.date)}
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                `)
+                .join("");
+    }
+
+
+
+    function updateBadges() {
+
+        const unreadNotifications =
+            dashboardData.notifications
+                .filter(item =>
+                    Number(item.is_read) === 0
+                ).length;
+
+
+        const unreadMessages =
+            dashboardData.messages
+                .filter(item =>
+                    Number(item.is_read) === 0
+                ).length;
+
+
+        const wishlistCount =
+            dashboardData.wishlist.length;
+
+
+        const notificationBadge =
+            $("#notificationBadge");
+
+        const messageBadge =
+            $("#messageBadge");
+
+        const wishlistBadge =
+            $("#wishlistBadge");
+
+
+        if (notificationBadge) {
+            notificationBadge.textContent =
+                unreadNotifications;
         }
-    );
 
-    $("#modalClose")?.addEventListener(
-        "click",
-        closeModal
-    );
 
-    $("#modalBackdrop")?.addEventListener(
-        "click",
-        event => {
-            if (event.target === $("#modalBackdrop")) {
-                closeModal();
-            }
+        if (messageBadge) {
+            messageBadge.textContent =
+                unreadMessages;
         }
-    );
 
-    document.addEventListener(
-        "keydown",
-        event => {
-            if (event.key === "Escape") {
-                closeModal();
-                sidebar?.classList.remove("open");
-            }
+
+        if (wishlistBadge) {
+            wishlistBadge.textContent =
+                wishlistCount;
         }
-    );
 
-    document.addEventListener(
-        "click",
-        event => {
-            if (
-                !event.target.closest(".search-box") &&
-                !event.target.closest(".search-results")
-            ) {
-                $("#searchResults")?.classList.remove("show");
-            }
 
-            if (
-                window.innerWidth <= 800 &&
-                sidebar &&
-                !event.target.closest(".sidebar") &&
-                !event.target.closest("#menuToggle")
-            ) {
-                sidebar.classList.remove("open");
-            }
+        const notificationDot =
+            $("#notificationDot");
+
+        if (notificationDot) {
+
+            notificationDot.style.display =
+                unreadNotifications > 0
+                    ? ""
+                    : "none";
         }
-    );
 
-    const savedSettings =
-        localStorage.getItem("bidYourItemSettings");
 
-    if (savedSettings) {
+        const quickMessage =
+            $("#quickMessageText");
+
+        if (quickMessage) {
+
+            quickMessage.textContent =
+                unreadMessages > 0
+                    ? `${unreadMessages} unread message${unreadMessages > 1 ? "s" : ""}`
+                    : "No unread messages";
+        }
+    }
+
+
+
+    function openBidModal(auctionId) {
+
+        const auction =
+            dashboardData.bids.find(
+                item => Number(item.id) === Number(auctionId)
+            ) ||
+            dashboardData.wishlist.find(
+                item => Number(item.id) === Number(auctionId)
+            );
+
+
+        selectedAuction = auction || {
+            id: auctionId
+        };
+
+
+        openModal(`
+
+            <div class="bid-modal-content">
+
+                <span class="eyebrow">
+                    PLACE YOUR BID
+                </span>
+
+                <h2>
+                    ${escapeHTML(
+                        auction?.name ||
+                        "Place Bid"
+                    )}
+                </h2>
+
+                <p>
+                    Current bid:
+                    <strong>
+                        ${money(auction?.current || 0)}
+                    </strong>
+                </p>
+
+                <input
+                    type="number"
+                    id="dashboardBidAmount"
+                    min="1"
+                    step="1"
+                    placeholder="Enter your bid">
+
+                <button
+                    type="button"
+                    class="primary-btn"
+                    id="dashboardConfirmBid">
+
+                    Place Bid
+
+                </button>
+
+                <p id="dashboardBidMessage"></p>
+
+            </div>
+
+        `);
+    }
+
+
+    async function submitBid() {
+
+        if (!selectedAuction) {
+            return;
+        }
+
+
+        const input =
+            $("#dashboardBidAmount");
+
+        const message =
+            $("#dashboardBidMessage");
+
+
+        const amount =
+            Number(input?.value);
+
+
+        const current =
+            Number(
+                selectedAuction.current ||
+                0
+            );
+
+
+        if (!amount || amount <= current) {
+
+            if (message) {
+                message.textContent =
+                    `Bid must be higher than ${money(current)}.`;
+            }
+
+            return;
+        }
+
+
+        const confirmButton =
+            $("#dashboardConfirmBid");
+
+
+        if (confirmButton) {
+            confirmButton.disabled = true;
+            confirmButton.textContent = "Placing...";
+        }
+
+
         try {
-            const settings = JSON.parse(savedSettings);
 
-            if ($("#bidAlert")) {
-                $("#bidAlert").checked =
-                    settings.bidAlerts !== false;
-            }
+            const response =
+                await BYI_API.request(
+                    `/api/auctions/${selectedAuction.id}/bids`,
+                    {
+                        method: "POST",
+                        body: {
+                            amount
+                        }
+                    }
+                );
 
-            if ($("#auctionAlert")) {
-                $("#auctionAlert").checked =
-                    settings.auctionAlerts !== false;
-            }
 
-            if ($("#publicProfile")) {
-                $("#publicProfile").checked =
-                    settings.publicProfile !== false;
-            }
+            toast(
+                response.message ||
+                "Bid placed successfully."
+            );
 
-            if ($("#darkToggle")) {
-                $("#darkToggle").checked =
-                    settings.darkMode !== false;
-            }
+
+            closeModal();
+
+            await loadDashboard();
+
+
         } catch (error) {
-            localStorage.removeItem(
-                "bidYourItemSettings"
+
+            console.error(
+                "Bid error:",
+                error
+            );
+
+
+            if (message) {
+                message.textContent =
+                    error.message;
+            }
+
+
+            if (confirmButton) {
+
+                confirmButton.disabled = false;
+
+                confirmButton.textContent =
+                    "Place Bid";
+            }
+        }
+    }
+
+
+    async function removeFromWishlist(auctionId) {
+
+        try {
+
+            await BYI_API.request(
+                `/api/wishlist/${auctionId}`,
+                {
+                    method: "DELETE"
+                }
+            );
+
+
+            toast(
+                "Removed from wishlist."
+            );
+
+
+            await loadDashboard();
+
+
+        } catch (error) {
+
+            toast(
+                error.message ||
+                "Unable to remove item.",
+                "error"
             );
         }
     }
 
-    renderAll();
-    bindDynamicButtons();
-    showSection("dashboard");
+
+
+    async function markNotificationRead(id) {
+
+        try {
+
+            await BYI_API.request(
+                `/api/notifications/${id}/read`,
+                {
+                    method: "PATCH"
+                }
+            );
+
+
+            const notification =
+                dashboardData.notifications.find(
+                    item =>
+                        Number(item.id) === Number(id)
+                );
+
+
+            if (notification) {
+                notification.is_read = 1;
+            }
+
+
+            renderNotifications();
+
+            updateBadges();
+
+
+        } catch (error) {
+
+            console.error(
+                "Notification error:",
+                error
+            );
+        }
+    }
+
+
+
+    function bindEvents() {
+
+        
+        document.addEventListener(
+            "click",
+            event => {
+
+                const sectionButton =
+                    event.target.closest(
+                        "[data-section]"
+                    );
+
+
+                if (sectionButton) {
+
+                    const section =
+                        sectionButton.dataset.section;
+
+                    if (section) {
+                        showSection(section);
+                    }
+
+                    return;
+                }
+
+
+                const topButton =
+                    event.target.closest(
+                        "[data-top]"
+                    );
+
+
+                if (topButton) {
+
+                    navigateTop(
+                        topButton.dataset.top
+                    );
+
+                    return;
+                }
+
+
+                const bidButton =
+                    event.target.closest(
+                        "[data-bid-auction]"
+                    );
+
+
+                if (bidButton) {
+
+                    openBidModal(
+                        bidButton.dataset.bidAuction
+                    );
+
+                    return;
+                }
+
+
+                const removeButton =
+                    event.target.closest(
+                        "[data-remove-wishlist]"
+                    );
+
+
+                if (removeButton) {
+
+                    removeFromWishlist(
+                        removeButton.dataset.removeWishlist
+                    );
+
+                    return;
+                }
+
+
+                const notification =
+                    event.target.closest(
+                        "[data-notification-id]"
+                    );
+
+
+                if (notification) {
+
+                    markNotificationRead(
+                        notification.dataset.notificationId
+                    );
+
+                    return;
+                }
+
+
+                const viewButton =
+                    event.target.closest(
+                        "[data-view-auction]"
+                    );
+
+
+                if (viewButton) {
+
+                    window.location.href =
+                        `../auctions/auction-details.html?id=${encodeURIComponent(
+                            viewButton.dataset.viewAuction
+                        )}`;
+                }
+
+            }
+        );
+
+
+       
+        document.addEventListener(
+            "click",
+            event => {
+
+                if (
+                    event.target.closest(
+                        "#dashboardConfirmBid"
+                    )
+                ) {
+
+                    submitBid();
+                }
+
+            }
+        );
+
+
+    
+        $("#modalClose")?.addEventListener(
+            "click",
+            closeModal
+        );
+
+
+        $("#modalBackdrop")?.addEventListener(
+            "click",
+            event => {
+
+                if (
+                    event.target ===
+                    $("#modalBackdrop")
+                ) {
+                    closeModal();
+                }
+
+            }
+        );
+
+
+        document.addEventListener(
+            "keydown",
+            event => {
+
+                if (event.key === "Escape") {
+                    closeModal();
+                }
+
+            }
+        );
+
+
+        
+        $("#logoutBtn")?.addEventListener(
+            "click",
+            () => {
+
+                BYI_API.clearSession();
+
+                window.location.href =
+                    "../auth/login.html";
+            }
+        );
+
+
+       
+        $("#notificationBtn")?.addEventListener(
+            "click",
+            () => {
+
+                showSection(
+                    "notifications"
+                );
+
+            }
+        );
+
+
+       
+        $("#transactionsBtn")?.addEventListener(
+            "click",
+            () => {
+
+                const card =
+                    $("#transactionCard");
+
+                if (!card) return;
+
+                card.style.display =
+                    card.style.display === "none"
+                        ? ""
+                        : "none";
+            }
+        );
+
+
+       
+        $("#addFundsBtn")?.addEventListener(
+            "click",
+            () => {
+
+                openModal(`
+
+                    <div>
+
+                        <span class="eyebrow">
+                            WALLET
+                        </span>
+
+                        <h2>
+                            Add Funds
+                        </h2>
+
+                        <p>
+                            Payment gateway integration
+                            is not configured yet.
+                        </p>
+
+                        <p>
+                            Your current wallet balance is
+                            <strong>
+                                ${money(
+                                    dashboardData.stats.wallet_balance
+                                )}
+                            </strong>.
+                        </p>
+
+                    </div>
+
+                `);
+
+            }
+        );
+
+
+       
+        $("#createAuctionBtn")?.addEventListener(
+            "click",
+            () => {
+
+                window.location.href =
+                    "../auctions/create-auction.html";
+
+            }
+        );
+
+
+      
+        $("#menuToggle")?.addEventListener(
+            "click",
+            () => {
+
+                document.body.classList.toggle(
+                    "sidebar-open"
+                );
+
+            }
+        );
+
+
+      
+        $("#searchInput")?.addEventListener(
+            "keydown",
+            event => {
+
+                if (
+                    event.key !== "Enter"
+                ) {
+                    return;
+                }
+
+
+                const query =
+                    event.target.value.trim();
+
+
+                if (!query) {
+                    return;
+                }
+
+
+                window.location.href =
+                    `../auctions/auctions.html?search=${encodeURIComponent(
+                        query
+                    )}`;
+            }
+        );
+
+
+       
+        const darkMode =
+            $("#darkModeToggle");
+
+
+        if (darkMode) {
+
+            const saved =
+                localStorage.getItem(
+                    "byi_dark_mode"
+                );
+
+            darkMode.checked =
+                saved === "true";
+
+
+            darkMode.addEventListener(
+                "change",
+                () => {
+
+                    localStorage.setItem(
+                        "byi_dark_mode",
+                        String(darkMode.checked)
+                    );
+
+                    toast(
+                        darkMode.checked
+                            ? "Dark mode enabled."
+                            : "Dark mode preference updated."
+                    );
+
+                }
+            );
+        }
+
+
+        $("#changePasswordBtn")?.addEventListener(
+            "click",
+            () => {
+
+                openModal(`
+
+                    <div>
+
+                        <span class="eyebrow">
+                            SECURITY
+                        </span>
+
+                        <h2>
+                            Change Password
+                        </h2>
+
+                        <p>
+                            Password change API is not
+                            available in the current backend.
+                        </p>
+
+                    </div>
+
+                `);
+
+            }
+        );
+
+
+        $("#deleteAccountBtn")?.addEventListener(
+            "click",
+            () => {
+
+                openModal(`
+
+                    <div>
+
+                        <span class="eyebrow">
+                            ACCOUNT
+                        </span>
+
+                        <h2>
+                            Delete Account
+                        </h2>
+
+                        <p>
+                            Account deletion is disabled
+                            until a dedicated backend
+                            endpoint is implemented.
+                        </p>
+
+                    </div>
+
+                `);
+
+            }
+        );
+
+
+        $("#editProfileBtn")?.addEventListener(
+            "click",
+            () => {
+
+                openModal(`
+
+                    <div>
+
+                        <span class="eyebrow">
+                            PROFILE
+                        </span>
+
+                        <h2>
+                            Profile Editing
+                        </h2>
+
+                        <p>
+                            Your profile information is
+                            currently loaded from the database.
+                            A profile update endpoint is not
+                            available in the current backend.
+                        </p>
+
+                    </div>
+
+                `);
+
+            }
+        );
+    }
+
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        () => {
+
+            if (!checkAuthentication()) {
+                return;
+            }
+
+            bindEvents();
+
+            loadDashboard();
+
+        }
+    );
+
+})();
+function navigateTop(page) {
+    switch (page) {
+        case "home":
+            window.location.href = "/";
+            break;
+
+        case "auctions":
+            window.location.href = "/pages/auctions/auctions.html";
+            break;
+
+        case "categories":
+            window.location.href = "/pages/categories/categories.html";
+            break;
+    }
+}
+document.querySelectorAll(".top-nav-link[data-top]").forEach(button => {
+    button.addEventListener("click", () => {
+        navigateTop(button.dataset.top);
+    });
 });

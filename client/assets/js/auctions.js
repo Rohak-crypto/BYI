@@ -1,1184 +1,1339 @@
-const auctions = [
 
-    {
-        name: "Luxury Wrist Watch",
-        category: "Fashion",
-        price: 45000,
-        time: 2 * 3600 + 15 * 60 + 30,
-        image: "assets/images/watch.jpg",
-        tags: ["Trending", "Live Now"]
-    },
+"use strict";
 
-    {
-        name: "Vintage Camera",
-        category: "Electronics",
-        price: 22500,
-        time: 1 * 3600 + 40 * 60 + 12,
-        image: "assets/images/camera.jpg",
-        tags: ["Trending", "Live Now", "Most Bids"]
-    },
+(() => {
+    let auctions = [];
+    let activeTab = "Trending";
+    let selectedAuction = null;
+    let toastTimer = null;
 
-    {
-        name: "Antique Wooden Chair",
-        category: "Furniture",
-        price: 12800,
-        time: 3 * 3600 + 20 * 60 + 45,
-        image: "assets/images/chair.jpg",
-        tags: ["Trending", "Live Now"]
-    },
+    const auctionGrid = document.getElementById("auctionGrid");
+    const emptyState = document.getElementById("emptyState");
+    const clearAll = document.getElementById("clearAll");
+    const priceRange = document.getElementById("priceRange");
+    const sortSelect = document.getElementById("sortSelect");
 
-    {
-        name: "Diamond Necklace",
-        category: "Jewellery",
-        price: 75000,
-        time: 50 * 60 + 10,
-        image: "assets/images/necklace.jpg",
-        tags: ["Trending", "Live Now", "Ending Soon"]
-    },
+    const searchInput =
+        document.getElementById("searchInput") ||
+        document.getElementById("globalSearch");
 
-    {
-        name: "Classic Painting",
-        category: "Art & Collectibles",
-        price: 60000,
-        time: 4 * 3600 + 12 * 60 + 22,
-        image: "assets/images/painting.jpg",
-        tags: ["Trending", "Live Now", "Newly Listed"]
-    },
+    const bidModal = document.getElementById("bidModal");
 
-    {
-        name: "Vintage Car Model",
-        category: "Vehicles",
-        price: 280000,
-        time: 1 * 3600 + 10 * 60 + 5,
-        image: "assets/images/car.jpg",
-        tags: ["Trending", "Live Now", "Ending Soon"]
-    },
+    const closeBidBtn =
+        document.getElementById("closeBidBtn") ||
+        document.getElementById("closeModal");
 
-    {
-        name: "Leather Handbag",
-        category: "Fashion",
-        price: 18000,
-        time: 2 * 3600 + 45 * 60 + 18,
-        image: "assets/images/handbag.jpg",
-        tags: ["Trending", "Live Now"]
-    },
+    const bidModalItem =
+        document.getElementById("bidModalItem") ||
+        document.getElementById("modalItem");
 
-    {
-        name: "Latest Smartphone",
-        category: "Electronics",
-        price: 38000,
-        time: 1 * 3600 + 5 * 60 + 18,
-        image: "assets/images/phone.jpg",
-        tags: ["Trending", "Live Now", "Most Bids"]
-    },
+    const bidAmountInput =
+        document.getElementById("bidAmountInput") ||
+        document.getElementById("bidAmount");
 
-    {
-        name: "Gramophone",
-        category: "Collectibles",
-        price: 32000,
-        time: 3 * 3600 + 15 * 60 + 40,
-        image: "assets/images/gramophone.jpg",
-        tags: ["Trending", "Live Now", "Newly Listed"]
-    },
+    const confirmBidBtn =
+        document.getElementById("confirmBidBtn") ||
+        document.getElementById("confirmBid");
 
-    {
-        name: "Designer Sofa",
-        category: "Furniture",
-        price: 55000,
-        time: 5 * 3600 + 20 * 60 + 15,
-        image: "assets/images/sofa.jpg",
-        tags: ["Trending", "Live Now"]
+    const bidError =
+        document.getElementById("bidError") ||
+        document.getElementById("bidMessage");
+
+    const toast = document.getElementById("toast");
+
+    const demoAuctions = [
+        {
+            id: 1,
+            name: "Luxury Wrist Watch",
+            category: "Fashion",
+            startingPrice: 45000,
+            currentBid: 45000,
+            bidCount: 18,
+            image: "/assets/images/watch.jpg",
+            status: "live",
+            startAt: new Date(Date.now() - 86400000).toISOString(),
+            endAt: new Date(
+                Date.now() + 2 * 3600000 + 15 * 60000 + 30000
+            ).toISOString()
+        },
+        {
+            id: 2,
+            name: "Vintage Camera",
+            category: "Electronics",
+            startingPrice: 22500,
+            currentBid: 22500,
+            bidCount: 25,
+            image: "/assets/images/camera.jpg",
+            status: "live",
+            startAt: new Date(Date.now() - 86400000).toISOString(),
+            endAt: new Date(
+                Date.now() + 1 * 3600000 + 45 * 60000
+            ).toISOString()
+        },
+        {
+            id: 3,
+            name: "Antique Wooden Chair",
+            category: "Furniture",
+            startingPrice: 12500,
+            currentBid: 12500,
+            bidCount: 9,
+            image: "/assets/images/chair.jpg",
+            status: "live",
+            startAt: new Date(Date.now() - 172800000).toISOString(),
+            endAt: new Date(
+                Date.now() + 4 * 3600000 + 20 * 60000
+            ).toISOString()
+        },
+        {
+            id: 4,
+            name: "Diamond Necklace",
+            category: "Jewellery",
+            startingPrice: 85000,
+            currentBid: 85000,
+            bidCount: 31,
+            image: "/assets/images/necklace.jpg",
+            status: "live",
+            startAt: new Date(Date.now() - 43200000).toISOString(),
+            endAt: new Date(
+                Date.now() + 3 * 3600000 + 10 * 60000
+            ).toISOString()
+        },
+        {
+            id: 5,
+            name: "Modern Art Painting",
+            category: "Art & Collectibles",
+            startingPrice: 35000,
+            currentBid: 35000,
+            bidCount: 14,
+            image: "/assets/images/painting.jpg",
+            status: "live",
+            startAt: new Date(Date.now() - 86400000).toISOString(),
+            endAt: new Date(
+                Date.now() + 5 * 3600000 + 30 * 60000
+            ).toISOString()
+        },
+        {
+            id: 6,
+            name: "BMW X5",
+            category: "Vehicles",
+            startingPrice: 1850000,
+            currentBid: 1850000,
+            bidCount: 12,
+            image: "/assets/images/car.jpg",
+            status: "live",
+            startAt: new Date(Date.now() - 259200000).toISOString(),
+            endAt: new Date(
+                Date.now() + 6 * 3600000 + 15 * 60000
+            ).toISOString()
+        },
+        {
+            id: 7,
+            name: "Designer Handbag",
+            category: "Fashion",
+            startingPrice: 28000,
+            currentBid: 28000,
+            bidCount: 22,
+            image: "/assets/images/handbag.jpg",
+            status: "live",
+            startAt: new Date(Date.now() - 43200000).toISOString(),
+            endAt: new Date(
+                Date.now() + 2 * 3600000 + 50 * 60000
+            ).toISOString()
+        },
+        {
+            id: 8,
+            name: "iPhone 15 Pro",
+            category: "Electronics",
+            startingPrice: 63500,
+            currentBid: 63500,
+            bidCount: 37,
+            image: "/assets/images/phone.jpg",
+            status: "live",
+            startAt: new Date(Date.now() - 21600000).toISOString(),
+            endAt: new Date(
+                Date.now() + 1 * 3600000 + 30 * 60000
+            ).toISOString()
+        },
+        {
+            id: 9,
+            name: "Vintage Gramophone",
+            category: "Antiques",
+            startingPrice: 18500,
+            currentBid: 18500,
+            bidCount: 8,
+            image: "/assets/images/gramophone.jpg",
+            status: "live",
+            startAt: new Date(Date.now() - 345600000).toISOString(),
+            endAt: new Date(
+                Date.now() + 7 * 3600000 + 20 * 60000
+            ).toISOString()
+        },
+        {
+            id: 10,
+            name: "Luxury Sofa Set",
+            category: "Home & Living",
+            startingPrice: 72000,
+            currentBid: 72000,
+            bidCount: 16,
+            image: "/assets/images/sofa.jpg",
+            status: "live",
+            startAt: new Date(Date.now() - 86400000).toISOString(),
+            endAt: new Date(
+                Date.now() + 3 * 3600000 + 45 * 60000
+            ).toISOString()
+        }
+    ];
+
+    function formatPrice(value) {
+        return "₹" + Number(value || 0).toLocaleString("en-IN");
     }
 
-];
+    function escapeHTML(value) {
+        return String(value ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
 
+    function getCurrentBid(auction) {
+        return Number(
+            auction.currentBid ??
+            auction.current_bid ??
+            auction.price ??
+            auction.startingPrice ??
+            auction.starting_price ??
+            0
+        );
+    }
 
+    function getEndTime(auction) {
+        if (!auction.endAt) {
+            return null;
+        }
 
-let activeTab = "Trending";
-let selectedAuction = null;
+        const timestamp = new Date(auction.endAt).getTime();
 
-const auctionGrid =
-    document.getElementById("auctionGrid");
+        return Number.isNaN(timestamp) ? null : timestamp;
+    }
 
-const emptyState =
-    document.getElementById("emptyState");
+    function getSecondsRemaining(auction) {
+        const endTime = getEndTime(auction);
 
-const priceRange =
-    document.getElementById("priceRange");
+        if (endTime === null) {
+            return 0;
+        }
 
-const sortSelect =
-    document.getElementById("sortSelect");
-
-const searchInput =
-    document.getElementById("globalSearch");
-
-const clearAllButton =
-    document.getElementById("clearAll");
-
-const bidModal =
-    document.getElementById("bidModal");
-
-const modalItem =
-    document.getElementById("modalItem");
-
-const modalCurrent =
-    document.getElementById("modalCurrent");
-
-const bidAmount =
-    document.getElementById("bidAmount");
-
-const confirmBidButton =
-    document.getElementById("confirmBid");
-
-const closeModalButton =
-    document.getElementById("closeModal");
-
-const bidMessage =
-    document.getElementById("bidMessage");
-
-
-/* =========================================================
-   TOAST
-========================================================= */
-
-let toastElement =
-    document.getElementById("auctionToast");
-
-
-if (!toastElement) {
-
-    toastElement =
-        document.createElement("div");
-
-    toastElement.id =
-        "auctionToast";
-
-    toastElement.className =
-        "auction-toast";
-
-    document.body.appendChild(
-        toastElement
-    );
-
-}
-
-
-/* =========================================================
-   FORMAT MONEY
-========================================================= */
-
-function formatMoney(number) {
-
-    return "₹ " +
-        Number(number).toLocaleString("en-IN");
-
-}
-
-
-/* =========================================================
-   FORMAT TIME
-========================================================= */
-
-function formatTime(totalSeconds) {
-
-    totalSeconds =
-        Math.max(
+        return Math.max(
             0,
-            Math.floor(Number(totalSeconds))
+            Math.floor((endTime - Date.now()) / 1000)
         );
-
-
-    const hours =
-        String(
-            Math.floor(
-                totalSeconds / 3600
-            )
-        ).padStart(2, "0");
-
-
-    const minutes =
-        String(
-            Math.floor(
-                (totalSeconds % 3600) / 60
-            )
-        ).padStart(2, "0");
-
-
-    const seconds =
-        String(
-            totalSeconds % 60
-        ).padStart(2, "0");
-
-
-    return `${hours}:${minutes}:${seconds}`;
-
-}
-
-
-/* =========================================================
-   SHOW TOAST
-========================================================= */
-
-function showAuctionToast(message) {
-
-    if (!toastElement) {
-        return;
     }
 
-
-    toastElement.textContent =
-        message;
-
-
-    toastElement.classList.add(
-        "show"
-    );
-
-
-    clearTimeout(
-        toastElement.hideTimer
-    );
-
-
-    toastElement.hideTimer =
-        setTimeout(
-            () => {
-
-                toastElement.classList.remove(
-                    "show"
-                );
-
-            },
-            2500
+    function formatTime(seconds) {
+        seconds = Math.max(
+            0,
+            Math.floor(Number(seconds) || 0)
         );
 
-}
+        const days = Math.floor(seconds / 86400);
+        const hours = Math.floor((seconds % 86400) / 3600);
+        const minutes = Math.floor((seconds % 3600) / 60);
+        const secs = seconds % 60;
 
+        if (days > 0) {
+            return (
+                String(days).padStart(2, "0") +
+                "d " +
+                String(hours).padStart(2, "0") +
+                ":" +
+                String(minutes).padStart(2, "0")
+            );
+        }
 
-/* =========================================================
-   GET SELECTED CATEGORIES
-========================================================= */
-
-function getSelectedCategories() {
-
-    return [
-        ...document.querySelectorAll(
-            ".auction-category:checked"
-        )
-    ].map(
-        checkbox => checkbox.value
-    );
-
-}
-
-
-/* =========================================================
-   GET SELECTED STATUS
-========================================================= */
-
-function getSelectedStatuses() {
-
-    return [
-        ...document.querySelectorAll(
-            ".auction-status:checked"
-        )
-    ].map(
-        checkbox => checkbox.value
-    );
-
-}
-
-
-/* =========================================================
-   FILTER + SORT + RENDER
-========================================================= */
-
-function renderAuctions() {
-
-    if (!auctionGrid) {
-        return;
+        return (
+            String(hours).padStart(2, "0") +
+            ":" +
+            String(minutes).padStart(2, "0") +
+            ":" +
+            String(secs).padStart(2, "0")
+        );
     }
 
+    function isEndingSoon(auction) {
+        const seconds = getSecondsRemaining(auction);
 
-    /* -----------------------------------------------------
-       SEARCH
-    ----------------------------------------------------- */
+        return seconds > 0 && seconds <= 24 * 60 * 60;
+    }
 
-    const searchText =
-        searchInput
-            ? searchInput.value
-                .trim()
-                .toLowerCase()
-            : "";
+    function isNewlyListed(auction) {
+        if (!auction.startAt) {
+            return false;
+        }
 
+        const startTime = new Date(auction.startAt).getTime();
 
-    /* -----------------------------------------------------
-       CATEGORY FILTER
-    ----------------------------------------------------- */
+        if (Number.isNaN(startTime)) {
+            return false;
+        }
 
-    const selectedCategories =
-        getSelectedCategories();
+        return Date.now() - startTime <= 24 * 60 * 60 * 1000;
+    }
 
+    function showBidError(message) {
+        if (!bidError) {
+            return;
+        }
 
-    /* -----------------------------------------------------
-       STATUS FILTER
-    ----------------------------------------------------- */
+        bidError.textContent = message || "";
 
-    const selectedStatuses =
-        getSelectedStatuses();
+        if (message) {
+            bidError.style.display = "block";
+        } else {
+            bidError.style.display = "none";
+        }
+    }
 
+    function showToast(message) {
+        if (!toast) {
+            return;
+        }
 
-    /* -----------------------------------------------------
-       PRICE FILTER
-    ----------------------------------------------------- */
+        toast.textContent = message;
+        toast.classList.add("show");
 
-    const maximumPrice =
-        priceRange
-            ? Number(priceRange.value)
-            : 500000;
+        clearTimeout(toastTimer);
 
+        toastTimer = setTimeout(() => {
+            toast.classList.remove("show");
+        }, 2500);
+    }
 
-    /* -----------------------------------------------------
-       SORT
-    ----------------------------------------------------- */
+    function normalizeAuction(item, index) {
+        const currentBid = Number(
+            item.currentBid ??
+            item.current_bid ??
+            item.price ??
+            item.startingPrice ??
+            item.starting_price ??
+            0
+        );
 
-    const sortType =
-        sortSelect
-            ? sortSelect.value
-            : "Trending";
+        const startingPrice = Number(
+            item.startingPrice ??
+            item.starting_price ??
+            currentBid
+        );
 
+        let image =
+            item.image ??
+            item.image_url ??
+            "";
 
-    /* -----------------------------------------------------
-       FILTER AUCTIONS
-    ----------------------------------------------------- */
+        if (
+            image &&
+            !image.startsWith("/") &&
+            !image.startsWith("http://") &&
+            !image.startsWith("https://") &&
+            !image.startsWith("data:")
+        ) {
+            image = "/" + image.replace(/^\.?\//, "");
+        }
 
-    let filteredAuctions =
-        auctions.filter(
-            auction => {
+        return {
+            id: item.id ?? index + 1,
+            name:
+                item.name ??
+                item.title ??
+                "Auction Item",
+            category:
+                item.category ??
+                "General",
+            description:
+                item.description ??
+                "",
+            startingPrice,
+            currentBid,
+            price: currentBid,
+            bidCount: Number(
+                item.bidCount ??
+                item.bid_count ??
+                0
+            ),
+            image:
+                image ||
+                "/assets/images/gramophone.jpg",
+            startAt:
+                item.startAt ??
+                item.start_at ??
+                null,
+            endAt:
+                item.endAt ??
+                item.end_at ??
+                null,
+            status:
+                String(
+                    item.status ??
+                    "live"
+                ).toLowerCase(),
+            tags:
+                Array.isArray(item.tags)
+                    ? item.tags
+                    : []
+        };
+    }
 
+    async function loadAuctionsFromServer() {
+        try {
+            if (
+                !window.BYI_API ||
+                typeof window.BYI_API.request !== "function"
+            ) {
+                auctions = demoAuctions.map(normalizeAuction);
+                renderAuctions();
+                return;
+            }
 
-                /* Search */
+            const response = await window.BYI_API.request(
+                "/api/auctions"
+            );
 
-                const searchableText =
-                    (
-                        auction.name +
-                        " " +
-                        auction.category
-                    )
+            const serverData =
+                Array.isArray(response)
+                    ? response
+                    : Array.isArray(response?.auctions)
+                        ? response.auctions
+                        : Array.isArray(response?.data)
+                            ? response.data
+                            : [];
+
+            if (serverData.length > 0) {
+                auctions = serverData.map(normalizeAuction);
+            } else {
+                auctions = demoAuctions.map(normalizeAuction);
+            }
+
+            renderAuctions();
+        } catch (error) {
+            console.error("Auction loading error:", error);
+
+            auctions = demoAuctions.map(normalizeAuction);
+
+            renderAuctions();
+        }
+    }
+
+    function getFilteredAuctions() {
+        let result = [...auctions];
+
+        const search =
+            searchInput?.value?.trim().toLowerCase() || "";
+
+        if (search) {
+            result = result.filter((auction) => {
+                const searchableText = [
+                    auction.name,
+                    auction.category,
+                    auction.description
+                ]
+                    .join(" ")
                     .toLowerCase();
 
+                return searchableText.includes(search);
+            });
+        }
 
-                const matchesSearch =
-                    !searchText ||
-                    searchableText.includes(
-                        searchText
-                    );
+        const selectedCategories = [
+            ...document.querySelectorAll(
+                ".auction-category:checked"
+            )
+        ].map((checkbox) =>
+            checkbox.value.trim().toLowerCase()
+        );
 
+        if (selectedCategories.length > 0) {
+            result = result.filter((auction) => {
+                const category = String(
+                    auction.category || ""
+                )
+                    .trim()
+                    .toLowerCase();
 
-                /* Category */
+                return selectedCategories.some((selected) => {
+                    if (selected === "art & collectibles") {
+                        return (
+                            category === "art" ||
+                            category === "art & collectibles"
+                        );
+                    }
 
-                const matchesCategory =
-                    selectedCategories.length === 0 ||
-                    selectedCategories.includes(
-                        auction.category
-                    );
+                    if (selected === "home & living") {
+                        return (
+                            category === "home & living" ||
+                            category === "furniture"
+                        );
+                    }
 
+                    if (selected === "sports & hobbies") {
+                        return (
+                            category === "sports" ||
+                            category === "sports & hobbies"
+                        );
+                    }
 
-                /* Price */
+                    return category === selected;
+                });
+            });
+        }
 
-                const matchesPrice =
-                    auction.price <=
-                    maximumPrice;
+        const maxPrice = Number(
+            priceRange?.value || 500000
+        );
 
+        if (maxPrice < 500000) {
+            result = result.filter(
+                (auction) =>
+                    getCurrentBid(auction) <= maxPrice
+            );
+        }
 
-                /* Status */
+        const selectedStatuses = [
+            ...document.querySelectorAll(
+                ".auction-status:checked"
+            )
+        ].map((checkbox) =>
+            checkbox.value.trim().toLowerCase()
+        );
 
-                const matchesStatus =
-                    selectedStatuses.length === 0 ||
-                    selectedStatuses.some(
-                        status =>
-                            auction.tags.includes(
-                                status
-                            )
-                    );
+        if (selectedStatuses.length > 0) {
+            result = result.filter((auction) => {
+                return selectedStatuses.some((status) => {
+                    if (status === "live now") {
+                        return (
+                            getSecondsRemaining(auction) > 0 &&
+                            auction.status !== "ended"
+                        );
+                    }
 
+                    if (status === "ending soon") {
+                        return isEndingSoon(auction);
+                    }
 
-                /* Active Tab */
+                    if (status === "most bids") {
+                        return Number(
+                            auction.bidCount || 0
+                        ) > 0;
+                    }
 
-                const matchesTab =
-                    auction.tags.includes(
-                        activeTab
-                    );
+                    if (status === "newly listed") {
+                        return isNewlyListed(auction);
+                    }
 
+                    return false;
+                });
+            });
+        }
 
-                return (
-                    matchesSearch &&
-                    matchesCategory &&
-                    matchesPrice &&
-                    matchesStatus &&
-                    matchesTab
-                );
+        if (activeTab === "Ending Soon") {
+            result = result.filter(isEndingSoon);
+        }
 
+        if (activeTab === "Most Bids") {
+            result.sort(
+                (a, b) =>
+                    Number(b.bidCount || 0) -
+                    Number(a.bidCount || 0)
+            );
+        }
+
+        if (activeTab === "Newly Listed") {
+            result = result.filter(isNewlyListed);
+        }
+
+        const sort = sortSelect?.value || "Trending";
+
+        if (sort === "Price: Low to High") {
+            result.sort(
+                (a, b) =>
+                    getCurrentBid(a) -
+                    getCurrentBid(b)
+            );
+        }
+
+        if (sort === "Price: High to Low") {
+            result.sort(
+                (a, b) =>
+                    getCurrentBid(b) -
+                    getCurrentBid(a)
+            );
+        }
+
+        if (sort === "Time Left") {
+            result.sort(
+                (a, b) =>
+                    getSecondsRemaining(a) -
+                    getSecondsRemaining(b)
+            );
+        }
+
+        if (sort === "Trending") {
+            result.sort(
+                (a, b) =>
+                    Number(b.bidCount || 0) -
+                    Number(a.bidCount || 0)
+            );
+        }
+
+        return result;
+    }
+
+    function renderAuctions() {
+        if (!auctionGrid) {
+            console.error("#auctionGrid was not found.");
+            return;
+        }
+
+        const filtered = getFilteredAuctions();
+
+        if (filtered.length === 0) {
+            auctionGrid.innerHTML = "";
+
+            if (emptyState) {
+                emptyState.hidden = false;
             }
-        );
 
+            return;
+        }
 
-    /* =====================================================
-       SORTING
-    ===================================================== */
+        if (emptyState) {
+            emptyState.hidden = true;
+        }
 
-    if (
-        sortType ===
-        "Price: Low to High"
-    ) {
+        auctionGrid.innerHTML = filtered
+            .map((auction) => {
+                const currentBid = getCurrentBid(auction);
+                const secondsRemaining =
+                    getSecondsRemaining(auction);
 
-        filteredAuctions.sort(
-            (a, b) =>
-                a.price - b.price
-        );
-
-    }
-
-
-    else if (
-        sortType ===
-        "Price: High to Low"
-    ) {
-
-        filteredAuctions.sort(
-            (a, b) =>
-                b.price - a.price
-        );
-
-    }
-
-
-    else if (
-        sortType ===
-        "Time Left"
-    ) {
-
-        filteredAuctions.sort(
-            (a, b) =>
-                a.time - b.time
-        );
-
-    }
-
-
-    /* =====================================================
-       CREATE CARDS
-    ===================================================== */
-
-    auctionGrid.innerHTML =
-        filteredAuctions.map(
-            auction => {
-
-
-                const originalIndex =
-                    auctions.indexOf(
-                        auction
-                    );
-
+                const isLive =
+                    auction.status !== "ended" &&
+                    secondsRemaining > 0;
 
                 return `
-
-                    <article class="card">
-
-                        <div class="card-image">
-
+                    <article
+                        class="card integrated-auction-card"
+                        data-auction-id="${escapeHTML(auction.id)}"
+                    >
+                        <div class="card-image position-relative">
                             <img
-                                src="${auction.image}"
-                                alt="${auction.name}"
-                                onerror="this.style.display='none';"
+                                src="${escapeHTML(auction.image)}"
+                                alt="${escapeHTML(auction.name)}"
+                                loading="lazy"
+                                class="integrated-auction-image"
                             >
 
-                            <span class="live-badge">
-                                LIVE
+                            <span class="live-badge ${isLive ? "" : "ended-badge"}">
+                                ${isLive ? "LIVE" : "ENDED"}
                             </span>
 
                             <button
-                                class="heart"
                                 type="button"
-                                aria-label="Favorite"
-                                onclick="toggleFavorite(this)"
+                                class="heart integrated-heart"
+                                data-favorite="${escapeHTML(auction.id)}"
+                                aria-label="Add to wishlist"
                             >
                                 ♡
                             </button>
-
                         </div>
 
+                        <div class="card-body integrated-auction-body">
 
-                        <div class="card-body">
-
-                            <h3>
-                                ${auction.name}
-                            </h3>
-
-
-                            <div class="category-name">
-                                ${auction.category}
+                            <div class="category-name integrated-auction-category">
+                                ${escapeHTML(auction.category)}
                             </div>
 
+                            <h3>
+                                ${escapeHTML(auction.name)}
+                            </h3>
 
-                            <div class="card-meta">
+                            <div class="card-meta integrated-auction-meta">
 
                                 <div>
-
                                     <span class="meta-label">
                                         Current Bid
                                     </span>
 
-                                    <span class="bid-price">
-                                        ${formatMoney(
-                                            auction.price
-                                        )}
-                                    </span>
-
+                                    <div class="bid-price integrated-bid-price">
+                                        ${formatPrice(currentBid)}
+                                    </div>
                                 </div>
 
-
                                 <div>
-
                                     <span class="meta-label">
-                                        Time Left
+                                        Ends In
                                     </span>
 
-                                    <span
-                                        class="time"
-                                        data-auction-index="${originalIndex}"
+                                    <strong
+                                        class="time auction-countdown"
+                                        data-auction-id="${escapeHTML(auction.id)}"
                                     >
-                                        ${formatTime(
-                                            auction.time
-                                        )}
-                                    </span>
-
+                                        ${isLive
+                                            ? formatTime(secondsRemaining)
+                                            : "Ended"
+                                        }
+                                    </strong>
                                 </div>
 
                             </div>
 
-
                             <button
-                                class="bid-button"
                                 type="button"
-                                onclick="placeBid(${originalIndex})"
+                                class="bid-button integrated-bid-button"
+                                data-bid="${escapeHTML(auction.id)}"
+                                ${isLive ? "" : "disabled"}
                             >
-                                Place Bid
+                                ${isLive ? "Place Bid" : "Auction Ended"}
                             </button>
 
                         </div>
-
                     </article>
-
                 `;
+            })
+            .join("");
 
-            }
-        ).join("");
-
-
-    /* =====================================================
-       EMPTY STATE
-    ===================================================== */
-
-    if (emptyState) {
-
-        emptyState.hidden =
-            filteredAuctions.length !== 0;
-
+        attachCardEvents();
     }
 
-}
-
-
-function toggleFavorite(button) {
-
-    if (!button) {
-        return;
-    }
-
-
-    button.classList.toggle(
-        "saved"
-    );
-
-
-    if (
-        button.classList.contains(
-            "saved"
-        )
-    ) {
-
-        button.textContent =
-            "♥";
-
-        showAuctionToast(
-            "Added to favorites"
-        );
-
-    }
-
-    else {
-
-        button.textContent =
-            "♡";
-
-        showAuctionToast(
-            "Removed from favorites"
-        );
-
-    }
-
-}
-
-function placeBid(auctionIndex) {
-
-    const auction =
-        auctions[auctionIndex];
-
-
-    if (!auction) {
-        return;
-    }
-
-
-    selectedAuction =
-        auction;
-
-
-    if (modalItem) {
-
-        modalItem.textContent =
-            auction.name;
-
-    }
-
-
-    if (modalCurrent) {
-
-        modalCurrent.textContent =
-            formatMoney(
-                auction.price
-            );
-
-    }
-
-
-    if (bidAmount) {
-
-        bidAmount.value =
-            "";
-
-        bidAmount.min =
-            auction.price + 1;
-
-        bidAmount.placeholder =
-            `Enter more than ${formatMoney(
-                auction.price
-            )}`;
-
-    }
-
-
-    if (bidMessage) {
-
-        bidMessage.textContent =
-            "";
-
-        bidMessage.className =
-            "bid-message";
-
-    }
-
-
-    if (bidModal) {
-
-        bidModal.classList.remove(
-            "hidden"
-        );
-
-        bidModal.classList.add(
-            "show"
-        );
-
-    }
-
-
-    setTimeout(
-        () => {
-
-            if (bidAmount) {
-                bidAmount.focus();
-            }
-
-        },
-        100
-    );
-
-}
-
-function closeBidModal() {
-
-    if (bidModal) {
-
-        bidModal.classList.remove(
-            "show"
-        );
-
-        bidModal.classList.add(
-            "hidden"
-        );
-
-    }
-
-
-    selectedAuction =
-        null;
-
-}
-
-
-function confirmBid() {
-
-    if (!selectedAuction) {
-        return;
-    }
-
-
-    const enteredAmount =
-        Number(
-            bidAmount
-                ? bidAmount.value
-                : 0
-        );
-
-
-    const currentBid =
-        Number(
-            selectedAuction.price
-        );
-
-
-
-    if (
-        !enteredAmount ||
-        enteredAmount <= 0
-    ) {
-
-        showBidMessage(
-            "Please enter a valid bid amount.",
-            "error"
-        );
-
-        return;
-    }
-
-
-    if (
-        enteredAmount <=
-        currentBid
-    ) {
-
-        showBidMessage(
-            `Please bid higher than ${formatMoney(
-                currentBid
-            )}.`,
-            "error"
-        );
-
-        if (bidAmount) {
-            bidAmount.focus();
-        }
-
-        return;
-    }
-
-
-    selectedAuction.price =
-        enteredAmount;
-
-
-    const itemName =
-        selectedAuction.name;
-
-
-    closeBidModal();
-
-
-    renderAuctions();
-
-
-    showAuctionToast(
-        `Bid placed successfully on ${itemName}`
-    );
-
-}
-
-
-
-function showBidMessage(
-    message,
-    type
-) {
-
-    if (!bidMessage) {
-        return;
-    }
-
-
-    bidMessage.textContent =
-        message;
-
-
-    bidMessage.className =
-        `bid-message ${type}`;
-
-}
-
-
-
-if (closeModalButton) {
-
-    closeModalButton.addEventListener(
-        "click",
-        closeBidModal
-    );
-
-}
-
-
-
-if (confirmBidButton) {
-
-    confirmBidButton.addEventListener(
-        "click",
-        confirmBid
-    );
-
-}
-
-
-if (bidAmount) {
-
-    bidAmount.addEventListener(
-        "keydown",
-        event => {
-
-            if (
-                event.key === "Enter"
-            ) {
-
+    function attachCardEvents() {
+        document.querySelectorAll("[data-bid]").forEach((button) => {
+            button.addEventListener("click", (event) => {
                 event.preventDefault();
+                event.stopPropagation();
 
-                confirmBid();
+                const auctionId = Number(
+                    button.dataset.bid
+                );
 
-            }
+                const auction = auctions.find(
+                    (item) =>
+                        Number(item.id) === auctionId
+                );
 
+                if (auction) {
+                    openBidModal(auction);
+                }
+            });
+        });
 
-            if (
-                event.key === "Escape"
-            ) {
+        document.querySelectorAll("[data-favorite]").forEach((button) => {
+            button.addEventListener("click", async (event) => {
+                event.preventDefault();
+                event.stopPropagation();
 
-                closeBidModal();
+                const auctionId = Number(
+                    button.dataset.favorite
+                );
 
-            }
+                if (
+                    !window.BYI_API ||
+                    !window.BYI_API.isLoggedIn()
+                ) {
+                    window.location.href =
+                        "/pages/auth/login.html";
+                    return;
+                }
 
-        }
-    );
+                const isSaved =
+                    button.classList.contains("active");
 
-}
-
-
-
-if (bidModal) {
-
-    bidModal.addEventListener(
-        "click",
-        event => {
-
-            if (
-                event.target ===
-                bidModal
-            ) {
-
-                closeBidModal();
-
-            }
-
-        }
-    );
-
-}
-
-
-document
-    .querySelectorAll(
-        ".auction-tab"
-    )
-    .forEach(
-        tab => {
-
-            tab.addEventListener(
-                "click",
-                () => {
-
-
-                    /* Remove active */
-
-                    document
-                        .querySelectorAll(
-                            ".auction-tab"
-                        )
-                        .forEach(
-                            item =>
-                                item.classList.remove(
-                                    "active"
-                                )
+                try {
+                    if (isSaved) {
+                        await window.BYI_API.request(
+                            `/api/wishlist/${auctionId}`,
+                            {
+                                method: "DELETE"
+                            }
                         );
 
+                        button.classList.remove("active");
+                        button.textContent = "♡";
 
-                    /* Add active */
+                        showToast(
+                            "Removed from wishlist."
+                        );
+                    } else {
+                        await window.BYI_API.request(
+                            `/api/wishlist/${auctionId}`,
+                            {
+                                method: "POST"
+                            }
+                        );
 
-                    tab.classList.add(
-                        "active"
+                        button.classList.add("active");
+                        button.textContent = "♥";
+
+                        showToast(
+                            "Added to wishlist."
+                        );
+                    }
+                } catch (error) {
+                    console.error(
+                        "Wishlist error:",
+                        error
                     );
 
-
-                    /* Change tab */
-
-                    activeTab =
-                        tab.dataset.tab;
-
-
-                    /* Render */
-
-                    renderAuctions();
-
+                    showToast(
+                        error.message ||
+                        "Unable to update wishlist."
+                    );
                 }
-            );
+            });
+        });
 
+        document
+            .querySelectorAll(".integrated-auction-image")
+            .forEach((image) => {
+                image.addEventListener("error", () => {
+                    if (image.dataset.fallback) {
+                        return;
+                    }
+
+                    image.dataset.fallback = "true";
+                    image.src =
+                        "/assets/images/gramophone.jpg";
+                });
+            });
+    }
+
+    function openBidModal(auction) {
+        if (!auction || !bidModal) {
+            return;
         }
-    );
 
-
-
-document
-    .querySelectorAll(
-        ".auction-category"
-    )
-    .forEach(
-        checkbox => {
-
-            checkbox.addEventListener(
-                "change",
-                renderAuctions
-            );
-
+        if (
+            !window.BYI_API ||
+            !window.BYI_API.isLoggedIn()
+        ) {
+            window.location.href =
+                "/pages/auth/login.html";
+            return;
         }
-    );
 
-
-
-document
-    .querySelectorAll(
-        ".auction-status"
-    )
-    .forEach(
-        checkbox => {
-
-            checkbox.addEventListener(
-                "change",
-                renderAuctions
-            );
-
+        if (
+            getSecondsRemaining(auction) <= 0 ||
+            auction.status === "ended"
+        ) {
+            showToast("This auction has ended.");
+            return;
         }
-    );
 
+        selectedAuction = auction;
 
-if (priceRange) {
+        const currentBid = getCurrentBid(auction);
 
-    priceRange.addEventListener(
-        "input",
-        renderAuctions
-    );
+        if (bidModalItem) {
+            bidModalItem.textContent =
+                auction.name;
+        }
 
-}
+        const modalCurrent =
+            document.getElementById("modalCurrent");
 
+        if (modalCurrent) {
+            modalCurrent.textContent =
+                formatPrice(currentBid);
+        }
 
-if (searchInput) {
+        if (bidAmountInput) {
+            bidAmountInput.value = "";
+            bidAmountInput.min = currentBid + 1;
+        }
 
-    searchInput.addEventListener(
-        "input",
-        renderAuctions
-    );
+        showBidError("");
 
-}
+        bidModal.classList.remove("hidden");
+        bidModal.classList.add("show");
 
+        bidModal.setAttribute(
+            "aria-hidden",
+            "false"
+        );
 
+        setTimeout(() => {
+            bidAmountInput?.focus();
+        }, 100);
+    }
 
-if (sortSelect) {
+    function closeBidModal() {
+        selectedAuction = null;
 
-    sortSelect.addEventListener(
-        "change",
-        renderAuctions
-    );
+        if (bidModal) {
+            bidModal.classList.remove("show");
+            bidModal.classList.add("hidden");
 
-}
+            bidModal.setAttribute(
+                "aria-hidden",
+                "true"
+            );
+        }
 
+        showBidError("");
 
-if (clearAllButton) {
+        if (bidAmountInput) {
+            bidAmountInput.value = "";
+        }
+    }
 
-    clearAllButton.addEventListener(
-        "click",
-        () => {
+    async function submitBid() {
+        if (!selectedAuction) {
+            showBidError(
+                "Please select an auction."
+            );
+            return;
+        }
 
+        const amount = Number(
+            bidAmountInput?.value
+        );
 
-            /* Clear categories */
+        const currentBid =
+            getCurrentBid(selectedAuction);
 
-            document
-                .querySelectorAll(
-                    ".auction-category"
-                )
-                .forEach(
-                    checkbox => {
+        if (
+            !Number.isFinite(amount) ||
+            amount <= currentBid
+        ) {
+            showBidError(
+                `Your bid must be higher than ${formatPrice(currentBid)}.`
+            );
+            return;
+        }
 
-                        checkbox.checked =
-                            false;
+        if (
+            !window.BYI_API ||
+            typeof window.BYI_API.request !== "function"
+        ) {
+            showBidError(
+                "Backend connection is unavailable."
+            );
+            return;
+        }
 
+        if (confirmBidBtn) {
+            confirmBidBtn.disabled = true;
+            confirmBidBtn.textContent =
+                "Placing Bid...";
+        }
+
+        try {
+            const auctionId =
+                selectedAuction.id;
+
+            const response =
+                await window.BYI_API.request(
+                    `/api/auctions/${auctionId}/bids`,
+                    {
+                        method: "POST",
+                        body: {
+                            amount
+                        }
                     }
                 );
-            document
-                .querySelectorAll(
-                    ".auction-status"
-                )
-                .forEach(
-                    checkbox => {
 
-                        checkbox.checked =
-                            false;
+            const newBid = Number(
+                response?.bid?.amount ??
+                response?.bid?.currentBid ??
+                response?.currentBid ??
+                response?.current_bid ??
+                response?.auction?.currentBid ??
+                response?.auction?.current_bid ??
+                amount
+            );
 
+            const auction = auctions.find(
+                (item) =>
+                    Number(item.id) ===
+                    Number(auctionId)
+            );
+
+            if (auction) {
+                auction.currentBid = newBid;
+                auction.price = newBid;
+
+                auction.bidCount =
+                    Number(auction.bidCount || 0) + 1;
+            }
+
+            closeBidModal();
+
+            renderAuctions();
+
+            document.dispatchEvent(
+                new CustomEvent(
+                    "byi:bidUpdated",
+                    {
+                        detail: {
+                            auctionId,
+                            currentBid: newBid
+                        }
                     }
-                );
-            const liveNow =
-                document.querySelector(
-                    ".auction-status[value='Live Now']"
-                );
+                )
+            );
 
+            showToast(
+                `Bid placed successfully: ${formatPrice(newBid)}`
+            );
+        } catch (error) {
+            console.error(
+                "Place bid error:",
+                error
+            );
 
-            if (liveNow) {
-
-                liveNow.checked =
-                    true;
-
+            showBidError(
+                error?.message ||
+                "Unable to place bid."
+            );
+        } finally {
+            if (confirmBidBtn) {
+                confirmBidBtn.disabled = false;
+                confirmBidBtn.textContent =
+                    "Place Bid";
             }
+        }
+    }
 
-            if (priceRange) {
+    function setupTabs() {
+        const tabs =
+            document.querySelectorAll(
+                ".auction-tab"
+            );
 
-                priceRange.value =
-                    priceRange.max ||
-                    500000;
+        tabs.forEach((tab) => {
+            tab.addEventListener("click", () => {
+                tabs.forEach((item) => {
+                    item.classList.remove("active");
+                });
 
-            }
+                tab.classList.add("active");
 
-            if (searchInput) {
-
-                searchInput.value =
-                    "";
-
-            }
-
-            if (sortSelect) {
-
-                sortSelect.value =
+                activeTab =
+                    tab.dataset.tab ||
                     "Trending";
 
-            }
-            activeTab =
-                "Trending";
+                renderAuctions();
+            });
+        });
+    }
 
+    function setupFilters() {
+        document
+            .querySelectorAll(".auction-category")
+            .forEach((checkbox) => {
+                checkbox.addEventListener(
+                    "change",
+                    renderAuctions
+                );
+            });
 
-            document
-                .querySelectorAll(
-                    ".auction-tab"
-                )
-                .forEach(
-                    tab => {
+        document
+            .querySelectorAll(".auction-status")
+            .forEach((checkbox) => {
+                checkbox.addEventListener(
+                    "change",
+                    renderAuctions
+                );
+            });
 
+        priceRange?.addEventListener(
+            "input",
+            renderAuctions
+        );
+
+        sortSelect?.addEventListener(
+            "change",
+            renderAuctions
+        );
+
+        searchInput?.addEventListener(
+            "input",
+            renderAuctions
+        );
+
+        clearAll?.addEventListener(
+            "click",
+            () => {
+                document
+                    .querySelectorAll(
+                        ".auction-category"
+                    )
+                    .forEach((checkbox) => {
+                        checkbox.checked = false;
+                    });
+
+                document
+                    .querySelectorAll(
+                        ".auction-status"
+                    )
+                    .forEach((checkbox) => {
+                        checkbox.checked = false;
+                    });
+
+                const liveNow =
+                    document.querySelector(
+                        '.auction-status[value="Live Now"]'
+                    );
+
+                if (liveNow) {
+                    liveNow.checked = true;
+                }
+
+                if (priceRange) {
+                    priceRange.value =
+                        priceRange.max;
+                }
+
+                if (sortSelect) {
+                    sortSelect.selectedIndex = 0;
+                }
+
+                if (searchInput) {
+                    searchInput.value = "";
+                }
+
+                activeTab = "Trending";
+
+                document
+                    .querySelectorAll(
+                        ".auction-tab"
+                    )
+                    .forEach((tab) => {
                         tab.classList.remove(
                             "active"
                         );
 
-                    }
-                );
+                        if (
+                            tab.dataset.tab ===
+                            "Trending"
+                        ) {
+                            tab.classList.add(
+                                "active"
+                            );
+                        }
+                    });
 
-
-            const trendingTab =
-                document.querySelector(
-                    ".auction-tab[data-tab='Trending']"
-                );
-
-
-            if (trendingTab) {
-
-                trendingTab.classList.add(
-                    "active"
-                );
-
+                renderAuctions();
             }
+        );
+    }
 
+    function updateCountdowns() {
+        document
+            .querySelectorAll(
+                ".auction-countdown"
+            )
+            .forEach((element) => {
+                const auctionId =
+                    Number(
+                        element.dataset.auctionId
+                    );
 
-            renderAuctions();
+                const auction =
+                    auctions.find(
+                        (item) =>
+                            Number(item.id) ===
+                            auctionId
+                    );
 
-        }
-    );
-
-}
-setInterval(
-    () => {
-
-        auctions.forEach(
-            auction => {
-
-                if (auction.time > 0) {
-
-                    auction.time--;
-
+                if (!auction) {
+                    return;
                 }
 
+                const seconds =
+                    getSecondsRemaining(
+                        auction
+                    );
+
+                element.textContent =
+                    seconds > 0
+                        ? formatTime(seconds)
+                        : "Ended";
+
+                const card =
+                    element.closest(
+                        ".integrated-auction-card"
+                    );
+
+                const bidButton =
+                    card?.querySelector(
+                        "[data-bid]"
+                    );
+
+                if (
+                    seconds <= 0 &&
+                    bidButton
+                ) {
+                    bidButton.disabled = true;
+                    bidButton.textContent =
+                        "Auction Ended";
+                }
+            });
+    }
+
+    function setupModal() {
+        closeBidBtn?.addEventListener(
+            "click",
+            (event) => {
+                event.preventDefault();
+                closeBidModal();
             }
         );
 
+        confirmBidBtn?.addEventListener(
+            "click",
+            (event) => {
+                event.preventDefault();
+                submitBid();
+            }
+        );
 
-        document
-            .querySelectorAll(
-                ".time[data-auction-index]"
-            )
-            .forEach(
-                timer => {
-
-                    const index =
-                        Number(
-                            timer.dataset.auctionIndex
-                        );
-
-
-                    const auction =
-                        auctions[index];
-
-
-                    if (!auction) {
-                        return;
-                    }
-
-
-                    timer.textContent =
-                        formatTime(
-                            auction.time
-                        );
-
+        bidAmountInput?.addEventListener(
+            "keydown",
+            (event) => {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    submitBid();
                 }
+            }
+        );
+
+        bidModal?.addEventListener(
+            "click",
+            (event) => {
+                if (event.target === bidModal) {
+                    closeBidModal();
+                }
+            }
+        );
+
+        document.addEventListener(
+            "keydown",
+            (event) => {
+                if (event.key === "Escape") {
+                    closeBidModal();
+                }
+            }
+        );
+    }
+
+    function setupCategoryBidListener() {
+        document.addEventListener(
+            "byi:categoryBid",
+            (event) => {
+                const auction =
+                    event.detail?.auction;
+
+                if (!auction) {
+                    return;
+                }
+
+                const normalized =
+                    normalizeAuction(
+                        auction,
+                        0
+                    );
+
+                const existing =
+                    auctions.find(
+                        (item) =>
+                            Number(item.id) ===
+                            Number(normalized.id)
+                    );
+
+                openBidModal(
+                    existing || normalized
+                );
+            }
+        );
+    }
+
+    function setupBidUpdateListener() {
+        document.addEventListener(
+            "byi:bidUpdated",
+            (event) => {
+                const auctionId =
+                    event.detail?.auctionId;
+
+                const currentBid =
+                    Number(
+                        event.detail?.currentBid
+                    );
+
+                if (
+                    auctionId === undefined ||
+                    !Number.isFinite(currentBid)
+                ) {
+                    return;
+                }
+
+                const auction =
+                    auctions.find(
+                        (item) =>
+                            Number(item.id) ===
+                            Number(auctionId)
+                    );
+
+                if (auction) {
+                    auction.currentBid =
+                        currentBid;
+
+                    auction.price =
+                        currentBid;
+                }
+
+                renderAuctions();
+            }
+        );
+    }
+
+    function init() {
+        if (!auctionGrid) {
+            console.error(
+                "Auction system: #auctionGrid not found."
+            );
+            return;
+        }
+
+        setupTabs();
+        setupFilters();
+        setupModal();
+        setupCategoryBidListener();
+        setupBidUpdateListener();
+
+        auctions =
+            demoAuctions.map(
+                normalizeAuction
             );
 
-    },
-    1000
-);
-renderAuctions();
+        renderAuctions();
+
+        loadAuctionsFromServer();
+
+        setInterval(
+            updateCountdowns,
+            1000
+        );
+    }
+
+    if (
+        document.readyState ===
+        "loading"
+    ) {
+        document.addEventListener(
+            "DOMContentLoaded",
+            init
+        );
+    } else {
+        init();
+    }
+})();
