@@ -85,23 +85,68 @@
     }
 
 
-    function imagePath(image) {
-        if (!image) {
-            return "../../assets/images/watch.jpg";
-        }
+    // function imagePath(image) {
+    //     if (!image) {
+    //         return "../../assets/images/watch.jpg";
+    //     }
 
-        if (
-            image.startsWith("http://") ||
-            image.startsWith("https://") ||
-            image.startsWith("/")
-        ) {
-            return image;
-        }
+    //     if (
+    //         image.startsWith("http://") ||
+    //         image.startsWith("https://") ||
+    //         image.startsWith("/")
+    //     ) {
+    //         return image;
+    //     }
 
-        return image.startsWith("../../")
-            ? image
-            : `../../${image.replace(/^\/+/, "")}`;
+    //     return image.startsWith("../../")
+    //         ? image
+    //         : `../../${image.replace(/^\/+/, "")}`;
+    // }
+
+
+    function imagePath(image, category) {
+    const fallbackImages = {
+        Electronics: "/assets/images/laptop.png",
+        Furniture: "/assets/images/chair.jpg",
+        Jewellery: "/assets/images/necklace.jpg",
+        "Art & Collectibles": "/assets/images/painting.jpg",
+        Art: "/assets/images/painting.jpg",
+        Vehicles: "/assets/images/car.jpg",
+        Fashion: "/assets/images/watch.jpg",
+        "Home & Living": "/assets/images/sofa.jpg",
+        "Sports & Hobbies": "/assets/images/sports.jpg",
+        Sports: "/assets/images/sports.jpg",
+        Antiques: "/assets/images/gramophone.jpg"
+    };
+
+    const fallback =
+        fallbackImages[category] ||
+        "/assets/images/gramophone.jpg";
+
+    if (!image) {
+        return fallback;
     }
+
+    image = String(image).trim();
+
+    if (
+        image.startsWith("http://") ||
+        image.startsWith("https://") ||
+        image.startsWith("data:")
+    ) {
+        return image;
+    }
+
+    if (image.startsWith("/")) {
+        return image;
+    }
+
+    image = image
+        .replace(/^(\.\.\/)+/, "")
+        .replace(/^(\.\/)+/, "");
+
+    return "/" + image;
+}
 
 
     function getUser() {
@@ -619,68 +664,151 @@
     }
 
 
+    // function createAuctionCard(auction) {
+
+    //     return `
+    //         <article
+    //             class="auction-mini-card"
+    //             data-auction-id="${auction.id}">
+
+    //             <div class="auction-mini-image">
+
+    //                 <img
+    //                     src="${escapeHTML(imagePath(auction.image_url || auction.img))}"
+    //                     alt="${escapeHTML(auction.title || auction.name)}">
+
+    //                 <span class="live-badge">
+    //                     Live
+    //                 </span>
+
+    //             </div>
+
+
+    //             <div class="auction-mini-content">
+
+    //                 <span class="category-label">
+    //                     ${escapeHTML(auction.category || "Auction")}
+    //                 </span>
+
+    //                 <h3>
+    //                     ${escapeHTML(auction.title || auction.name)}
+    //                 </h3>
+
+
+    //                 <div class="auction-mini-price">
+
+    //                     <span>
+    //                         Current Bid
+    //                     </span>
+
+    //                     <strong>
+    //                         ${money(
+    //                             auction.current_bid ||
+    //                             auction.current
+    //                         )}
+    //                     </strong>
+
+    //                 </div>
+
+
+    //                 <button
+    //                     type="button"
+    //                     class="mini-btn"
+    //                     data-bid-auction="${auction.id}">
+
+    //                     Place Bid
+
+    //                 </button>
+
+    //             </div>
+
+    //         </article>
+    //     `;
+    // }
+
     function createAuctionCard(auction) {
+    const title =
+        auction.title ||
+        auction.name ||
+        "Auction Item";
 
-        return `
-            <article
-                class="auction-mini-card"
-                data-auction-id="${auction.id}">
+    const category =
+        auction.category ||
+        "Auction";
 
-                <div class="auction-mini-image">
+    const image =
+        auction.image_url ||
+        auction.image ||
+        auction.img ||
+        auction.imageUrl ||
+        "";
 
-                    <img
-                        src="${escapeHTML(imagePath(auction.image_url || auction.img))}"
-                        alt="${escapeHTML(auction.title || auction.name)}">
+    const finalImage =
+        imagePath(image, category);
 
-                    <span class="live-badge">
-                        Live
+    const currentBid =
+        auction.current_bid ??
+        auction.currentBid ??
+        auction.current ??
+        auction.starting_price ??
+        auction.startingPrice ??
+        0;
+
+    return `
+        <article
+            class="auction-mini-card"
+            data-auction-id="${escapeHTML(String(auction.id))}">
+
+            <div class="auction-mini-image">
+
+                <img
+                    src="${escapeHTML(finalImage)}"
+                    alt="${escapeHTML(title)}"
+                    loading="lazy"
+                    onerror="this.onerror=null;this.src='/assets/images/gramophone.jpg';">
+
+                <span class="live-badge">
+                    Live
+                </span>
+
+            </div>
+
+            <div class="auction-mini-content">
+
+                <span class="category-label">
+                    ${escapeHTML(category)}
+                </span>
+
+                <h3>
+                    ${escapeHTML(title)}
+                </h3>
+
+                <div class="auction-mini-price">
+
+                    <span>
+                        Current Bid
                     </span>
+
+                    <strong>
+                        ${money(currentBid)}
+                    </strong>
 
                 </div>
 
+                <button
+                    type="button"
+                    class="mini-btn"
+                    data-bid-auction="${escapeHTML(String(auction.id))}">
 
-                <div class="auction-mini-content">
+                    Place Bid
 
-                    <span class="category-label">
-                        ${escapeHTML(auction.category || "Auction")}
-                    </span>
+                </button>
 
-                    <h3>
-                        ${escapeHTML(auction.title || auction.name)}
-                    </h3>
+            </div>
 
-
-                    <div class="auction-mini-price">
-
-                        <span>
-                            Current Bid
-                        </span>
-
-                        <strong>
-                            ${money(
-                                auction.current_bid ||
-                                auction.current
-                            )}
-                        </strong>
-
-                    </div>
-
-
-                    <button
-                        type="button"
-                        class="mini-btn"
-                        data-bid-auction="${auction.id}">
-
-                        Place Bid
-
-                    </button>
-
-                </div>
-
-            </article>
-        `;
-    }
-
+        </article>
+    `;
+}
 
 
     function renderWishlist() {
