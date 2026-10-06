@@ -119,10 +119,19 @@ function renderSidebar(filter = "") {
     categoryList.innerHTML = "";
 
     const all = document.createElement("button");
+
     all.type = "button";
     all.className = `category-item ${!selectedCategory ? "active" : ""}`;
-    all.innerHTML = `<span class="icon">▦</span><span>All Categories</span>`;
+
+    all.innerHTML = `
+        <span class="category-label">
+            <span class="icon">▦</span>
+            <span>All Categories</span>
+        </span>
+    `;
+
     all.addEventListener("click", showAll);
+
     categoryList.appendChild(all);
 
     categories
@@ -130,14 +139,20 @@ function renderSidebar(filter = "") {
             category.name.toLowerCase().includes(filter.toLowerCase())
         )
         .forEach(category => {
+
             const element = document.createElement("button");
 
             element.type = "button";
-            element.className = `category-item ${selectedCategory === category.name ? "active" : ""}`;
+
+            element.className =
+                `category-item ${selectedCategory === category.name ? "active" : ""}`;
 
             element.innerHTML = `
-                <span class="icon">${category.icon}</span>
-                <span>${category.name}</span>
+                <span class="category-label">
+                    <span class="icon">${category.icon}</span>
+                    <span>${category.name}</span>
+                </span>
+
                 <small>${category.count}</small>
             `;
 
@@ -153,21 +168,43 @@ function renderCategories() {
     if (!categoryCards) return;
 
     categoryCards.innerHTML = categories.map(category => `
-        <article class="integrated-category-card" data-category="${category.name}">
-            <img src="${category.image}" alt="${category.name}">
+        <article
+            class="integrated-category-card"
+            data-category="${category.name}"
+        >
+            <img
+                src="${category.image}"
+                alt="${category.name}"
+            >
+
             <div class="integrated-category-card-info">
+
                 <h3>${category.name}</h3>
+
                 <p>${category.count} items</p>
-                <button class="integrated-category-arrow" type="button">→</button>
+
+                <button
+                    class="integrated-category-arrow"
+                    type="button"
+                    aria-label="Open ${category.name}"
+                >
+                    →
+                </button>
+
             </div>
+
         </article>
     `).join("");
 
-    categoryCards.querySelectorAll(".integrated-category-card").forEach(card => {
-        card.addEventListener("click", () => {
-            showCategory(card.dataset.category);
+    categoryCards
+        .querySelectorAll(".integrated-category-card")
+        .forEach(card => {
+
+            card.addEventListener("click", () => {
+                showCategory(card.dataset.category);
+            });
+
         });
-    });
 }
 
 function showAll() {
@@ -212,6 +249,7 @@ function showCategory(name) {
     }
 
     renderSidebar(categorySearch ? categorySearch.value : "");
+
     renderItems(category);
 
     setTimeout(() => {
@@ -227,28 +265,50 @@ function renderItems(category) {
 
     itemsGrid.innerHTML = category.items.map((item, index) => `
         <article class="integrated-item-card">
-            <img src="${item[2]}" alt="${item[0]}">
+
+            <img
+                src="${item[2]}"
+                alt="${item[0]}"
+            >
+
             <div class="integrated-item-body">
+
                 <h3>${item[0]}</h3>
-                <span class="integrated-price-label">Current Auction Price</span>
-                <div class="integrated-price" id="price-${category.name}-${index}">
+
+                <span class="integrated-price-label">
+                    Current Auction Price
+                </span>
+
+                <div
+                    class="integrated-price"
+                    id="price-${category.name}-${index}"
+                >
                     ${item[1]}
                 </div>
-                <div class="integrated-timer" id="timer-${category.name}-${index}">
+
+                <div
+                    class="integrated-timer"
+                    id="timer-${category.name}-${index}"
+                >
                     Loading...
                 </div>
+
                 <button
                     class="integrated-item-bid-btn"
                     type="button"
                     data-category="${category.name}"
-                    data-index="${index}">
+                    data-index="${index}"
+                >
                     Bid Now
                 </button>
+
             </div>
+
         </article>
     `).join("");
 
     category.items.forEach((item, index) => {
+
         const key = `${category.name}-${index}`;
 
         if (!timers.has(key)) {
@@ -260,27 +320,42 @@ function renderItems(category) {
         updateTimer(category, index);
     });
 
-    itemsGrid.querySelectorAll(".integrated-item-bid-btn").forEach(button => {
-        button.addEventListener("click", () => {
-            openBid(category, Number(button.dataset.index));
+    itemsGrid
+        .querySelectorAll(".integrated-item-bid-btn")
+        .forEach(button => {
+
+            button.addEventListener("click", () => {
+                openBid(
+                    category,
+                    Number(button.dataset.index)
+                );
+            });
+
         });
-    });
 }
 
 function updateTimer(category, index) {
     const key = `${category.name}-${index}`;
+
     const state = timers.get(key);
-    const element = document.getElementById(`timer-${category.name}-${index}`);
+
+    const element = document.getElementById(
+        `timer-${category.name}-${index}`
+    );
 
     if (!element || !state) return;
 
-    const left = Math.max(0, state.end - Date.now());
+    const left = Math.max(
+        0,
+        state.end - Date.now()
+    );
 
     const button = itemsGrid?.querySelector(
         `.integrated-item-bid-btn[data-category="${CSS.escape(category.name)}"][data-index="${index}"]`
     );
 
     if (left <= 0) {
+
         element.textContent = "Auction Closed";
 
         if (button) {
@@ -297,8 +372,13 @@ function updateTimer(category, index) {
     }
 
     const total = Math.floor(left / 1000);
+
     const hours = Math.floor(total / 3600);
-    const minutes = Math.floor((total % 3600) / 60);
+
+    const minutes = Math.floor(
+        (total % 3600) / 60
+    );
+
     const seconds = total % 60;
 
     element.textContent =
@@ -306,6 +386,7 @@ function updateTimer(category, index) {
 }
 
 setInterval(() => {
+
     if (!selectedCategory) return;
 
     const category = categories.find(
@@ -317,6 +398,7 @@ setInterval(() => {
     category.items.forEach((_, index) => {
         updateTimer(category, index);
     });
+
 }, 1000);
 
 function openBid(category, index) {
@@ -338,14 +420,18 @@ function openBid(category, index) {
     }
 
     if (bidAmount) {
+
         const current = parseInt(
             item[1].replace(/[₹,\s]/g, ""),
             10
         );
 
         bidAmount.value = "";
+
         bidAmount.min = current + 1;
-        bidAmount.placeholder = `Enter more than ${item[1]}`;
+
+        bidAmount.placeholder =
+            `Enter more than ${item[1]}`;
     }
 
     if (bidMessage) {
@@ -360,6 +446,7 @@ function openBid(category, index) {
 }
 
 function closeBid() {
+
     if (modal) {
         modal.classList.remove("show");
         modal.classList.add("hidden");
@@ -369,6 +456,7 @@ function closeBid() {
 }
 
 function handleCategoryBid() {
+
     if (!currentBidTarget) return;
 
     const amount = parseInt(
@@ -377,7 +465,9 @@ function handleCategoryBid() {
     );
 
     const category = currentBidTarget.category;
+
     const index = currentBidTarget.index;
+
     const item = category.items[index];
 
     if (!item) return;
@@ -388,110 +478,214 @@ function handleCategoryBid() {
     );
 
     if (!amount || amount <= current) {
+
         if (bidMessage) {
+
             bidMessage.textContent =
                 `Please enter a bid higher than ${item[1]}.`;
-            bidMessage.className = "bid-message error";
+
+            bidMessage.className =
+                "bid-message error";
         }
+
         return;
     }
 
-    item[1] = `₹${amount.toLocaleString("en-IN")}`;
+    item[1] =
+        `₹${amount.toLocaleString("en-IN")}`;
 
     renderItems(category);
 
     if (bidMessage) {
-        bidMessage.textContent = "Bid placed successfully!";
-        bidMessage.className = "bid-message success";
+
+        bidMessage.textContent =
+            "Bid placed successfully!";
+
+        bidMessage.className =
+            "bid-message success";
     }
 
     setTimeout(closeBid, 700);
 }
 
-closeModal?.addEventListener("click", closeBid);
-
-modal?.addEventListener("click", event => {
-    if (event.target === modal) {
-        closeBid();
-    }
-});
-
-confirmBid?.addEventListener("click", handleCategoryBid);
-
-bidAmount?.addEventListener("keydown", event => {
-    if (event.key === "Enter") {
-        event.preventDefault();
-        handleCategoryBid();
-    }
-
-    if (event.key === "Escape") {
-        closeBid();
-    }
-});
-
-categorySearch?.addEventListener("input", event => {
-    renderSidebar(event.target.value);
-});
-
-exploreAll?.addEventListener("click", showAll);
-
-backCategories?.addEventListener("click", showAll);
-
-globalThis.document?.getElementById("globalSearch")?.addEventListener("input", event => {
-    const query = event.target.value.toLowerCase().trim();
-
-    if (!query) return;
-
-    const categoryMatch = categories.find(category =>
-        category.name.toLowerCase().includes(query) ||
-        category.items.some(item =>
-            item[0].toLowerCase().includes(query)
-        )
-    );
-
-    if (categoryMatch) {
-        showCategory(categoryMatch.name);
-    }
-});
-
-startExploringBtn?.addEventListener("click", () => {
-    document.getElementById("trending-auctions")?.scrollIntoView({
-        behavior: "smooth"
-    });
-});
-
-const navLinks = document.querySelectorAll(
-    ".custom-navbar .nav-link"
+closeModal?.addEventListener(
+    "click",
+    closeBid
 );
 
-window.addEventListener("scroll", () => {
-    const trendingSection = document.getElementById("trending-auctions");
-    const categoriesSection = document.getElementById("categories");
+modal?.addEventListener(
+    "click",
+    event => {
 
-    if (!trendingSection || !categoriesSection) return;
+        if (event.target === modal) {
+            closeBid();
+        }
 
-    const scrollPosition = window.scrollY + 150;
-
-    navLinks.forEach(link => {
-        link.classList.remove("active");
-    });
-
-    if (scrollPosition < trendingSection.offsetTop) {
-        document.querySelector(
-            ".custom-navbar a[href='#home']"
-        )?.classList.add("active");
-    } else if (scrollPosition < categoriesSection.offsetTop) {
-        document.querySelector(
-            ".custom-navbar a[href='#trending-auctions']"
-        )?.classList.add("active");
-    } else {
-        document.querySelector(
-            ".custom-navbar a[href='#categories']"
-        )?.classList.add("active");
     }
-});
+);
 
-document.addEventListener("DOMContentLoaded", () => {
-    renderSidebar();
-    renderCategories();
-});
+confirmBid?.addEventListener(
+    "click",
+    handleCategoryBid
+);
+
+bidAmount?.addEventListener(
+    "keydown",
+    event => {
+
+        if (event.key === "Enter") {
+
+            event.preventDefault();
+
+            handleCategoryBid();
+        }
+
+        if (event.key === "Escape") {
+            closeBid();
+        }
+
+    }
+);
+
+categorySearch?.addEventListener(
+    "input",
+    event => {
+        renderSidebar(event.target.value);
+    }
+);
+
+exploreAll?.addEventListener(
+    "click",
+    showAll
+);
+
+backCategories?.addEventListener(
+    "click",
+    showAll
+);
+
+document
+    .getElementById("globalSearch")
+    ?.addEventListener(
+        "input",
+        event => {
+
+            const query =
+                event.target.value
+                    .toLowerCase()
+                    .trim();
+
+            if (!query) return;
+
+            const categoryMatch =
+                categories.find(category =>
+                    category.name
+                        .toLowerCase()
+                        .includes(query) ||
+
+                    category.items.some(item =>
+                        item[0]
+                            .toLowerCase()
+                            .includes(query)
+                    )
+                );
+
+            if (categoryMatch) {
+                showCategory(
+                    categoryMatch.name
+                );
+            }
+
+        }
+    );
+
+startExploringBtn?.addEventListener(
+    "click",
+    () => {
+
+        document
+            .getElementById("trending-auctions")
+            ?.scrollIntoView({
+                behavior: "smooth"
+            });
+
+    }
+);
+
+const navLinks =
+    document.querySelectorAll(
+        ".custom-navbar .nav-link"
+    );
+
+window.addEventListener(
+    "scroll",
+    () => {
+
+        const trendingSection =
+            document.getElementById(
+                "trending-auctions"
+            );
+
+        const categoriesSection =
+            document.getElementById(
+                "categories"
+            );
+
+        if (
+            !trendingSection ||
+            !categoriesSection
+        ) {
+            return;
+        }
+
+        const scrollPosition =
+            window.scrollY + 150;
+
+        navLinks.forEach(link => {
+            link.classList.remove("active");
+        });
+
+        if (
+            scrollPosition <
+            trendingSection.offsetTop
+        ) {
+
+            document
+                .querySelector(
+                    ".custom-navbar a[href='#home']"
+                )
+                ?.classList.add("active");
+
+        } else if (
+            scrollPosition <
+            categoriesSection.offsetTop
+        ) {
+
+            document
+                .querySelector(
+                    ".custom-navbar a[href='#trending-auctions']"
+                )
+                ?.classList.add("active");
+
+        } else {
+
+            document
+                .querySelector(
+                    ".custom-navbar a[href='#categories']"
+                )
+                ?.classList.add("active");
+        }
+
+    }
+);
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        renderSidebar();
+
+        renderCategories();
+
+    }
+);
