@@ -136,7 +136,10 @@ async function start() {
     process.exit(1);
   }
 
-  app.listen(PORT, () => console.log(`Bid Your Item running at http://localhost:${PORT}`));
+  //app.listen(PORT, () => console.log(`Bid Your Item running at http://localhost:${PORT}`));
+  app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Bid Your Item running on port ${PORT}`);
+});
 }
 
 start();
