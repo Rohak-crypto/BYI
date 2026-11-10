@@ -3,469 +3,235 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bid Your Item - User Dashboard</title>
 
-    <title>Bid Your Item - Dashboard</title>
-
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-    >
-
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-    >
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/assets/css/dashboard.css">
 
     <script src="/assets/js/api.js"></script>
     <script src="/assets/js/dashboard.js" defer></script>
 </head>
-
 <body>
 
 <header class="topbar">
-
     <div class="topbar-left">
-
         <button class="menu-toggle" id="menuToggle" type="button">
             <i class="fa-solid fa-bars"></i>
         </button>
 
         <a href="../../index.html" class="brand">
             <i class="fa-solid fa-gavel"></i>
-
             <div class="brand-text">
                 <span class="brand-name">Bid Your Item</span>
                 <span class="brand-tagline">BID · DISCOVER · OWN</span>
             </div>
         </a>
-
     </div>
 
-
     <nav class="top-navigation">
-
-        <button type="button" class="top-nav-link" data-top="home">
-            <i class="fa-solid fa-house"></i>
-            <span>Home</span>
+        <button class="top-nav-link" data-top="home" type="button">
+            <i class="fa-solid fa-house"></i> Home
         </button>
-
-        <button type="button" class="top-nav-link" data-top="auctions">
-            <i class="fa-solid fa-gavel"></i>
-            <span>Auctions</span>
+        <button class="top-nav-link" data-top="auctions" type="button">
+            <i class="fa-solid fa-gavel"></i> Auctions
         </button>
-
-        <button type="button" class="top-nav-link" data-top="categories">
-            <i class="fa-solid fa-layer-group"></i>
-            <span>Categories</span>
+        <button class="top-nav-link" data-top="categories" type="button">
+            <i class="fa-solid fa-layer-group"></i> Categories
         </button>
-
     </nav>
 
-
     <div class="topbar-right">
-
         <div class="search-box">
-
             <i class="fa-solid fa-magnifying-glass"></i>
-
-            <input
-                type="text"
-                id="searchInput"
-                placeholder="Search auctions...">
-
+            <input id="searchInput" type="text"
+                   placeholder="Search auctions..."
+                   aria-label="Search auctions">
         </div>
 
-
-        <button
-            class="icon-button"
-            id="notificationBtn"
-            type="button"
-            aria-label="Notifications">
-
+        <button class="icon-button" id="notificationBtn" type="button">
             <i class="fa-regular fa-bell"></i>
-
-            <span
-                class="notification-dot"
-                id="notificationDot">
-            </span>
-
+            <span class="notification-dot" id="notificationDot"></span>
         </button>
 
-
         <div class="user-mini">
-
             <div class="user-avatar">
                 <i class="fa-solid fa-user"></i>
             </div>
-
             <div class="user-mini-info">
-
                 <strong id="topUserName">User</strong>
-
-                <small id="topUserRole">
-                    Buyer
-                </small>
-
+                <small id="topUserRole">Buyer</small>
             </div>
-
             <i class="fa-solid fa-chevron-down"></i>
-
         </div>
-
     </div>
-
 </header>
-
-
 
 <div class="layout">
 
-
+    <!-- LEFT SIDEBAR -->
     <aside class="sidebar">
 
         <div class="sidebar-profile">
-
             <div class="sidebar-avatar">
                 <i class="fa-solid fa-user"></i>
             </div>
-
             <div>
-
                 <h6>Welcome back!</h6>
-
-                <strong id="sidebarUserName">
-                    User
-                </strong>
-
+                <strong id="sidebarUserName">User</strong>
             </div>
-
         </div>
-
 
         <nav class="sidebar-nav">
 
-            <button
-                type="button"
-                class="side-link active"
-                data-section="dashboard">
-
+            <button class="side-link active" data-section="dashboard" type="button">
                 <i class="fa-solid fa-chart-line"></i>
                 <span>Dashboard</span>
-
             </button>
 
-
-            <button
-                type="button"
-                class="side-link"
-                data-section="profile">
-
+            <button class="side-link" data-section="profile" type="button">
                 <i class="fa-regular fa-user"></i>
                 <span>My Profile</span>
-
             </button>
 
-
-            <button
-                type="button"
-                class="side-link"
-                data-section="mybids">
-
+            <button class="side-link" data-section="mybids" type="button">
                 <i class="fa-solid fa-gavel"></i>
                 <span>My Bids</span>
-
             </button>
 
-
-            <button
-                type="button"
-                class="side-link"
-                data-section="wishlist">
-
+            <button class="side-link" data-section="wishlist" type="button">
                 <i class="fa-regular fa-heart"></i>
                 <span>Wishlist</span>
-
-                <span
-                    class="side-badge"
-                    id="wishlistBadge">
-                    0
-                </span>
-
+                <span class="side-badge" id="wishlistBadge">0</span>
             </button>
 
-
-            <button
-                type="button"
-                class="side-link"
-                data-section="myauctions">
-
+            <button class="side-link" data-section="myauctions" type="button">
                 <i class="fa-solid fa-box-open"></i>
                 <span>My Auctions</span>
-
             </button>
 
-
-            <button
-                type="button"
-                class="side-link"
-                data-section="messages">
-
+            <button class="side-link" data-section="messages" type="button">
                 <i class="fa-regular fa-comments"></i>
                 <span>Messages</span>
-
-                <span
-                    class="side-badge"
-                    id="messageBadge">
-                    0
-                </span>
-
+                <span class="side-badge" id="messageBadge">0</span>
             </button>
 
-
-            <button
-                type="button"
-                class="side-link"
-                data-section="wallet">
-
+            <button class="side-link" data-section="wallet" type="button">
                 <i class="fa-solid fa-wallet"></i>
                 <span>Wallet</span>
-
             </button>
 
-
-            <button
-                type="button"
-                class="side-link"
-                data-section="notifications">
-
+            <button class="side-link" data-section="notifications" type="button">
                 <i class="fa-regular fa-bell"></i>
                 <span>Notifications</span>
-
-                <span
-                    class="side-badge"
-                    id="notificationBadge">
-                    0
-                </span>
-
+                <span class="side-badge" id="notificationBadge">0</span>
             </button>
 
-
-            <button
-                type="button"
-                class="side-link"
-                data-section="settings">
-
+            <button class="side-link" data-section="settings" type="button">
                 <i class="fa-solid fa-gear"></i>
                 <span>Settings</span>
-
             </button>
-
         </nav>
 
-
         <div class="sidebar-bottom">
-
-            <button
-                type="button"
-                class="side-link"
-                data-top="help">
-
+            <button class="side-link" data-top="help" type="button">
                 <i class="fa-regular fa-circle-question"></i>
                 <span>Help & Support</span>
-
             </button>
 
-
-            <button
-                type="button"
-                class="side-link logout-btn"
-                id="logoutBtn">
-
+            <button class="side-link logout-btn" id="logoutBtn" type="button">
                 <i class="fa-solid fa-right-from-bracket"></i>
                 <span>Logout</span>
-
             </button>
-
         </div>
-
     </aside>
 
-
+    <!-- MAIN CONTENT -->
     <main class="main">
 
-
-        <section
-            id="dashboard"
-            class="dashboard-section active-section">
+        <!-- DASHBOARD -->
+        <section id="dashboard" class="dashboard-section active-section">
 
             <div class="page-heading">
-
                 <div>
-
-                    <span class="eyebrow">
-                        USER DASHBOARD
-                    </span>
-
+                    <span class="eyebrow">USER DASHBOARD</span>
                     <h1>
                         Welcome back,
-                        <span id="welcomeUserName">
-                            User
-                        </span>
-                        <span>👋</span>
+                        <span id="welcomeUserName">User</span> 👋
                     </h1>
-
-                    <p>
-                        Track your bids, auctions and account activity
-                        from one place.
-                    </p>
-
+                    <p>Track your bids, auctions and account activity from one place.</p>
                 </div>
 
-
-                <button
-                    type="button"
-                    class="primary-btn"
-                    data-top="auctions">
-
+                <button class="primary-btn" data-top="auctions" type="button">
                     <i class="fa-solid fa-gavel"></i>
                     Browse Auctions
-
                 </button>
-
             </div>
 
-
+            <!-- STATISTICS -->
             <div class="stats-grid">
 
                 <div class="stat-card">
-
                     <div class="stat-icon">
                         <i class="fa-solid fa-gavel"></i>
                     </div>
-
                     <div class="stat-content">
-
                         <span>Active Bids</span>
-
-                        <strong id="activeBidsStat">
-                            0
-                        </strong>
-
-                        <small>
-                            Currently active
-                        </small>
-
+                        <strong id="activeBidsStat">0</strong>
+                        <small>Currently active</small>
                     </div>
-
                 </div>
 
-
                 <div class="stat-card">
-
                     <div class="stat-icon">
                         <i class="fa-solid fa-trophy"></i>
                     </div>
-
                     <div class="stat-content">
-
                         <span>Won Auctions</span>
-
-                        <strong id="wonAuctionsStat">
-                            0
-                        </strong>
-
-                        <small>
-                            Successful purchases
-                        </small>
-
+                        <strong id="wonAuctionsStat">0</strong>
+                        <small>Successful purchases</small>
                     </div>
-
                 </div>
 
-
                 <div class="stat-card">
-
                     <div class="stat-icon">
                         <i class="fa-regular fa-heart"></i>
                     </div>
-
                     <div class="stat-content">
-
                         <span>Watching</span>
-
-                        <strong id="watchingStat">
-                            0
-                        </strong>
-
-                        <small>
-                            Auctions you're following
-                        </small>
-
+                        <strong id="watchingStat">0</strong>
+                        <small>Auctions you're following</small>
                     </div>
-
                 </div>
 
-
                 <div class="stat-card">
-
                     <div class="stat-icon">
                         <i class="fa-solid fa-bookmark"></i>
                     </div>
-
                     <div class="stat-content">
-
                         <span>Saved Items</span>
-
-                        <strong id="savedStat">
-                            0
-                        </strong>
-
-                        <small>
-                            Saved for later
-                        </small>
-
+                        <strong id="savedStat">0</strong>
+                        <small>Saved for later</small>
                     </div>
-
                 </div>
 
             </div>
 
-
+            <!-- ACTIVE BIDS -->
             <div class="content-card">
-
                 <div class="card-heading">
-
                     <div>
-
                         <h2>My Active Bids</h2>
-
-                        <p>
-                            Auctions where you currently have an active bid.
-                        </p>
-
+                        <p>Auctions where you currently have an active bid.</p>
                     </div>
-
-                    <button
-                        type="button"
-                        class="text-btn"
-                        data-section="mybids">
-
-                        View All
-                        <i class="fa-solid fa-arrow-right"></i>
-
+                    <button class="text-btn" data-section="mybids" type="button">
+                        View All <i class="fa-solid fa-arrow-right"></i>
                     </button>
-
                 </div>
 
-
                 <div class="table-responsive">
-
                     <table class="dashboard-table">
-
                         <thead>
-
                             <tr>
                                 <th>Item</th>
                                 <th>Your Bid</th>
@@ -473,190 +239,61 @@
                                 <th>Ends In</th>
                                 <th>Status</th>
                             </tr>
-
                         </thead>
-
-                        <tbody id="dashboardRows">
-
+                        <tbody id="activeBidRows">
                             <tr>
-                                <td colspan="5">
-                                    Loading bids...
-                                </td>
+                                <td colspan="5">Loading bids...</td>
                             </tr>
-
                         </tbody>
-
                     </table>
-
                 </div>
-
             </div>
 
-
+            <!-- RECOMMENDED -->
             <div class="content-card">
-
                 <div class="card-heading">
-
                     <div>
-
                         <h2>Recommended For You</h2>
-
-                        <p>
-                            Live auctions available for bidding.
-                        </p>
-
+                        <p>Live auctions available for bidding.</p>
                     </div>
-
-                    <button
-                        type="button"
-                        class="text-btn"
-                        data-top="auctions">
-
-                        Explore More
-                        <i class="fa-solid fa-arrow-right"></i>
-
+                    <button class="text-btn" data-top="auctions" type="button">
+                        Explore More <i class="fa-solid fa-arrow-right"></i>
                     </button>
-
                 </div>
 
-
-                <div
-                    class="recommend-grid"
-                    id="recommendGrid">
-
-                    <p>Loading auctions...</p>
-
+                <div class="recommend-grid" id="recommendedGrid">
+                    <p>Loading recommended auctions...</p>
                 </div>
-
             </div>
-
         </section>
 
-
+        <!-- PROFILE -->
         <section id="profile" class="dashboard-section">
-
             <div class="section-heading">
-
                 <span class="eyebrow">ACCOUNT</span>
-
                 <h1>My Profile</h1>
-
-                <p>
-                    Manage your personal information.
-                </p>
-
+                <p>Manage your personal information.</p>
             </div>
-
-
-            <div class="content-card profile-card">
-
-                <div class="profile-header">
-
-                    <div class="large-avatar">
-                        <i class="fa-solid fa-user"></i>
-                    </div>
-
-                    <div>
-
-                        <h2 id="profileDisplayName">
-                            User
-                        </h2>
-
-                        <p id="profileRole">
-                            Buyer
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <div class="profile-details">
-
-                    <div class="detail-item">
-
-                        <span>Full Name</span>
-
-                        <strong id="profileFullName">
-                            -
-                        </strong>
-
-                    </div>
-
-
-                    <div class="detail-item">
-
-                        <span>Email</span>
-
-                        <strong id="profileEmail">
-                            -
-                        </strong>
-
-                    </div>
-
-
-                    <div class="detail-item">
-
-                        <span>Phone</span>
-
-                        <strong id="profilePhone">
-                            -
-                        </strong>
-
-                    </div>
-
-
-                    <div class="detail-item">
-
-                        <span>Member Since</span>
-
-                        <strong id="profileMemberSince">
-                            -
-                        </strong>
-
-                    </div>
-
-                </div>
-
-
-                <button
-                    type="button"
-                    class="primary-btn"
-                    id="editProfileBtn">
-
-                    <i class="fa-solid fa-pen"></i>
-                    Edit Profile
-
-                </button>
-
-            </div>
-
-        </section>
-
-
-        <section id="mybids" class="dashboard-section">
-
-            <div class="section-heading">
-
-                <span class="eyebrow">ACTIVITY</span>
-
-                <h1>My Bids</h1>
-
-                <p>
-                    Track all your current and previous bids.
-                </p>
-
-            </div>
-
 
             <div class="content-card">
+                <div id="profileContent">
+                    <p>Loading profile...</p>
+                </div>
+            </div>
+        </section>
 
+        <!-- MY BIDS -->
+        <section id="mybids" class="dashboard-section">
+            <div class="section-heading">
+                <span class="eyebrow">BIDDING ACTIVITY</span>
+                <h1>My Bids</h1>
+                <p>Track all your auction bids.</p>
+            </div>
+
+            <div class="content-card">
                 <div class="table-responsive">
-
                     <table class="dashboard-table">
-
                         <thead>
-
                             <tr>
                                 <th>Item</th>
                                 <th>Your Bid</th>
@@ -664,256 +301,110 @@
                                 <th>Ends In</th>
                                 <th>Status</th>
                             </tr>
-
                         </thead>
-
-                        <tbody id="myBidsGrid">
-
-                            <tr>
-                                <td colspan="5">
-                                    Loading bids...
-                                </td>
-                            </tr>
-
+                        <tbody id="myBidRows">
+                            <tr><td colspan="5">Loading bids...</td></tr>
                         </tbody>
-
                     </table>
-
                 </div>
-
             </div>
-
         </section>
 
-
+        <!-- WISHLIST -->
         <section id="wishlist" class="dashboard-section">
-
             <div class="section-heading">
-
-                <span class="eyebrow">SAVED</span>
-
+                <span class="eyebrow">SAVED ITEMS</span>
                 <h1>Wishlist</h1>
-
-                <p>
-                    Auctions you've saved for later.
-                </p>
-
+                <p>Auctions you have saved for later.</p>
             </div>
 
-
-            <div
-                class="recommend-grid"
-                id="wishlistGrid">
-
+            <div class="recommend-grid" id="wishlistGrid">
                 <p>Loading wishlist...</p>
-
             </div>
-
         </section>
 
-
-
-
+        <!-- MY AUCTIONS -->
         <section id="myauctions" class="dashboard-section">
-
             <div class="section-heading">
-
-                <span class="eyebrow">SELLER</span>
-
+                <span class="eyebrow">SELLER ACTIVITY</span>
                 <h1>My Auctions</h1>
-
-                <p>
-                    Manage items you've listed for auction.
-                </p>
-
+                <p>Manage items you've listed for auction.</p>
             </div>
 
-
-            <div
-                class="recommend-grid"
-                id="myAuctionsGrid">
-
+            <div class="recommend-grid" id="myAuctionsGrid">
                 <p>Loading your auctions...</p>
-
             </div>
 
-
-            <div
-                class="content-card"
-                id="myAuctionsEmpty"
-                style="display:none;">
-
+            <div class="content-card" id="myAuctionsEmpty" style="display:none;">
                 <div class="empty-state">
-
                     <div class="empty-icon">
                         <i class="fa-solid fa-box-open"></i>
                     </div>
-
                     <h2>No Auctions Yet</h2>
-
-                    <p>
-                        You haven't listed any items yet.
-                    </p>
-
-                    <button
-                        type="button"
-                        class="primary-btn"
-                        id="createAuctionBtn">
-
-                        <i class="fa-solid fa-plus"></i>
-                        Sell an Item
-
+                    <p>You haven't listed any items yet.</p>
+                    <button class="primary-btn" id="createAuctionBtn" type="button">
+                        <i class="fa-solid fa-plus"></i> Sell an Item
                     </button>
-
                 </div>
-
             </div>
-
         </section>
 
-
-
+        <!-- MESSAGES -->
         <section id="messages" class="dashboard-section">
-
             <div class="section-heading">
-
                 <span class="eyebrow">COMMUNICATION</span>
-
                 <h1>Messages</h1>
-
-                <p>
-                    View your conversations and messages.
-                </p>
-
+                <p>View your conversations and messages.</p>
             </div>
-
-
             <div class="content-card">
-
-                <div
-                    class="message-list"
-                    id="messageList">
-
+                <div class="message-list" id="messageList">
                     <p>Loading messages...</p>
-
                 </div>
-
             </div>
-
         </section>
 
-
+        <!-- WALLET -->
         <section id="wallet" class="dashboard-section">
-
             <div class="section-heading">
-
                 <span class="eyebrow">PAYMENTS</span>
-
                 <h1>Wallet</h1>
-
-                <p>
-                    Manage your auction funds.
-                </p>
-
+                <p>Manage your auction funds.</p>
             </div>
-
 
             <div class="wallet-card">
-
                 <div class="wallet-info">
-
                     <span>Available Balance</span>
-
-                    <h2 id="walletBalance">
-                        ₹0
-                    </h2>
-
-                    <small>
-                        Available for bidding
-                    </small>
-
+                    <h2 id="walletBalance">₹0</h2>
+                    <small>Available for bidding</small>
                 </div>
-
-
                 <div class="wallet-icon">
-
                     <i class="fa-solid fa-wallet"></i>
-
                 </div>
-
             </div>
-
 
             <div class="quick-actions">
-
-                <button
-                    type="button"
-                    class="quick-card"
-                    id="addFundsBtn">
-
+                <button class="quick-card" id="addFundsBtn" type="button">
                     <i class="fa-solid fa-plus"></i>
-
-                    <span>
-
-                        <strong>Add Funds</strong>
-
-                        <small>
-                            Add money to wallet
-                        </small>
-
-                    </span>
-
+                    <span><strong>Add Funds</strong><small>Add money to wallet</small></span>
                 </button>
 
-
-                <button
-                    type="button"
-                    class="quick-card"
-                    id="transactionsBtn">
-
+                <button class="quick-card" id="transactionsBtn" type="button">
                     <i class="fa-solid fa-clock-rotate-left"></i>
-
-                    <span>
-
-                        <strong>Transactions</strong>
-
-                        <small>
-                            View transaction history
-                        </small>
-
-                    </span>
-
+                    <span><strong>Transactions</strong><small>View transaction history</small></span>
                 </button>
-
             </div>
 
-
-            <div
-                class="content-card"
-                id="transactionCard"
-                style="display:none;">
-
+            <div class="content-card" id="transactionCard" style="display:none;">
                 <div class="card-heading">
-
                     <div>
-
                         <h2>Transaction History</h2>
-
-                        <p>
-                            Your recent wallet transactions.
-                        </p>
-
+                        <p>Your recent wallet transactions.</p>
                     </div>
-
                 </div>
 
-
                 <div class="table-responsive">
-
                     <table class="dashboard-table">
-
                         <thead>
-
                             <tr>
                                 <th>Date</th>
                                 <th>Description</th>
@@ -921,452 +412,116 @@
                                 <th>Amount</th>
                                 <th>Status</th>
                             </tr>
-
                         </thead>
-
-                        <tbody id="transactionRows">
-
-                        </tbody>
-
+                        <tbody id="transactionRows"></tbody>
                     </table>
-
                 </div>
-
             </div>
-
         </section>
 
+        <!-- NOTIFICATIONS -->
         <section id="notifications" class="dashboard-section">
-
             <div class="section-heading">
-
                 <span class="eyebrow">UPDATES</span>
-
                 <h1>Notifications</h1>
-
-                <p>
-                    Stay updated about your auctions and bids.
-                </p>
-
+                <p>Stay updated about your auctions and bids.</p>
             </div>
-
-
             <div class="content-card">
-
-                <div
-                    class="notification-list"
-                    id="notificationList">
-
+                <div class="notification-list" id="notificationList">
                     <p>Loading notifications...</p>
-
                 </div>
-
             </div>
-
         </section>
 
-
+        <!-- SETTINGS -->
         <section id="settings" class="dashboard-section">
-
             <div class="section-heading">
-
                 <span class="eyebrow">PREFERENCES</span>
-
                 <h1>Settings</h1>
-
-                <p>
-                    Manage your account preferences.
-                </p>
-
+                <p>Manage your account preferences.</p>
             </div>
-
 
             <div class="settings-grid">
 
                 <div class="settings-card">
-
-                    <div class="settings-icon">
-                        <i class="fa-solid fa-palette"></i>
-                    </div>
-
+                    <div class="settings-icon"><i class="fa-solid fa-palette"></i></div>
                     <div class="settings-content">
-
                         <h3>Appearance</h3>
-
-                        <p>
-                            Customize your dashboard appearance.
-                        </p>
-
+                        <p>Customize your dashboard appearance.</p>
                         <label class="switch-row">
-
                             <span>Dark Interface</span>
-
-                            <input
-                                type="checkbox"
-                                id="darkModeToggle">
-
+                            <input type="checkbox" id="darkModeToggle">
                             <span class="switch"></span>
-
                         </label>
-
                     </div>
-
                 </div>
 
-
                 <div class="settings-card">
-
-                    <div class="settings-icon">
-                        <i class="fa-regular fa-bell"></i>
-                    </div>
-
+                    <div class="settings-icon"><i class="fa-regular fa-bell"></i></div>
                     <div class="settings-content">
-
                         <h3>Notifications</h3>
-
-                        <p>
-                            Manage auction notifications.
-                        </p>
-
+                        <p>Manage auction notifications.</p>
                         <label class="switch-row">
-
                             <span>Bid Alerts</span>
-
-                            <input
-                                type="checkbox"
-                                id="bidAlertsToggle"
-                                checked>
-
+                            <input type="checkbox" id="bidAlertsToggle" checked>
                             <span class="switch"></span>
-
                         </label>
-
-
                         <label class="switch-row">
-
                             <span>Auction Reminders</span>
-
-                            <input
-                                type="checkbox"
-                                id="auctionReminderToggle"
-                                checked>
-
+                            <input type="checkbox" id="auctionReminderToggle" checked>
                             <span class="switch"></span>
-
                         </label>
-
                     </div>
-
                 </div>
 
-
                 <div class="settings-card">
-
-                    <div class="settings-icon">
-                        <i class="fa-solid fa-shield-halved"></i>
-                    </div>
-
+                    <div class="settings-icon"><i class="fa-solid fa-shield-halved"></i></div>
                     <div class="settings-content">
-
                         <h3>Privacy</h3>
-
-                        <p>
-                            Control your profile visibility.
-                        </p>
-
+                        <p>Control your profile visibility.</p>
                         <label class="switch-row">
-
                             <span>Public Profile</span>
-
-                            <input
-                                type="checkbox"
-                                id="publicProfileToggle"
-                                checked>
-
+                            <input type="checkbox" id="publicProfileToggle" checked>
                             <span class="switch"></span>
-
                         </label>
-
                     </div>
-
                 </div>
 
-
                 <div class="settings-card">
-
-                    <div class="settings-icon">
-                        <i class="fa-solid fa-lock"></i>
-                    </div>
-
+                    <div class="settings-icon"><i class="fa-solid fa-lock"></i></div>
                     <div class="settings-content">
-
                         <h3>Account Security</h3>
-
-                        <p>
-                            Manage your account security.
-                        </p>
-
-                        <button
-                            type="button"
-                            class="secondary-btn"
-                            id="changePasswordBtn">
-
+                        <p>Manage your account security.</p>
+                        <button class="secondary-btn" id="changePasswordBtn" type="button">
                             Change Password
-
                         </button>
-
-
-                        <button
-                            type="button"
-                            class="danger-btn"
-                            id="deleteAccountBtn">
-
+                        <button class="danger-btn" id="deleteAccountBtn" type="button">
                             Delete Account
-
                         </button>
-
                     </div>
-
                 </div>
 
             </div>
-
         </section>
 
     </main>
-
-
-    <aside class="rightbar">
-
-
-        <div class="right-user-card">
-
-            <div class="right-avatar">
-                <i class="fa-solid fa-user"></i>
-            </div>
-
-            <h3 id="rightUserName">
-                User
-            </h3>
-
-            <span
-                class="user-role"
-                id="rightUserRole">
-
-                Buyer Account
-
-            </span>
-
-            <div class="user-status">
-
-                <span></span>
-                Active
-
-            </div>
-
-        </div>
-
-
-
-        <div class="right-card">
-
-            <div class="right-card-heading">
-                <h3>Quick Actions</h3>
-            </div>
-
-
-            <div class="quick-actions-list">
-
-                <button
-                    type="button"
-                    class="quick-action"
-                    data-top="auctions">
-
-                    <span class="quick-action-icon">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                    </span>
-
-                    <span>
-
-                        <strong>Browse Auctions</strong>
-
-                        <small>
-                            Find items to bid on
-                        </small>
-
-                    </span>
-
-                </button>
-
-
-                <button
-                    type="button"
-                    class="quick-action"
-                    data-section="myauctions">
-
-                    <span class="quick-action-icon">
-                        <i class="fa-solid fa-plus"></i>
-                    </span>
-
-                    <span>
-
-                        <strong>Sell an Item</strong>
-
-                        <small>
-                            Create an auction
-                        </small>
-
-                    </span>
-
-                </button>
-
-
-                <button
-                    type="button"
-                    class="quick-action"
-                    data-section="wallet">
-
-                    <span class="quick-action-icon">
-                        <i class="fa-solid fa-wallet"></i>
-                    </span>
-
-                    <span>
-
-                        <strong>Add Funds</strong>
-
-                        <small>
-                            Top up your wallet
-                        </small>
-
-                    </span>
-
-                </button>
-
-
-                <button
-                    type="button"
-                    class="quick-action"
-                    data-section="messages">
-
-                    <span class="quick-action-icon">
-                        <i class="fa-regular fa-comments"></i>
-                    </span>
-
-                    <span>
-
-                        <strong>My Messages</strong>
-
-                        <small id="quickMessageText">
-                            No unread messages
-                        </small>
-
-                    </span>
-
-                </button>
-
-            </div>
-
-        </div>
-
-        <div class="right-card">
-
-            <div class="right-card-heading">
-
-                <h3>Recent Activity</h3>
-
-                <button
-                    type="button"
-                    class="small-link"
-                    data-section="notifications">
-
-                    View All
-
-                </button>
-
-            </div>
-
-
-            <div
-                class="activity-list"
-                id="activityList">
-
-                <p>Loading activity...</p>
-
-            </div>
-
-        </div>
-
-
-
-  
-
-        <div class="help-card">
-
-            <div class="help-icon">
-                <i class="fa-regular fa-circle-question"></i>
-            </div>
-
-            <h3>Need Help?</h3>
-
-            <p>
-                Have questions about bidding or auctions?
-            </p>
-
-            <a href="../help/help-support.html"
-                class="help-btn">
-                    Contact Support
-            </a>
-
-            
-
-        </div>
-
-    </aside>
-
 </div>
 
-
-
-<div
-    class="modal-backdrop"
-    id="modalBackdrop"
-    aria-hidden="true">
-
-    <div
-        class="custom-modal"
-        role="dialog"
-        aria-modal="true">
-
-        <button
-            type="button"
-            class="modal-close"
-            id="modalClose"
-            aria-label="Close">
-
+<!-- MODAL -->
+<div class="modal-backdrop" id="modalBackdrop" aria-hidden="true">
+    <div class="custom-modal" role="dialog" aria-modal="true">
+        <button class="modal-close" id="modalClose" type="button" aria-label="Close">
             <i class="fa-solid fa-xmark"></i>
-
         </button>
-
         <div id="modalContent"></div>
-
     </div>
-
 </div>
 
-<div
-    class="toast"
-    id="toast"
-    role="alert">
-
+<!-- TOAST -->
+<div class="toast" id="toast" role="alert">
     <i class="fa-solid fa-circle-check"></i>
-
-    <span id="toastMessage">
-        Action completed
-    </span>
-
+    <span id="toastMessage">Action completed</span>
 </div>
-
 
 </body>
-
 </html>

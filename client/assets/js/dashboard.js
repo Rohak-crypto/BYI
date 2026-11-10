@@ -1,8 +1,7 @@
-
 (() => {
     "use strict";
 
-    let dashboardData = {
+    const dashboardData = {
         user: null,
         stats: {},
         bids: [],
@@ -11,15 +10,14 @@
         notifications: [],
         messages: [],
         transactions: [],
-        orders: []
+        orders: [],
+        auctions: []
     };
 
     let selectedAuction = null;
 
-    const $ = (selector) => document.querySelector(selector);
-
-    const $$ = (selector) => [...document.querySelectorAll(selector)];
-
+    const $ = selector => document.querySelector(selector);
+    const $$ = selector => [...document.querySelectorAll(selector)];
 
     function money(value) {
         return "₹" + Number(value || 0).toLocaleString("en-IN", {
@@ -27,25 +25,22 @@
         });
     }
 
-
     function escapeHTML(value) {
-        return String(value ?? "")
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
+        return String(value ?? "").replace(/[&<>"']/g, char => ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#039;"
+        })[char]);
     }
-
 
     function formatDate(date) {
         if (!date) return "-";
 
         const d = new Date(date);
 
-        if (Number.isNaN(d.getTime())) {
-            return "-";
-        }
+        if (Number.isNaN(d.getTime())) return "-";
 
         return d.toLocaleDateString("en-IN", {
             day: "2-digit",
@@ -54,138 +49,97 @@
         });
     }
 
-
     function timeRemaining(endAt) {
         if (!endAt) return "-";
 
-        const end = new Date(endAt).getTime();
-        const now = Date.now();
+        const difference = new Date(endAt).getTime() - Date.now();
 
-        const difference = end - now;
+        if (Number.isNaN(difference)) return "-";
+        if (difference <= 0) return "Ended";
 
-        if (difference <= 0) {
-            return "Ended";
-        }
+        const minutes = Math.floor(difference / 60000);
+        const days = Math.floor(minutes / 1440);
+        const hours = Math.floor((minutes % 1440) / 60);
 
-        const totalMinutes = Math.floor(difference / 60000);
-
-        const days = Math.floor(totalMinutes / 1440);
-        const hours = Math.floor((totalMinutes % 1440) / 60);
-        const minutes = totalMinutes % 60;
-
-        if (days > 0) {
-            return `${days}d ${hours}h`;
-        }
-
-        if (hours > 0) {
-            return `${hours}h ${minutes}m`;
-        }
+        if (days > 0) return `${days}d ${hours}h`;
+        if (hours > 0) return `${hours}h ${minutes % 60}m`;
 
         return `${minutes}m`;
     }
 
-
-    // function imagePath(image) {
-    //     if (!image) {
-    //         return "../../assets/images/watch.jpg";
-    //     }
-
-    //     if (
-    //         image.startsWith("http://") ||
-    //         image.startsWith("https://") ||
-    //         image.startsWith("/")
-    //     ) {
-    //         return image;
-    //     }
-
-    //     return image.startsWith("../../")
-    //         ? image
-    //         : `../../${image.replace(/^\/+/, "")}`;
-    // }
-
-
     function imagePath(image, category) {
-    const fallbackImages = {
-        Electronics: "/assets/images/laptop.png",
-        Furniture: "/assets/images/chair.jpg",
-        Jewellery: "/assets/images/necklace.jpg",
-        "Art & Collectibles": "/assets/images/painting.jpg",
-        Art: "/assets/images/painting.jpg",
-        Vehicles: "/assets/images/car.jpg",
-        Fashion: "/assets/images/watch.jpg",
-        "Home & Living": "/assets/images/sofa.jpg",
-        "Sports & Hobbies": "/assets/images/sports.jpg",
-        Sports: "/assets/images/sports.jpg",
-        Antiques: "/assets/images/gramophone.jpg"
-    };
+        const fallbackImages = {
+            Electronics: "/assets/images/laptop.png",
+            Furniture: "/assets/images/chair.jpg",
+            Jewellery: "/assets/images/necklace.jpg",
+            "Art & Collectibles": "/assets/images/painting.jpg",
+            Vehicles: "/assets/images/car.jpg",
+            Fashion: "/assets/images/watch.jpg",
+            Antiques: "/assets/images/gramophone.jpg"
+        };
 
-    const fallback =
-        fallbackImages[category] ||
-        "/assets/images/gramophone.jpg";
+        if (!image) {
+            return fallbackImages[category] ||
+                "/assets/images/gramophone.jpg";
+        }
 
-    if (!image) {
-        return fallback;
+        image = String(image).trim();
+
+        if (/^(https?:|data:)/i.test(image) || image.startsWith("/")) {
+            return image;
+        }
+
+        return "/" + image.replace(/^(?:\.\.\/)+/, "").replace(/^\/+/, "");
     }
-
-    image = String(image).trim();
-
-    if (
-        image.startsWith("http://") ||
-        image.startsWith("https://") ||
-        image.startsWith("data:")
-    ) {
-        return image;
-    }
-
-    if (image.startsWith("/")) {
-        return image;
-    }
-
-    image = image
-        .replace(/^(\.\.\/)+/, "")
-        .replace(/^(\.\/)+/, "");
-
-    return "/" + image;
-}
-
 
     function getUser() {
         try {
-            return JSON.parse(
-                localStorage.getItem(BYI_API.userKey)
-            );
+            return JSON.parse(localStorage.getItem(BYI_API.userKey));
         } catch {
             return null;
         }
     }
 
-    function toast(message, type = "success") {
 
+    function checkAuthentication() {
+        if (!BYI_API || !BYI_API.isLoggedIn()) {
+            window.location.href = "../auth/login.html";
+            return false;
+        }
+
+        return true;
+    }
+
+
+    function toast(message, type = "success") {
         const element = $("#toast");
         const messageElement = $("#toastMessage");
 
-        if (!element || !messageElement) return;
+        if (!element || !messageElement) {
+            console.log(message);
+            return;
+        }
 
         messageElement.textContent = message;
 
-        element.classList.remove("show", "error");
+        const icon = element.querySelector("i");
 
-        if (type === "error") {
-            element.classList.add("error");
+        if (icon) {
+            icon.className = type === "error"
+                ? "fa-solid fa-circle-exclamation"
+                : "fa-solid fa-circle-check";
         }
 
-        requestAnimationFrame(() => {
-            element.classList.add("show");
-        });
+        element.classList.add("show");
 
-        setTimeout(() => {
+        clearTimeout(element.toastTimer);
+
+        element.toastTimer = setTimeout(() => {
             element.classList.remove("show");
         }, 3000);
     }
 
-
     function openModal(content) {
-
         const backdrop = $("#modalBackdrop");
         const modalContent = $("#modalContent");
 
@@ -197,9 +151,7 @@
         backdrop.setAttribute("aria-hidden", "false");
     }
 
-
     function closeModal() {
-
         const backdrop = $("#modalBackdrop");
 
         if (!backdrop) return;
@@ -210,21 +162,9 @@
         selectedAuction = null;
     }
 
-    function checkAuthentication() {
-
-        if (!BYI_API.isLoggedIn()) {
-            window.location.href = "../auth/login.html";
-            return false;
-        }
-
-        return true;
-    }
 
     function showSection(sectionId) {
-
-        const sections = $$(".dashboard-section");
-
-        sections.forEach(section => {
+        $$(".dashboard-section").forEach(section => {
             section.classList.remove("active-section");
         });
 
@@ -241,49 +181,37 @@
             );
         });
 
+        document.body.classList.remove("sidebar-open");
+
         window.scrollTo({
             top: 0,
             behavior: "smooth"
         });
     }
 
+    function navigateTop(page) {
+        const routes = {
+            home: "../../index.html",
+            auctions: "../auctions/auctions.html",
+            categories: "../categories/categories.html",
+            help: "../help/help.html"
+        };
 
-    document.querySelectorAll(".top-nav-link[data-top]").forEach(button => {
-    button.addEventListener("click", () => {
-        const page = button.dataset.top;
-
-        switch (page) {
-            case "home":
-                window.location.href = "../../index.html";
-                break;
-
-            case "auctions":
-                window.location.href = "../auctions/auctions.html";
-                break;
-
-            case "categories":
-                window.location.href = "../categories/categories.html";
-                break;
+        if (routes[page]) {
+            window.location.href = routes[page];
         }
-    });
-});
+    }
+
 
     async function loadDashboard() {
-
-        if (!checkAuthentication()) {
-            return;
-        }
+        if (!checkAuthentication()) return;
 
         try {
-
-            const [
-                dashboardResponse,
-                ordersResponse
-            ] = await Promise.all([
-                BYI_API.request("/api/dashboard"),
-                BYI_API.request("/api/orders/won")
-            ]);
-
+            const [dashboardResponse, ordersResponse] =
+                await Promise.all([
+                    BYI_API.request("/api/dashboard"),
+                    BYI_API.request("/api/orders/won")
+                ]);
 
             if (!dashboardResponse.success) {
                 throw new Error(
@@ -291,7 +219,6 @@
                     "Failed to load dashboard."
                 );
             }
-
 
             dashboardData.user =
                 dashboardResponse.user || getUser();
@@ -320,1730 +247,944 @@
             dashboardData.orders =
                 ordersResponse.orders || [];
 
+            // Render all dashboard sections
 
             renderUser();
-
             renderStats();
-
             renderDashboardBids();
-
             renderMyBids();
-
             renderWishlist();
-
             renderMyAuctions();
-
             renderMessages();
-
             renderNotifications();
-
             renderWallet();
-
             renderTransactions();
-
-            renderRecommendations();
-
-            renderActivity();
-
             updateBadges();
 
+            await renderRecommendations();
 
         } catch (error) {
-
             console.error("Dashboard loading error:", error);
-
-            toast(
-                error.message ||
-                "Unable to load dashboard.",
-                "error"
-            );
+            toast(error.message || "Unable to load dashboard.", "error");
         }
     }
 
-    function renderUser() {
 
+    function renderUser() {
         const user = dashboardData.user;
 
         if (!user) return;
 
         const name = user.name || "User";
-
         const role = user.role || "buyer";
 
-        const roleText =
-            role.charAt(0).toUpperCase() +
-            role.slice(1);
-
-
-        const elements = {
-
+        const values = {
             "#topUserName": name,
-
-            "#topUserRole": roleText,
-
+            "#topUserRole": role.charAt(0).toUpperCase() + role.slice(1),
             "#sidebarUserName": name,
-
-            "#welcomeUserName": name,
-
-            "#rightUserName": name,
-
-            "#rightUserRole":
-                `${roleText} Account`,
-
-            "#profileDisplayName": name,
-
-            "#profileRole": roleText,
-
-            "#profileFullName": name,
-
-            "#profileEmail":
-                user.email || "-",
-
-            "#profilePhone":
-                user.phone || "-",
-
-            "#profileMemberSince":
-                formatDate(user.created_at)
-
+            "#welcomeUserName": name
         };
 
+        Object.entries(values).forEach(([selector, value]) => {
+            const element = $(selector);
+            if (element) element.textContent = value;
+        });
 
-        Object.entries(elements).forEach(
-            ([selector, value]) => {
+        const profile = $("#profileContent");
 
-                const element = $(selector);
+        if (profile) {
+            profile.innerHTML = `
+                <div class="profile-header p-4">
+                    <div class="sidebar-avatar mb-3">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
 
-                if (element) {
-                    element.textContent = value;
-                }
-            }
-        );
+                    <h2>${escapeHTML(name)}</h2>
+                    <p>${escapeHTML(role)}</p>
+
+                    <button class="secondary-btn" id="editProfileBtn">
+                        <i class="fa-solid fa-pen"></i>
+                        Edit Profile
+                    </button>
+                </div>
+
+                <div class="p-4">
+                    <p><strong>Full Name:</strong>
+                        ${escapeHTML(user.name || "-")}</p>
+
+                    <p><strong>Email:</strong>
+                        ${escapeHTML(user.email || "-")}</p>
+
+                    <p><strong>Phone:</strong>
+                        ${escapeHTML(user.phone || "-")}</p>
+
+                    <p><strong>Account Type:</strong>
+                        ${escapeHTML(role)}</p>
+
+                    <p><strong>Member Since:</strong>
+                        ${formatDate(user.created_at)}</p>
+                </div>
+            `;
+        }
     }
-
 
     function renderStats() {
-
         const stats = dashboardData.stats;
 
-        const values = {
+        const activeBids = dashboardData.bids.filter(bid =>
+            !["ended", "cancelled", "lost", "won"].includes(
+                String(bid.status || "").toLowerCase()
+            )
+        ).length;
 
+        const values = {
             "#activeBidsStat":
-                stats.active_bids || 0,
+                stats.active_bids ?? activeBids,
 
             "#wonAuctionsStat":
-                stats.won_auctions || 0,
+                stats.won_auctions ?? dashboardData.orders.length,
 
             "#watchingStat":
-                stats.watching || 0,
+                stats.watching ?? dashboardData.wishlist.length,
 
             "#savedStat":
-                stats.saved_items || 0
-
+                stats.saved_items ?? dashboardData.wishlist.length
         };
 
-
-        Object.entries(values).forEach(
-            ([selector, value]) => {
-
-                const element = $(selector);
-
-                if (element) {
-                    element.textContent = value;
-                }
-            }
-        );
+        Object.entries(values).forEach(([selector, value]) => {
+            const element = $(selector);
+            if (element) element.textContent = value;
+        });
     }
 
+    // ==========================================
+    // 11. CREATE BID ROW
+    // ==========================================
 
     function createBidRow(bid) {
+        const auction = bid.auction || bid;
+        const itemName =
+            auction.title || auction.name || "Auction Item";
 
-        const status =
-            bid.bid_status ||
-            bid.status ||
-            "outbid";
+        const yourBid =
+            bid.amount ?? bid.bid_amount ?? bid.your_bid ?? 0;
 
+        const currentBid =
+            auction.current_bid ?? auction.currentBid ?? 0;
 
-        const statusClass =
-            status === "leading"
-                ? "active"
-                : status === "ended"
-                    ? "ended"
-                    : "warning";
+        const endDate =
+            auction.end_time || auction.end_date || auction.ends_at;
 
+        const status = bid.status || auction.status || "Active";
 
         return `
             <tr>
-
                 <td>
-
-                    <div class="table-item">
-
-                        <img
-                            src="${escapeHTML(imagePath(bid.img))}"
-                            alt="${escapeHTML(bid.name)}">
-
-                        <div>
-
-                            <strong>
-                                ${escapeHTML(bid.name)}
-                            </strong>
-
-                            <small>
-                                ${escapeHTML(bid.category || "Auction")}
-                            </small>
-
-                        </div>
-
-                    </div>
-
+                    <strong>${escapeHTML(itemName)}</strong>
                 </td>
 
+                <td>${money(yourBid)}</td>
+
+                <td>${money(currentBid)}</td>
+
+                <td>${timeRemaining(endDate)}</td>
 
                 <td>
-                    ${money(bid.your)}
-                </td>
-
-
-                <td>
-                    ${money(bid.current)}
-                </td>
-
-
-                <td>
-                    ${timeRemaining(bid.end_at)}
-                </td>
-
-
-                <td>
-
-                    <span
-                        class="status-badge ${statusClass}">
-
-                        ${
-                            status === "leading"
-                                ? "Leading"
-                                : status === "ended"
-                                    ? "Ended"
-                                    : "Outbid"
-                        }
-
+                    <span class="status-badge active">
+                        ${escapeHTML(status)}
                     </span>
-
                 </td>
-
             </tr>
         `;
     }
 
-
+    // ==========================================
+    // 12. RENDER ACTIVE BIDS
+    // ==========================================
 
     function renderDashboardBids() {
-
-        const container = $("#dashboardRows");
+        const container = $("#activeBidRows");
 
         if (!container) return;
 
+        const bids = dashboardData.bids.slice(0, 5);
 
-        const activeBids =
-            dashboardData.bids
-                .filter(bid => {
-
-                    return (
-                        bid.auction_status === "live" &&
-                        new Date(bid.end_at).getTime() > Date.now()
-                    );
-                })
-                .slice(0, 5);
-
-
-        if (!activeBids.length) {
-
+        if (!bids.length) {
             container.innerHTML = `
                 <tr>
                     <td colspan="5">
-                        You don't have any active bids.
+                        You have no active bids yet.
                     </td>
                 </tr>
             `;
-
             return;
         }
 
-
-        container.innerHTML =
-            activeBids.map(createBidRow).join("");
+        container.innerHTML = bids.map(createBidRow).join("");
     }
-
-
 
     function renderMyBids() {
-
-        const container = $("#myBidsGrid");
+        const container = $("#myBidRows");
 
         if (!container) return;
 
-
         if (!dashboardData.bids.length) {
-
             container.innerHTML = `
                 <tr>
-                    <td colspan="5">
-                        You haven't placed any bids yet.
-                    </td>
+                    <td colspan="5">No bids found.</td>
                 </tr>
             `;
-
             return;
         }
 
-
         container.innerHTML =
-            dashboardData.bids
-                .map(createBidRow)
-                .join("");
+            dashboardData.bids.map(createBidRow).join("");
     }
 
+    // ==========================================
+    // 13. AUCTION CARD
+    // ==========================================
 
+    function createAuctionCard(auction) {
+        const id = auction.id;
+
+        const title = auction.title || auction.name || "Auction Item";
+
+        const image = imagePath(
+            auction.image_url || auction.image,
+            auction.category
+        );
+
+        const currentBid =
+            auction.current_bid || auction.starting_price || 0;
+
+        const endDate =
+            auction.end_time || auction.end_date || auction.ends_at;
+
+        return `
+            <div class="auction-mini-card">
+
+                <img
+                    src="${escapeHTML(image)}"
+                    alt="${escapeHTML(title)}"
+                    onerror="this.onerror=null;this.src='/assets/images/gramophone.jpg'"
+                >
+
+                <div class="p-3">
+
+                    <h5>${escapeHTML(title)}</h5>
+
+                    <p class="text-muted mb-2">
+                        ${escapeHTML(auction.category || "General")}
+                    </p>
+
+                    <div class="auction-mini-price mb-2">
+                        Current Bid:
+                        <strong>${money(currentBid)}</strong>
+                    </div>
+
+                    <p class="small">
+                        <i class="fa-regular fa-clock"></i>
+                        ${timeRemaining(endDate)}
+                    </p>
+
+                    <button
+                        class="mini-btn w-100"
+                        data-action="bid"
+                        data-id="${escapeHTML(id)}"
+                        type="button">
+                        Place Bid
+                    </button>
+
+                </div>
+            </div>
+        `;
+    }
+
+    // ==========================================
+    // 14. RECOMMENDED AUCTIONS API
+    // ==========================================
 
     async function renderRecommendations() {
-
-        const container = $("#recommendGrid");
+        const container = $("#recommendedGrid");
 
         if (!container) return;
 
-
         try {
+            const response = await BYI_API.request("/api/auctions");
 
-            const response =
-                await BYI_API.request(
-                    "/api/auctions"
-                );
+            dashboardData.auctions =
+                response.auctions || response.data || [];
 
-
-            const auctions =
-                response.auctions ||
-                response.data ||
-                [];
-
-
-            const liveAuctions =
-                auctions
-                    .filter(auction =>
-                        auction.status === "live"
-                    )
-                    .slice(0, 3);
-
+            const liveAuctions = dashboardData.auctions
+                .filter(auction =>
+                    String(auction.status).toLowerCase() === "live"
+                )
+                .slice(0, 4);
 
             if (!liveAuctions.length) {
-
                 container.innerHTML = `
-                    <p>No live auctions available.</p>
+                    <p>No live auctions available currently.</p>
                 `;
-
                 return;
             }
 
-
             container.innerHTML =
-                liveAuctions
-                    .map(createAuctionCard)
-                    .join("");
-
+                liveAuctions.map(createAuctionCard).join("");
 
         } catch (error) {
-
-            console.error(
-                "Recommendation error:",
-                error
-            );
+            console.error("Recommendation error:", error);
 
             container.innerHTML = `
-                <p>Unable to load recommendations.</p>
+                <p>Unable to load recommended auctions.</p>
             `;
         }
     }
 
-
-    // function createAuctionCard(auction) {
-
-    //     return `
-    //         <article
-    //             class="auction-mini-card"
-    //             data-auction-id="${auction.id}">
-
-    //             <div class="auction-mini-image">
-
-    //                 <img
-    //                     src="${escapeHTML(imagePath(auction.image_url || auction.img))}"
-    //                     alt="${escapeHTML(auction.title || auction.name)}">
-
-    //                 <span class="live-badge">
-    //                     Live
-    //                 </span>
-
-    //             </div>
-
-
-    //             <div class="auction-mini-content">
-
-    //                 <span class="category-label">
-    //                     ${escapeHTML(auction.category || "Auction")}
-    //                 </span>
-
-    //                 <h3>
-    //                     ${escapeHTML(auction.title || auction.name)}
-    //                 </h3>
-
-
-    //                 <div class="auction-mini-price">
-
-    //                     <span>
-    //                         Current Bid
-    //                     </span>
-
-    //                     <strong>
-    //                         ${money(
-    //                             auction.current_bid ||
-    //                             auction.current
-    //                         )}
-    //                     </strong>
-
-    //                 </div>
-
-
-    //                 <button
-    //                     type="button"
-    //                     class="mini-btn"
-    //                     data-bid-auction="${auction.id}">
-
-    //                     Place Bid
-
-    //                 </button>
-
-    //             </div>
-
-    //         </article>
-    //     `;
-    // }
-
-    function createAuctionCard(auction) {
-    const title =
-        auction.title ||
-        auction.name ||
-        "Auction Item";
-
-    const category =
-        auction.category ||
-        "Auction";
-
-    const image =
-        auction.image_url ||
-        auction.image ||
-        auction.img ||
-        auction.imageUrl ||
-        "";
-
-    const finalImage =
-        imagePath(image, category);
-
-    const currentBid =
-        auction.current_bid ??
-        auction.currentBid ??
-        auction.current ??
-        auction.starting_price ??
-        auction.startingPrice ??
-        0;
-
-    return `
-        <article
-            class="auction-mini-card"
-            data-auction-id="${escapeHTML(String(auction.id))}">
-
-            <div class="auction-mini-image">
-
-                <img
-                    src="${escapeHTML(finalImage)}"
-                    alt="${escapeHTML(title)}"
-                    loading="lazy"
-                    onerror="this.onerror=null;this.src='/assets/images/gramophone.jpg';">
-
-                <span class="live-badge">
-                    Live
-                </span>
-
-            </div>
-
-            <div class="auction-mini-content">
-
-                <span class="category-label">
-                    ${escapeHTML(category)}
-                </span>
-
-                <h3>
-                    ${escapeHTML(title)}
-                </h3>
-
-                <div class="auction-mini-price">
-
-                    <span>
-                        Current Bid
-                    </span>
-
-                    <strong>
-                        ${money(currentBid)}
-                    </strong>
-
-                </div>
-
-                <button
-                    type="button"
-                    class="mini-btn"
-                    data-bid-auction="${escapeHTML(String(auction.id))}">
-
-                    Place Bid
-
-                </button>
-
-            </div>
-
-        </article>
-    `;
-}
-
+    // ==========================================
+    // 15. WISHLIST
+    // ==========================================
 
     function renderWishlist() {
-
         const container = $("#wishlistGrid");
 
         if (!container) return;
 
-
         if (!dashboardData.wishlist.length) {
-
             container.innerHTML = `
-                <div class="content-card">
-                    <div class="empty-state">
-
-                        <div class="empty-icon">
-                            <i class="fa-regular fa-heart"></i>
-                        </div>
-
-                        <h2>Your Wishlist Is Empty</h2>
-
-                        <p>
-                            Save auctions you want to watch later.
-                        </p>
-
-                    </div>
-                </div>
+                <p>Your wishlist is empty.</p>
             `;
-
             return;
         }
 
+        container.innerHTML = dashboardData.wishlist.map(item => {
+            const auction = item.auction || item;
 
-        container.innerHTML =
-            dashboardData.wishlist
-                .map(item => `
+            return `
+                <div class="auction-mini-card">
 
-                    <article
-                        class="auction-mini-card"
-                        data-auction-id="${item.id}">
+                    <img
+                        src="${escapeHTML(imagePath(
+                            auction.image_url || auction.image,
+                            auction.category
+                        ))}"
+                        alt="${escapeHTML(auction.title || "Saved item")}"
+                    >
 
-                        <div class="auction-mini-image">
+                    <div class="p-3">
+                        <h5>${escapeHTML(auction.title || "Auction Item")}</h5>
 
-                            <img
-                                src="${escapeHTML(imagePath(item.img))}"
-                                alt="${escapeHTML(item.name)}">
+                        <p>
+                            Current Bid:
+                            <strong>${money(auction.current_bid)}</strong>
+                        </p>
 
-                        </div>
+                        <button
+                            class="mini-btn"
+                            data-action="remove-wishlist"
+                            data-id="${escapeHTML(auction.id)}"
+                            type="button">
+                            Remove
+                        </button>
+                    </div>
 
-
-                        <div class="auction-mini-content">
-
-                            <span class="category-label">
-                                ${escapeHTML(item.category || "Auction")}
-                            </span>
-
-                            <h3>
-                                ${escapeHTML(item.name)}
-                            </h3>
-
-
-                            <div class="auction-mini-price">
-
-                                <span>
-                                    Current Bid
-                                </span>
-
-                                <strong>
-                                    ${money(item.current)}
-                                </strong>
-
-                            </div>
-
-
-                            <button
-                                type="button"
-                                class="mini-btn"
-                                data-view-auction="${item.id}">
-
-                                View Auction
-
-                            </button>
-
-
-                            <button
-                                type="button"
-                                class="secondary-btn"
-                                data-remove-wishlist="${item.id}">
-
-                                Remove
-
-                            </button>
-
-                        </div>
-
-                    </article>
-
-                `)
-                .join("");
+                </div>
+            `;
+        }).join("");
     }
 
+    async function removeFromWishlist(auctionId) {
+        try {
+            await BYI_API.request(
+                `/api/wishlist/${encodeURIComponent(auctionId)}`,
+                { method: "DELETE" }
+            );
 
+            toast("Removed from wishlist.");
+
+            await loadDashboard();
+
+        } catch (error) {
+            toast(error.message || "Unable to remove item.", "error");
+        }
+    }
+
+    // ==========================================
+    // 16. MY AUCTIONS
+    // ==========================================
 
     function renderMyAuctions() {
-
         const container = $("#myAuctionsGrid");
-
         const empty = $("#myAuctionsEmpty");
 
         if (!container) return;
 
-
         if (!dashboardData.myAuctions.length) {
-
             container.innerHTML = "";
 
-            if (empty) {
-                empty.style.display = "";
-            }
+            if (empty) empty.style.display = "block";
 
             return;
         }
 
-
-        if (empty) {
-            empty.style.display = "none";
-        }
-
+        if (empty) empty.style.display = "none";
 
         container.innerHTML =
-            dashboardData.myAuctions
-                .map(auction => `
-
-                    <article
-                        class="auction-mini-card">
-
-                        <div class="auction-mini-image">
-
-                            <img
-                                src="${escapeHTML(imagePath(auction.image_url))}"
-                                alt="${escapeHTML(auction.title)}">
-
-                        </div>
-
-
-                        <div class="auction-mini-content">
-
-                            <span class="category-label">
-                                ${escapeHTML(auction.category)}
-                            </span>
-
-                            <h3>
-                                ${escapeHTML(auction.title)}
-                            </h3>
-
-
-                            <div class="auction-mini-price">
-
-                                <span>
-                                    Current Bid
-                                </span>
-
-                                <strong>
-                                    ${money(auction.current_bid)}
-                                </strong>
-
-                            </div>
-
-
-                            <small>
-                                ${Number(auction.bid_count || 0)}
-                                bid(s)
-                            </small>
-
-                        </div>
-
-                    </article>
-
-                `)
-                .join("");
+            dashboardData.myAuctions.map(createAuctionCard).join("");
     }
 
+    // ==========================================
+    // 17. MESSAGES
+    // ==========================================
 
     function renderMessages() {
-
         const container = $("#messageList");
 
         if (!container) return;
 
-
         if (!dashboardData.messages.length) {
-
             container.innerHTML = `
-                <p>No messages yet.</p>
+                <div class="empty-state">
+                    <i class="fa-regular fa-comments"></i>
+                    <h3>No Messages</h3>
+                    <p>Your conversations will appear here.</p>
+                </div>
             `;
-
             return;
         }
 
+        container.innerHTML = dashboardData.messages.map(message => `
+            <div class="p-3 border-bottom">
+                <strong>
+                    ${escapeHTML(
+                        message.sender_name ||
+                        message.name ||
+                        "User"
+                    )}
+                </strong>
 
-        container.innerHTML =
-            dashboardData.messages
-                .map(message => `
+                <p class="mb-1">
+                    ${escapeHTML(message.message || message.content || "")}
+                </p>
 
-                    <div class="message-item">
-
-                        <div class="message-avatar">
-
-                            <i class="fa-solid fa-user"></i>
-
-                        </div>
-
-
-                        <div class="message-content">
-
-                            <strong>
-                                ${escapeHTML(
-                                    message.sender_name ||
-                                    "User"
-                                )}
-                            </strong>
-
-                            <p>
-                                ${escapeHTML(
-                                    message.body
-                                )}
-                            </p>
-
-                            <small>
-                                ${formatDate(message.created_at)}
-                            </small>
-
-                        </div>
-
-
-                        ${
-                            Number(message.is_read) === 0
-                                ? `<span class="unread-dot"></span>`
-                                : ""
-                        }
-
-                    </div>
-
-                `)
-                .join("");
+                <small>${formatDate(message.created_at)}</small>
+            </div>
+        `).join("");
     }
 
-
+    // ==========================================
+    // 18. NOTIFICATIONS
+    // ==========================================
 
     function renderNotifications() {
-
         const container = $("#notificationList");
 
         if (!container) return;
 
-
         if (!dashboardData.notifications.length) {
-
             container.innerHTML = `
-                <p>No notifications yet.</p>
+                <div class="empty-state">
+                    <i class="fa-regular fa-bell"></i>
+                    <h3>No Notifications</h3>
+                    <p>You are all caught up!</p>
+                </div>
             `;
-
             return;
         }
 
-
         container.innerHTML =
-            dashboardData.notifications
-                .map(notification => `
+            dashboardData.notifications.map(notification => `
+                <div class="p-3 border-bottom d-flex justify-content-between gap-3">
 
-                    <div
-                        class="notification-item ${
-                            Number(notification.is_read) === 0
-                                ? "unread"
-                                : ""
-                        }"
-                        data-notification-id="${notification.id}">
+                    <div>
+                        <strong>
+                            ${escapeHTML(notification.title || "Notification")}
+                        </strong>
 
-                        <div class="notification-icon">
+                        <p class="mb-1">
+                            ${escapeHTML(notification.message || "")}
+                        </p>
 
-                            <i class="fa-solid fa-bell"></i>
-
-                        </div>
-
-
-                        <div>
-
-                            <strong>
-                                ${escapeHTML(notification.title)}
-                            </strong>
-
-                            <p>
-                                ${escapeHTML(notification.message)}
-                            </p>
-
-                            <small>
-                                ${formatDate(notification.created_at)}
-                            </small>
-
-                        </div>
-
+                        <small>
+                            ${formatDate(notification.created_at)}
+                        </small>
                     </div>
 
-                `)
-                .join("");
+                    ${notification.is_read ? "" : `
+                        <button
+                            class="secondary-btn"
+                            data-action="read-notification"
+                            data-id="${escapeHTML(notification.id)}"
+                            type="button">
+                            Mark Read
+                        </button>
+                    `}
+
+                </div>
+            `).join("");
     }
 
+    async function markNotificationRead(id) {
+        try {
+            await BYI_API.request(
+                `/api/notifications/${encodeURIComponent(id)}/read`,
+                { method: "PATCH" }
+            );
 
+            toast("Notification marked as read.");
 
-    function renderWallet() {
+            await loadDashboard();
 
-        const balance =
-            dashboardData.stats.wallet_balance || 0;
-
-        const element = $("#walletBalance");
-
-        if (element) {
-            element.textContent = money(balance);
+        } catch (error) {
+            toast(error.message || "Unable to update notification.", "error");
         }
     }
 
+    // ==========================================
+    // 19. WALLET
+    // ==========================================
 
+    function renderWallet() {
+        const balance = $("#walletBalance");
+
+        if (!balance) return;
+
+        balance.textContent = money(
+            dashboardData.stats.wallet_balance
+        );
+    }
+
+    // ==========================================
+    // 20. TRANSACTIONS
+    // ==========================================
 
     function renderTransactions() {
-
         const container = $("#transactionRows");
 
         if (!container) return;
 
-
         if (!dashboardData.transactions.length) {
-
             container.innerHTML = `
                 <tr>
-                    <td colspan="5">
-                        No transactions found.
-                    </td>
+                    <td colspan="5">No transactions found.</td>
                 </tr>
             `;
-
             return;
         }
 
-
         container.innerHTML =
-            dashboardData.transactions
-                .map(transaction => {
+            dashboardData.transactions.map(transaction => `
+                <tr>
+                    <td>${formatDate(transaction.created_at)}</td>
 
-                    const credit =
-                        transaction.type === "credit";
+                    <td>
+                        ${escapeHTML(transaction.description || "-")}
+                    </td>
 
+                    <td>
+                        ${escapeHTML(transaction.type || "-")}
+                    </td>
 
-                    return `
-                        <tr>
+                    <td>${money(transaction.amount)}</td>
 
-                            <td>
-                                ${formatDate(
-                                    transaction.created_at
-                                )}
-                            </td>
-
-                            <td>
-                                ${escapeHTML(
-                                    transaction.description ||
-                                    "Wallet transaction"
-                                )}
-                            </td>
-
-                            <td>
-                                ${credit
-                                    ? "Credit"
-                                    : "Debit"}
-                            </td>
-
-                            <td>
-                                ${credit ? "+" : "-"}
-                                ${money(transaction.amount)}
-                            </td>
-
-                            <td>
-                                ${escapeHTML(
-                                    transaction.status
-                                )}
-                            </td>
-
-                        </tr>
-                    `;
-                })
-                .join("");
+                    <td>
+                        ${escapeHTML(transaction.status || "-")}
+                    </td>
+                </tr>
+            `).join("");
     }
 
-
-
-    function renderActivity() {
-
-        const container = $("#activityList");
-
-        if (!container) return;
-
-
-        const activity = [];
-
-
-        dashboardData.bids.slice(0, 3)
-            .forEach(bid => {
-
-                activity.push({
-                    icon: "fa-gavel",
-                    title: "Placed a bid",
-                    item: bid.name,
-                    date: bid.created_at || bid.end_at
-                });
-
-            });
-
-
-        dashboardData.wishlist.slice(0, 2)
-            .forEach(item => {
-
-                activity.push({
-                    icon: "fa-heart",
-                    title: "Added to wishlist",
-                    item: item.name,
-                    date: item.created_at
-                });
-
-            });
-
-
-        if (!activity.length) {
-
-            container.innerHTML =
-                "<p>No recent activity.</p>";
-
-            return;
-        }
-
-
-        container.innerHTML =
-            activity.slice(0, 5)
-                .map(item => `
-
-                    <div class="activity-item">
-
-                        <div class="activity-icon">
-
-                            <i class="fa-solid ${item.icon}"></i>
-
-                        </div>
-
-                        <div>
-
-                            <strong>
-                                ${escapeHTML(item.title)}
-                            </strong>
-
-                            <p>
-                                ${escapeHTML(item.item)}
-                            </p>
-
-                            <small>
-                                ${formatDate(item.date)}
-                            </small>
-
-                        </div>
-
-                    </div>
-
-                `)
-                .join("");
-    }
-
-
+    // ==========================================
+    // 21. SIDEBAR BADGES
+    // ==========================================
 
     function updateBadges() {
-
         const unreadNotifications =
-            dashboardData.notifications
-                .filter(item =>
-                    Number(item.is_read) === 0
-                ).length;
-
+            dashboardData.notifications.filter(item =>
+                !item.is_read
+            ).length;
 
         const unreadMessages =
-            dashboardData.messages
-                .filter(item =>
-                    Number(item.is_read) === 0
-                ).length;
+            dashboardData.messages.filter(item =>
+                !item.is_read
+            ).length;
 
+        const values = {
+            "#wishlistBadge": dashboardData.wishlist.length,
+            "#messageBadge": unreadMessages,
+            "#notificationBadge": unreadNotifications
+        };
 
-        const wishlistCount =
-            dashboardData.wishlist.length;
+        Object.entries(values).forEach(([selector, value]) => {
+            const element = $(selector);
 
+            if (element) {
+                element.textContent = value;
+            }
+        });
 
-        const notificationBadge =
-            $("#notificationBadge");
+        const dot = $("#notificationDot");
 
-        const messageBadge =
-            $("#messageBadge");
-
-        const wishlistBadge =
-            $("#wishlistBadge");
-
-
-        if (notificationBadge) {
-            notificationBadge.textContent =
-                unreadNotifications;
-        }
-
-
-        if (messageBadge) {
-            messageBadge.textContent =
-                unreadMessages;
-        }
-
-
-        if (wishlistBadge) {
-            wishlistBadge.textContent =
-                wishlistCount;
-        }
-
-
-        const notificationDot =
-            $("#notificationDot");
-
-        if (notificationDot) {
-
-            notificationDot.style.display =
-                unreadNotifications > 0
-                    ? ""
-                    : "none";
-        }
-
-
-        const quickMessage =
-            $("#quickMessageText");
-
-        if (quickMessage) {
-
-            quickMessage.textContent =
-                unreadMessages > 0
-                    ? `${unreadMessages} unread message${unreadMessages > 1 ? "s" : ""}`
-                    : "No unread messages";
+        if (dot) {
+            dot.style.display =
+                unreadNotifications > 0 ? "block" : "none";
         }
     }
 
-
+    // ==========================================
+    // 22. PLACE BID MODAL
+    // ==========================================
 
     function openBidModal(auctionId) {
+        const auction = dashboardData.auctions.find(
+            item => String(item.id) === String(auctionId)
+        );
 
-        const auction =
-            dashboardData.bids.find(
-                item => Number(item.id) === Number(auctionId)
-            ) ||
-            dashboardData.wishlist.find(
-                item => Number(item.id) === Number(auctionId)
-            );
+        if (!auction) {
+            toast("Auction not found.", "error");
+            return;
+        }
 
+        selectedAuction = auction;
 
-        selectedAuction = auction || {
-            id: auctionId
-        };
-
+        const currentBid = Number(
+            auction.current_bid || auction.starting_price || 0
+        );
 
         openModal(`
+            <span class="eyebrow">LIVE AUCTION</span>
 
-            <div class="bid-modal-content">
+            <h2>${escapeHTML(auction.title || auction.name)}</h2>
 
-                <span class="eyebrow">
-                    PLACE YOUR BID
-                </span>
+            <p>Current Bid:
+                <strong>${money(currentBid)}</strong>
+            </p>
 
-                <h2>
-                    ${escapeHTML(
-                        auction?.name ||
-                        "Place Bid"
-                    )}
-                </h2>
+            <label for="dashboardBidAmount" class="form-label">
+                Enter Your Bid Amount
+            </label>
 
-                <p>
-                    Current bid:
-                    <strong>
-                        ${money(auction?.current || 0)}
-                    </strong>
-                </p>
+            <input
+                type="number"
+                id="dashboardBidAmount"
+                class="form-control"
+                min="${currentBid + 1}"
+                placeholder="Enter higher bid"
+                required
+            >
 
-                <input
-                    type="number"
-                    id="dashboardBidAmount"
-                    min="1"
-                    step="1"
-                    placeholder="Enter your bid">
+            <p id="dashboardBidMessage"
+               class="text-danger mt-2"></p>
 
-                <button
-                    type="button"
-                    class="primary-btn"
-                    id="dashboardConfirmBid">
-
-                    Place Bid
-
-                </button>
-
-                <p id="dashboardBidMessage"></p>
-
-            </div>
-
+            <button
+                id="dashboardConfirmBid"
+                class="primary-btn w-100 mt-3"
+                type="button">
+                Place Bid
+            </button>
         `);
     }
 
+    // ==========================================
+    // 23. CONFIRM BID
+    // ==========================================
 
-    async function submitBid() {
+    async function placeBid() {
+        if (!selectedAuction) return;
 
-        if (!selectedAuction) {
-            return;
-        }
+        const input = $("#dashboardBidAmount");
+        const message = $("#dashboardBidMessage");
+        const button = $("#dashboardConfirmBid");
 
+        const amount = Number(input?.value);
 
-        const input =
-            $("#dashboardBidAmount");
+        const currentBid = Number(
+            selectedAuction.current_bid ||
+            selectedAuction.starting_price ||
+            0
+        );
 
-        const message =
-            $("#dashboardBidMessage");
-
-
-        const amount =
-            Number(input?.value);
-
-
-        const current =
-            Number(
-                selectedAuction.current ||
-                0
-            );
-
-
-        if (!amount || amount <= current) {
-
+        if (!amount || amount <= currentBid) {
             if (message) {
                 message.textContent =
-                    `Bid must be higher than ${money(current)}.`;
+                    "Your bid must be higher than the current bid.";
             }
 
             return;
         }
 
-
-        const confirmButton =
-            $("#dashboardConfirmBid");
-
-
-        if (confirmButton) {
-            confirmButton.disabled = true;
-            confirmButton.textContent = "Placing...";
-        }
-
+        button.disabled = true;
+        button.textContent = "Placing...";
 
         try {
-
-            const response =
-                await BYI_API.request(
-                    `/api/auctions/${selectedAuction.id}/bids`,
-                    {
-                        method: "POST",
-                        body: {
-                            amount
-                        }
-                    }
-                );
-
-
-            toast(
-                response.message ||
-                "Bid placed successfully."
+            const response = await BYI_API.request(
+                `/api/auctions/${selectedAuction.id}/bids`,
+                {
+                    method: "POST",
+                    body: { amount }
+                }
             );
 
+            toast(response.message || "Bid placed successfully.");
 
             closeModal();
 
             await loadDashboard();
 
-
         } catch (error) {
-
-            console.error(
-                "Bid error:",
-                error
-            );
-
+            console.error("Bid error:", error);
 
             if (message) {
-                message.textContent =
-                    error.message;
+                message.textContent = error.message;
             }
 
-
-            if (confirmButton) {
-
-                confirmButton.disabled = false;
-
-                confirmButton.textContent =
-                    "Place Bid";
-            }
+            button.disabled = false;
+            button.textContent = "Place Bid";
         }
     }
 
-
-    async function removeFromWishlist(auctionId) {
-
-        try {
-
-            await BYI_API.request(
-                `/api/wishlist/${auctionId}`,
-                {
-                    method: "DELETE"
-                }
-            );
-
-
-            toast(
-                "Removed from wishlist."
-            );
-
-
-            await loadDashboard();
-
-
-        } catch (error) {
-
-            toast(
-                error.message ||
-                "Unable to remove item.",
-                "error"
-            );
-        }
-    }
-
-
-
-    async function markNotificationRead(id) {
-
-        try {
-
-            await BYI_API.request(
-                `/api/notifications/${id}/read`,
-                {
-                    method: "PATCH"
-                }
-            );
-
-
-            const notification =
-                dashboardData.notifications.find(
-                    item =>
-                        Number(item.id) === Number(id)
-                );
-
-
-            if (notification) {
-                notification.is_read = 1;
-            }
-
-
-            renderNotifications();
-
-            updateBadges();
-
-
-        } catch (error) {
-
-            console.error(
-                "Notification error:",
-                error
-            );
-        }
-    }
-
-
+    // ==========================================
+    // 24. EVENT LISTENERS
+    // ==========================================
 
     function bindEvents() {
 
-        
-        document.addEventListener(
-            "click",
-            event => {
+        // Sidebar navigation
 
-                const sectionButton =
-                    event.target.closest(
-                        "[data-section]"
-                    );
+        $$(".side-link[data-section]").forEach(button => {
+            button.addEventListener("click", () => {
+                showSection(button.dataset.section);
+            });
+        });
 
+        // Top navigation
 
-                if (sectionButton) {
+        $$("[data-top]").forEach(button => {
+            button.addEventListener("click", () => {
+                navigateTop(button.dataset.top);
+            });
+        });
 
-                    const section =
-                        sectionButton.dataset.section;
+        // Menu toggle
 
-                    if (section) {
-                        showSection(section);
-                    }
+        $("#menuToggle")?.addEventListener("click", () => {
+            $("#menuToggle").closest(".topbar")
+                ?.nextElementSibling
+                ?.querySelector(".sidebar")
+                ?.classList.toggle("open");
+        });
 
-                    return;
-                }
+        // Logout
 
-
-                const topButton =
-                    event.target.closest(
-                        "[data-top]"
-                    );
-
-
-                if (topButton) {
-
-                    navigateTop(
-                        topButton.dataset.top
-                    );
-
-                    return;
-                }
-
-
-                const bidButton =
-                    event.target.closest(
-                        "[data-bid-auction]"
-                    );
-
-
-                if (bidButton) {
-
-                    openBidModal(
-                        bidButton.dataset.bidAuction
-                    );
-
-                    return;
-                }
-
-
-                const removeButton =
-                    event.target.closest(
-                        "[data-remove-wishlist]"
-                    );
-
-
-                if (removeButton) {
-
-                    removeFromWishlist(
-                        removeButton.dataset.removeWishlist
-                    );
-
-                    return;
-                }
-
-
-                const notification =
-                    event.target.closest(
-                        "[data-notification-id]"
-                    );
-
-
-                if (notification) {
-
-                    markNotificationRead(
-                        notification.dataset.notificationId
-                    );
-
-                    return;
-                }
-
-
-                const viewButton =
-                    event.target.closest(
-                        "[data-view-auction]"
-                    );
-
-
-                if (viewButton) {
-
-                    window.location.href =
-                        `../auctions/auction-details.html?id=${encodeURIComponent(
-                            viewButton.dataset.viewAuction
-                        )}`;
-                }
-
-            }
-        );
-
-
-       
-        document.addEventListener(
-            "click",
-            event => {
-
-                if (
-                    event.target.closest(
-                        "#dashboardConfirmBid"
-                    )
-                ) {
-
-                    submitBid();
-                }
-
-            }
-        );
-
-
-    
-        $("#modalClose")?.addEventListener(
-            "click",
-            closeModal
-        );
-
-
-        $("#modalBackdrop")?.addEventListener(
-            "click",
-            event => {
-
-                if (
-                    event.target ===
-                    $("#modalBackdrop")
-                ) {
-                    closeModal();
-                }
-
-            }
-        );
-
-
-        document.addEventListener(
-            "keydown",
-            event => {
-
-                if (event.key === "Escape") {
-                    closeModal();
-                }
-
-            }
-        );
-
-
-        
-        $("#logoutBtn")?.addEventListener(
-            "click",
-            () => {
-
+        $("#logoutBtn")?.addEventListener("click", () => {
+            if (confirm("Are you sure you want to logout?")) {
                 BYI_API.clearSession();
-
-                window.location.href =
-                    "../auth/login.html";
+                window.location.href = "../auth/login.html";
             }
-        );
+        });
 
+        // Notifications
 
-       
-        $("#notificationBtn")?.addEventListener(
-            "click",
-            () => {
+        $("#notificationBtn")?.addEventListener("click", () => {
+            showSection("notifications");
+        });
 
-                showSection(
-                    "notifications"
-                );
+        // Search auctions
 
+        $("#searchInput")?.addEventListener("keydown", event => {
+            if (event.key !== "Enter") return;
+
+            const query = event.target.value.trim();
+
+            if (!query) return;
+
+            window.location.href =
+                `../auctions/auctions.html?search=${encodeURIComponent(query)}`;
+        });
+
+        // Close modal
+
+        $("#modalClose")?.addEventListener("click", closeModal);
+
+        $("#modalBackdrop")?.addEventListener("click", event => {
+            if (event.target === $("#modalBackdrop")) {
+                closeModal();
             }
-        );
+        });
 
+        document.addEventListener("keydown", event => {
+            if (event.key === "Escape") closeModal();
+        });
 
-       
-        $("#transactionsBtn")?.addEventListener(
-            "click",
-            () => {
+        // Dynamic buttons
 
-                const card =
-                    $("#transactionCard");
+        document.addEventListener("click", event => {
+            const actionButton = event.target.closest("[data-action]");
 
-                if (!card) return;
+            if (!actionButton) return;
 
+            const action = actionButton.dataset.action;
+            const id = actionButton.dataset.id;
+
+            if (action === "bid") {
+                openBidModal(id);
+            }
+
+            if (action === "remove-wishlist") {
+                removeFromWishlist(id);
+            }
+
+            if (action === "read-notification") {
+                markNotificationRead(id);
+            }
+        });
+
+        // Confirm bid
+
+        document.addEventListener("click", event => {
+            if (event.target.id === "dashboardConfirmBid") {
+                placeBid();
+            }
+        });
+
+        // View transactions
+
+        $("#transactionsBtn")?.addEventListener("click", () => {
+            const card = $("#transactionCard");
+
+            if (card) {
                 card.style.display =
-                    card.style.display === "none"
-                        ? ""
-                        : "none";
+                    card.style.display === "none" ? "block" : "none";
             }
-        );
+        });
 
+        // Add funds
 
-       
-        $("#addFundsBtn")?.addEventListener(
-            "click",
-            () => {
+        $("#addFundsBtn")?.addEventListener("click", () => {
+            openModal(`
+                <span class="eyebrow">WALLET</span>
+                <h2>Add Funds</h2>
 
-                openModal(`
+                <p>
+                    Your current balance is
+                    <strong>${money(dashboardData.stats.wallet_balance)}</strong>.
+                </p>
 
-                    <div>
+                <p>
+                    Payment gateway integration is not configured yet.
+                </p>
+            `);
+        });
 
-                        <span class="eyebrow">
-                            WALLET
-                        </span>
+        // Create auction
 
-                        <h2>
-                            Add Funds
-                        </h2>
+        $("#createAuctionBtn")?.addEventListener("click", () => {
+            window.location.href =
+                "../auctions/create-auction.html";
+        });
 
-                        <p>
-                            Payment gateway integration
-                            is not configured yet.
-                        </p>
+        // Dark mode preference
 
-                        <p>
-                            Your current wallet balance is
-                            <strong>
-                                ${money(
-                                    dashboardData.stats.wallet_balance
-                                )}
-                            </strong>.
-                        </p>
-
-                    </div>
-
-                `);
-
-            }
-        );
-
-
-       
-        $("#createAuctionBtn")?.addEventListener(
-            "click",
-            () => {
-
-                window.location.href =
-                    "../auctions/create-auction.html";
-
-            }
-        );
-
-
-      
-        $("#menuToggle")?.addEventListener(
-            "click",
-            () => {
-
-                document.body.classList.toggle(
-                    "sidebar-open"
-                );
-
-            }
-        );
-
-
-      
-        $("#searchInput")?.addEventListener(
-            "keydown",
-            event => {
-
-                if (
-                    event.key !== "Enter"
-                ) {
-                    return;
-                }
-
-
-                const query =
-                    event.target.value.trim();
-
-
-                if (!query) {
-                    return;
-                }
-
-
-                window.location.href =
-                    `../auctions/auctions.html?search=${encodeURIComponent(
-                        query
-                    )}`;
-            }
-        );
-
-
-       
-        const darkMode =
-            $("#darkModeToggle");
-
+        const darkMode = $("#darkModeToggle");
 
         if (darkMode) {
+            darkMode.checked =
+                localStorage.getItem("byi_dark_mode") === "true";
 
-            const saved =
-                localStorage.getItem(
-                    "byi_dark_mode"
+            darkMode.addEventListener("change", () => {
+                localStorage.setItem(
+                    "byi_dark_mode",
+                    String(darkMode.checked)
                 );
 
-            darkMode.checked =
-                saved === "true";
+                document.body.classList.toggle(
+                    "dark-dashboard",
+                    darkMode.checked
+                );
 
-
-            darkMode.addEventListener(
-                "change",
-                () => {
-
-                    localStorage.setItem(
-                        "byi_dark_mode",
-                        String(darkMode.checked)
-                    );
-
-                    toast(
-                        darkMode.checked
-                            ? "Dark mode enabled."
-                            : "Dark mode preference updated."
-                    );
-
-                }
-            );
+                toast("Appearance preference updated.");
+            });
         }
 
+        // Notification preferences
 
-        $("#changePasswordBtn")?.addEventListener(
-            "click",
-            () => {
+        ["bidAlertsToggle", "auctionReminderToggle",
+         "publicProfileToggle"].forEach(id => {
 
-                openModal(`
+            const element = document.getElementById(id);
 
-                    <div>
+            if (!element) return;
 
-                        <span class="eyebrow">
-                            SECURITY
-                        </span>
+            const saved = localStorage.getItem("byi_" + id);
 
-                        <h2>
-                            Change Password
-                        </h2>
-
-                        <p>
-                            Password change API is not
-                            available in the current backend.
-                        </p>
-
-                    </div>
-
-                `);
-
+            if (saved !== null) {
+                element.checked = saved === "true";
             }
-        );
 
+            element.addEventListener("change", () => {
+                localStorage.setItem(
+                    "byi_" + id,
+                    String(element.checked)
+                );
 
-        $("#deleteAccountBtn")?.addEventListener(
-            "click",
-            () => {
+                toast("Preference updated.");
+            });
+        });
 
+        // Password
+
+        $("#changePasswordBtn")?.addEventListener("click", () => {
+            openModal(`
+                <span class="eyebrow">SECURITY</span>
+                <h2>Change Password</h2>
+                <p>
+                    Password change API is not available
+                    in the current backend.
+                </p>
+            `);
+        });
+
+        // Delete account
+
+        $("#deleteAccountBtn")?.addEventListener("click", () => {
+            openModal(`
+                <span class="eyebrow">ACCOUNT</span>
+                <h2>Delete Account</h2>
+                <p>
+                    Account deletion requires a dedicated
+                    backend endpoint.
+                </p>
+            `);
+        });
+
+        // Edit profile
+
+        document.addEventListener("click", event => {
+            if (event.target.closest("#editProfileBtn")) {
                 openModal(`
-
-                    <div>
-
-                        <span class="eyebrow">
-                            ACCOUNT
-                        </span>
-
-                        <h2>
-                            Delete Account
-                        </h2>
-
-                        <p>
-                            Account deletion is disabled
-                            until a dedicated backend
-                            endpoint is implemented.
-                        </p>
-
-                    </div>
-
+                    <span class="eyebrow">PROFILE</span>
+                    <h2>Edit Profile</h2>
+                    <p>
+                        Profile update API is not available
+                        in the current backend.
+                    </p>
                 `);
-
             }
-        );
-
-
-        $("#editProfileBtn")?.addEventListener(
-            "click",
-            () => {
-
-                openModal(`
-
-                    <div>
-
-                        <span class="eyebrow">
-                            PROFILE
-                        </span>
-
-                        <h2>
-                            Profile Editing
-                        </h2>
-
-                        <p>
-                            Your profile information is
-                            currently loaded from the database.
-                            A profile update endpoint is not
-                            available in the current backend.
-                        </p>
-
-                    </div>
-
-                `);
-
-            }
-        );
+        });
     }
 
+    // ==========================================
+    // 25. INITIALIZE DASHBOARD
+    // ==========================================
 
-    document.addEventListener(
-        "DOMContentLoaded",
-        () => {
+    document.addEventListener("DOMContentLoaded", () => {
 
-            if (!checkAuthentication()) {
-                return;
-            }
+        if (!checkAuthentication()) return;
 
-            bindEvents();
+        bindEvents();
 
-            loadDashboard();
+        loadDashboard();
 
-        }
-    );
+    });
 
 })();
-function navigateTop(page) {
-    switch (page) {
-        case "home":
-            window.location.href = "/";
-            break;
-
-        case "auctions":
-            window.location.href = "/pages/auctions/auctions.html";
-            break;
-
-        case "categories":
-            window.location.href = "/pages/categories/categories.html";
-            break;
-    }
-}
-document.querySelectorAll(".top-nav-link[data-top]").forEach(button => {
-    button.addEventListener("click", () => {
-        navigateTop(button.dataset.top);
-    });
-});
