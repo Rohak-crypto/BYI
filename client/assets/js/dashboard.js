@@ -1,3 +1,4 @@
+
 (() => {
     "use strict";
 
@@ -38,11 +39,11 @@
     function formatDate(date) {
         if (!date) return "-";
 
-        const d = new Date(date);
+        const value = new Date(date);
 
-        if (Number.isNaN(d.getTime())) return "-";
+        if (Number.isNaN(value.getTime())) return "-";
 
-        return d.toLocaleDateString("en-IN", {
+        return value.toLocaleDateString("en-IN", {
             day: "2-digit",
             month: "short",
             year: "numeric"
@@ -85,7 +86,7 @@
 
         image = String(image).trim();
 
-        if (/^(https?:|data:)/i.test(image) || image.startsWith("/")) {
+        if (/^(https?:|data:|blob:)/i.test(image) || image.startsWith("/")) {
             return image;
         }
 
@@ -100,16 +101,14 @@
         }
     }
 
-
     function checkAuthentication() {
-        if (!BYI_API || !BYI_API.isLoggedIn()) {
+        if (!window.BYI_API || !BYI_API.isLoggedIn()) {
             window.location.href = "../auth/login.html";
             return false;
         }
 
         return true;
     }
-
 
     function toast(message, type = "success") {
         const element = $("#toast");
@@ -146,7 +145,6 @@
         if (!backdrop || !modalContent) return;
 
         modalContent.innerHTML = content;
-
         backdrop.classList.add("show");
         backdrop.setAttribute("aria-hidden", "false");
     }
@@ -161,7 +159,6 @@
 
         selectedAuction = null;
     }
-
 
     function showSection(sectionId) {
         $$(".dashboard-section").forEach(section => {
@@ -182,6 +179,7 @@
         });
 
         document.body.classList.remove("sidebar-open");
+        $(".sidebar")?.classList.remove("open");
 
         window.scrollTo({
             top: 0,
@@ -202,6 +200,92 @@
         }
     }
 
+    function normalizeBid(bid) {
+        const auction = bid.auction || bid;
+
+        return {
+            ...bid,
+            auction: {
+                ...auction,
+                id: auction.id,
+                title: auction.title || auction.name || "Auction Item",
+                current_bid: Number(
+                    auction.current_bid ??
+                    auction.current ??
+                    auction.currentBid ??
+                    0
+                ),
+                starting_price: Number(auction.starting_price || 0),
+                image_url: auction.image_url || auction.img || auction.image || "",
+                end_at: auction.end_at ||
+                    auction.end_time ||
+                    auction.end_date ||
+                    auction.ends_at
+            },
+            amount: Number(
+                bid.amount ??
+                bid.bid_amount ??
+                bid.your_bid ??
+                bid.your ??
+                0
+            ),
+            status: bid.status ||
+                bid.bid_status ||
+                bid.auction_status ||
+                auction.status ||
+                "active"
+        };
+    }
+
+    function normalizeWishlistItem(item) {
+        const auction = item.auction || item;
+
+        return {
+            ...item,
+            auction: {
+                ...auction,
+                id: auction.id || item.auction_id,
+                title: auction.title || auction.name || "Auction Item",
+                current_bid: Number(
+                    auction.current_bid ??
+                    auction.current ??
+                    auction.currentBid ??
+                    0
+                ),
+                image_url: auction.image_url ||
+                    auction.img ||
+                    auction.image ||
+                    "",
+                end_at: auction.end_at ||
+                    auction.end_time ||
+                    auction.end_date
+            }
+        };
+    }
+
+    function normalizeAuction(auction) {
+        return {
+            ...auction,
+            id: auction.id,
+            title: auction.title || auction.name || "Auction Item",
+            current_bid: Number(
+                auction.current_bid ??
+                auction.current ??
+                auction.currentBid ??
+                auction.starting_price ??
+                0
+            ),
+            starting_price: Number(auction.starting_price || 0),
+            image_url: auction.image_url ||
+                auction.img ||
+                auction.image ||
+                "",
+            end_at: auction.end_at ||
+                auction.end_time ||
+                auction.end_date ||
+                auction.ends_at
+        };
+    }
 
     async function loadDashboard() {
         if (!checkAuthentication()) return;
@@ -210,7 +294,9 @@
             const [dashboardResponse, ordersResponse] =
                 await Promise.all([
                     BYI_API.request("/api/dashboard"),
-                    BYI_API.request("/api/orders/won")
+                    BYI_API.request("/api/orders/won").catch(() => ({
+                        orders: []
+                    }))
                 ]);
 
             if (!dashboardResponse.success) {
@@ -227,13 +313,13 @@
                 dashboardResponse.stats || {};
 
             dashboardData.bids =
-                dashboardResponse.bids || [];
+                (dashboardResponse.bids || []).map(normalizeBid);
 
             dashboardData.wishlist =
-                dashboardResponse.wishlist || [];
+                (dashboardResponse.wishlist || []).map(normalizeWishlistItem);
 
             dashboardData.myAuctions =
-                dashboardResponse.myAuctions || [];
+                (dashboardResponse.myAuctions || []).map(normalizeAuction);
 
             dashboardData.notifications =
                 dashboardResponse.notifications || [];
@@ -246,8 +332,6 @@
 
             dashboardData.orders =
                 ordersResponse.orders || [];
-
-            // Render all dashboard sections
 
             renderUser();
             renderStats();
@@ -268,7 +352,6 @@
             toast(error.message || "Unable to load dashboard.", "error");
         }
     }
-
 
     function renderUser() {
         const user = dashboardData.user;
@@ -302,7 +385,7 @@
                     <h2>${escapeHTML(name)}</h2>
                     <p>${escapeHTML(role)}</p>
 
-                    <button class="secondary-btn" id="editProfileBtn">
+                    <button class="secondary-btn" id="editProfileBtn" type="button">
                         <i class="fa-solid fa-pen"></i>
                         Edit Profile
                     </button>
@@ -331,11 +414,11 @@
     function renderStats() {
         const stats = dashboardData.stats;
 
-        const activeBids = dashboardData.bids.filter(bid =>
-            !["ended", "cancelled", "lost", "won"].includes(
-                String(bid.status || "").toLowerCase()
-            )
-        ).length;
+        const activeBids = dashboardData.bids.filter(bid => {
+            const status = String(bid.status || "").toLowerCase();
+
+            return !["ended", "cancelled", "lost", "won"].includes(status);
+        }).length;
 
         const values = {
             "#activeBidsStat":
@@ -357,25 +440,37 @@
         });
     }
 
-    // ==========================================
-    // 11. CREATE BID ROW
-    // ==========================================
-
     function createBidRow(bid) {
         const auction = bid.auction || bid;
+
         const itemName =
             auction.title || auction.name || "Auction Item";
 
-        const yourBid =
-            bid.amount ?? bid.bid_amount ?? bid.your_bid ?? 0;
+        const yourBid = Number(
+            bid.amount ??
+            bid.your ??
+            bid.bid_amount ??
+            0
+        );
 
-        const currentBid =
-            auction.current_bid ?? auction.currentBid ?? 0;
+        const currentBid = Number(
+            auction.current_bid ??
+            auction.current ??
+            0
+        );
 
-        const endDate =
-            auction.end_time || auction.end_date || auction.ends_at;
+        const endDate = auction.end_at ||
+            auction.end_time ||
+            auction.end_date;
 
-        const status = bid.status || auction.status || "Active";
+        const status = String(
+            bid.status ||
+            bid.bid_status ||
+            auction.status ||
+            "Active"
+        );
+
+        const statusClass = status.toLowerCase().replace(/[^a-z]/g, "");
 
         return `
             <tr>
@@ -390,7 +485,7 @@
                 <td>${timeRemaining(endDate)}</td>
 
                 <td>
-                    <span class="status-badge active">
+                    <span class="status-badge ${escapeHTML(statusClass)}">
                         ${escapeHTML(status)}
                     </span>
                 </td>
@@ -398,23 +493,23 @@
         `;
     }
 
-    // ==========================================
-    // 12. RENDER ACTIVE BIDS
-    // ==========================================
-
     function renderDashboardBids() {
         const container = $("#activeBidRows");
 
         if (!container) return;
 
-        const bids = dashboardData.bids.slice(0, 5);
+        const bids = dashboardData.bids
+            .filter(bid => {
+                const status = String(bid.status || "").toLowerCase();
+
+                return !["ended", "cancelled"].includes(status);
+            })
+            .slice(0, 5);
 
         if (!bids.length) {
             container.innerHTML = `
                 <tr>
-                    <td colspan="5">
-                        You have no active bids yet.
-                    </td>
+                    <td colspan="5">You have no active bids yet.</td>
                 </tr>
             `;
             return;
@@ -441,41 +536,32 @@
             dashboardData.bids.map(createBidRow).join("");
     }
 
-    // ==========================================
-    // 13. AUCTION CARD
-    // ==========================================
-
     function createAuctionCard(auction) {
-        const id = auction.id;
-
-        const title = auction.title || auction.name || "Auction Item";
+        const item = normalizeAuction(auction);
 
         const image = imagePath(
-            auction.image_url || auction.image,
-            auction.category
+            item.image_url,
+            item.category
         );
 
         const currentBid =
-            auction.current_bid || auction.starting_price || 0;
-
-        const endDate =
-            auction.end_time || auction.end_date || auction.ends_at;
+            item.current_bid || item.starting_price || 0;
 
         return `
             <div class="auction-mini-card">
 
                 <img
                     src="${escapeHTML(image)}"
-                    alt="${escapeHTML(title)}"
+                    alt="${escapeHTML(item.title)}"
                     onerror="this.onerror=null;this.src='/assets/images/gramophone.jpg'"
                 >
 
                 <div class="p-3">
 
-                    <h5>${escapeHTML(title)}</h5>
+                    <h5>${escapeHTML(item.title)}</h5>
 
                     <p class="text-muted mb-2">
-                        ${escapeHTML(auction.category || "General")}
+                        ${escapeHTML(item.category || "General")}
                     </p>
 
                     <div class="auction-mini-price mb-2">
@@ -485,13 +571,13 @@
 
                     <p class="small">
                         <i class="fa-regular fa-clock"></i>
-                        ${timeRemaining(endDate)}
+                        ${timeRemaining(item.end_at)}
                     </p>
 
                     <button
                         class="mini-btn w-100"
                         data-action="bid"
-                        data-id="${escapeHTML(id)}"
+                        data-id="${escapeHTML(item.id)}"
                         type="button">
                         Place Bid
                     </button>
@@ -501,10 +587,6 @@
         `;
     }
 
-    // ==========================================
-    // 14. RECOMMENDED AUCTIONS API
-    // ==========================================
-
     async function renderRecommendations() {
         const container = $("#recommendedGrid");
 
@@ -513,12 +595,15 @@
         try {
             const response = await BYI_API.request("/api/auctions");
 
-            dashboardData.auctions =
-                response.auctions || response.data || [];
+            const auctions = response.auctions ||
+                response.data ||
+                [];
+
+            dashboardData.auctions = auctions.map(normalizeAuction);
 
             const liveAuctions = dashboardData.auctions
                 .filter(auction =>
-                    String(auction.status).toLowerCase() === "live"
+                    String(auction.status || "").toLowerCase() === "live"
                 )
                 .slice(0, 4);
 
@@ -541,10 +626,6 @@
         }
     }
 
-    // ==========================================
-    // 15. WISHLIST
-    // ==========================================
-
     function renderWishlist() {
         const container = $("#wishlistGrid");
 
@@ -560,23 +641,30 @@
         container.innerHTML = dashboardData.wishlist.map(item => {
             const auction = item.auction || item;
 
+            const image = imagePath(
+                auction.image_url || auction.img || auction.image,
+                auction.category
+            );
+
             return `
                 <div class="auction-mini-card">
 
                     <img
-                        src="${escapeHTML(imagePath(
-                            auction.image_url || auction.image,
-                            auction.category
-                        ))}"
-                        alt="${escapeHTML(auction.title || "Saved item")}"
+                        src="${escapeHTML(image)}"
+                        alt="${escapeHTML(auction.title || auction.name || "Saved item")}"
+                        onerror="this.onerror=null;this.src='/assets/images/gramophone.jpg'"
                     >
 
                     <div class="p-3">
-                        <h5>${escapeHTML(auction.title || "Auction Item")}</h5>
+                        <h5>
+                            ${escapeHTML(auction.title || auction.name || "Auction Item")}
+                        </h5>
 
                         <p>
                             Current Bid:
-                            <strong>${money(auction.current_bid)}</strong>
+                            <strong>
+                                ${money(auction.current_bid ?? auction.current)}
+                            </strong>
                         </p>
 
                         <button
@@ -609,10 +697,6 @@
         }
     }
 
-    // ==========================================
-    // 16. MY AUCTIONS
-    // ==========================================
-
     function renderMyAuctions() {
         const container = $("#myAuctionsGrid");
         const empty = $("#myAuctionsEmpty");
@@ -632,10 +716,6 @@
         container.innerHTML =
             dashboardData.myAuctions.map(createAuctionCard).join("");
     }
-
-    // ==========================================
-    // 17. MESSAGES
-    // ==========================================
 
     function renderMessages() {
         const container = $("#messageList");
@@ -664,17 +744,18 @@
                 </strong>
 
                 <p class="mb-1">
-                    ${escapeHTML(message.message || message.content || "")}
+                    ${escapeHTML(
+                        message.message ||
+                        message.body ||
+                        message.content ||
+                        ""
+                    )}
                 </p>
 
                 <small>${formatDate(message.created_at)}</small>
             </div>
         `).join("");
     }
-
-    // ==========================================
-    // 18. NOTIFICATIONS
-    // ==========================================
 
     function renderNotifications() {
         const container = $("#notificationList");
@@ -710,7 +791,7 @@
                         </small>
                     </div>
 
-                    ${notification.is_read ? "" : `
+                    ${Number(notification.is_read) ? "" : `
                         <button
                             class="secondary-btn"
                             data-action="read-notification"
@@ -740,10 +821,6 @@
         }
     }
 
-    // ==========================================
-    // 19. WALLET
-    // ==========================================
-
     function renderWallet() {
         const balance = $("#walletBalance");
 
@@ -753,10 +830,6 @@
             dashboardData.stats.wallet_balance
         );
     }
-
-    // ==========================================
-    // 20. TRANSACTIONS
-    // ==========================================
 
     function renderTransactions() {
         const container = $("#transactionRows");
@@ -794,19 +867,15 @@
             `).join("");
     }
 
-    // ==========================================
-    // 21. SIDEBAR BADGES
-    // ==========================================
-
     function updateBadges() {
         const unreadNotifications =
             dashboardData.notifications.filter(item =>
-                !item.is_read
+                !Number(item.is_read)
             ).length;
 
         const unreadMessages =
             dashboardData.messages.filter(item =>
-                !item.is_read
+                !Number(item.is_read)
             ).length;
 
         const values = {
@@ -831,10 +900,6 @@
         }
     }
 
-    // ==========================================
-    // 22. PLACE BID MODAL
-    // ==========================================
-
     function openBidModal(auctionId) {
         const auction = dashboardData.auctions.find(
             item => String(item.id) === String(auctionId)
@@ -848,7 +913,9 @@
         selectedAuction = auction;
 
         const currentBid = Number(
-            auction.current_bid || auction.starting_price || 0
+            auction.current_bid ||
+            auction.starting_price ||
+            0
         );
 
         openModal(`
@@ -856,7 +923,8 @@
 
             <h2>${escapeHTML(auction.title || auction.name)}</h2>
 
-            <p>Current Bid:
+            <p>
+                Current Bid:
                 <strong>${money(currentBid)}</strong>
             </p>
 
@@ -869,6 +937,7 @@
                 id="dashboardBidAmount"
                 class="form-control"
                 min="${currentBid + 1}"
+                step="0.01"
                 placeholder="Enter higher bid"
                 required
             >
@@ -884,10 +953,6 @@
             </button>
         `);
     }
-
-    // ==========================================
-    // 23. CONFIRM BID
-    // ==========================================
 
     async function placeBid() {
         if (!selectedAuction) return;
@@ -913,8 +978,10 @@
             return;
         }
 
-        button.disabled = true;
-        button.textContent = "Placing...";
+        if (button) {
+            button.disabled = true;
+            button.textContent = "Placing...";
+        }
 
         try {
             const response = await BYI_API.request(
@@ -938,26 +1005,19 @@
                 message.textContent = error.message;
             }
 
-            button.disabled = false;
-            button.textContent = "Place Bid";
+            if (button) {
+                button.disabled = false;
+                button.textContent = "Place Bid";
+            }
         }
     }
 
-    // ==========================================
-    // 24. EVENT LISTENERS
-    // ==========================================
-
     function bindEvents() {
-
-        // Sidebar navigation
-
         $$(".side-link[data-section]").forEach(button => {
             button.addEventListener("click", () => {
                 showSection(button.dataset.section);
             });
         });
-
-        // Top navigation
 
         $$("[data-top]").forEach(button => {
             button.addEventListener("click", () => {
@@ -965,16 +1025,10 @@
             });
         });
 
-        // Menu toggle
-
         $("#menuToggle")?.addEventListener("click", () => {
-            $("#menuToggle").closest(".topbar")
-                ?.nextElementSibling
-                ?.querySelector(".sidebar")
-                ?.classList.toggle("open");
+            $(".sidebar")?.classList.toggle("open");
+            document.body.classList.toggle("sidebar-open");
         });
-
-        // Logout
 
         $("#logoutBtn")?.addEventListener("click", () => {
             if (confirm("Are you sure you want to logout?")) {
@@ -983,13 +1037,9 @@
             }
         });
 
-        // Notifications
-
         $("#notificationBtn")?.addEventListener("click", () => {
             showSection("notifications");
         });
-
-        // Search auctions
 
         $("#searchInput")?.addEventListener("keydown", event => {
             if (event.key !== "Enter") return;
@@ -1002,8 +1052,6 @@
                 `../auctions/auctions.html?search=${encodeURIComponent(query)}`;
         });
 
-        // Close modal
-
         $("#modalClose")?.addEventListener("click", closeModal);
 
         $("#modalBackdrop")?.addEventListener("click", event => {
@@ -1015,8 +1063,6 @@
         document.addEventListener("keydown", event => {
             if (event.key === "Escape") closeModal();
         });
-
-        // Dynamic buttons
 
         document.addEventListener("click", event => {
             const actionButton = event.target.closest("[data-action]");
@@ -1039,15 +1085,11 @@
             }
         });
 
-        // Confirm bid
-
         document.addEventListener("click", event => {
-            if (event.target.id === "dashboardConfirmBid") {
+            if (event.target.closest("#dashboardConfirmBid")) {
                 placeBid();
             }
         });
-
-        // View transactions
 
         $("#transactionsBtn")?.addEventListener("click", () => {
             const card = $("#transactionCard");
@@ -1057,8 +1099,6 @@
                     card.style.display === "none" ? "block" : "none";
             }
         });
-
-        // Add funds
 
         $("#addFundsBtn")?.addEventListener("click", () => {
             openModal(`
@@ -1076,20 +1116,21 @@
             `);
         });
 
-        // Create auction
-
         $("#createAuctionBtn")?.addEventListener("click", () => {
             window.location.href =
                 "../auctions/create-auction.html";
         });
-
-        // Dark mode preference
 
         const darkMode = $("#darkModeToggle");
 
         if (darkMode) {
             darkMode.checked =
                 localStorage.getItem("byi_dark_mode") === "true";
+
+            document.body.classList.toggle(
+                "dark-dashboard",
+                darkMode.checked
+            );
 
             darkMode.addEventListener("change", () => {
                 localStorage.setItem(
@@ -1106,11 +1147,11 @@
             });
         }
 
-        // Notification preferences
-
-        ["bidAlertsToggle", "auctionReminderToggle",
-         "publicProfileToggle"].forEach(id => {
-
+        [
+            "bidAlertsToggle",
+            "auctionReminderToggle",
+            "publicProfileToggle"
+        ].forEach(id => {
             const element = document.getElementById(id);
 
             if (!element) return;
@@ -1131,8 +1172,6 @@
             });
         });
 
-        // Password
-
         $("#changePasswordBtn")?.addEventListener("click", () => {
             openModal(`
                 <span class="eyebrow">SECURITY</span>
@@ -1144,8 +1183,6 @@
             `);
         });
 
-        // Delete account
-
         $("#deleteAccountBtn")?.addEventListener("click", () => {
             openModal(`
                 <span class="eyebrow">ACCOUNT</span>
@@ -1156,8 +1193,6 @@
                 </p>
             `);
         });
-
-        // Edit profile
 
         document.addEventListener("click", event => {
             if (event.target.closest("#editProfileBtn")) {
@@ -1173,18 +1208,11 @@
         });
     }
 
-    // ==========================================
-    // 25. INITIALIZE DASHBOARD
-    // ==========================================
-
     document.addEventListener("DOMContentLoaded", () => {
-
         if (!checkAuthentication()) return;
 
         bindEvents();
-
         loadDashboard();
-
     });
 
 })();
